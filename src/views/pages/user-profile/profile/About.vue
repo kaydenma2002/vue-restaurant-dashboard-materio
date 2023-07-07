@@ -1,0 +1,117 @@
+<script setup>
+const props = defineProps({
+  data: {
+    type: null,
+    required: true,
+  },
+})
+</script>
+
+<template>
+  <VCard class="mb-4">
+    <VCardText>
+      <p class="text-xs">
+        ABOUT
+      </p>
+
+      <VList class="card-list text-medium-emphasis">
+        <VListItem
+          v-for="item in props.data.about"
+          :key="item.property"
+        >
+          <template #prepend>
+            <VIcon
+              :icon="item.icon"
+              size="24"
+              class="me-2"
+            />
+          </template>
+          <VListItemTitle>
+            <span class="font-weight-medium me-2">{{ item.property }}:</span>
+            <span>{{ item.value }}</span>
+          </VListItemTitle>
+        </VListItem>
+      </VList>
+
+      <p class="text-xs mb-5 mt-6">
+        CONTACTS
+      </p>
+
+      <VList class="card-list text-medium-emphasis">
+        <VListItem
+          v-for="item in props.data.contacts"
+          :key="item.property"
+        >
+          <template #prepend>
+            <VIcon
+              :icon="item.icon"
+              size="24"
+              class="me-2"
+            />
+          </template>
+          <VListItemTitle>
+            <span class="font-weight-medium me-1">{{ item.property }}:</span>
+            <span>{{ item.value }}</span>
+          </VListItemTitle>
+        </VListItem>
+      </VList>
+
+      <p class="text-xs mb-5 mt-6">
+        TEAMS
+      </p>
+
+      <VList class="card-list text-medium-emphasis">
+        <VListItem
+          v-for="item in props.data.teams"
+          :key="item.property"
+        >
+          <template #prepend>
+            <VIcon
+              :icon="item.icon"
+              size="24"
+              :color="item.color"
+              class="me-2"
+            />
+          </template>
+          <VListItemTitle>
+            <span class="font-weight-medium me-1">{{ item.property }}:</span>
+            <span>{{ item.value }}</span>
+          </VListItemTitle>
+        </VListItem>
+      </VList>
+    </VCardText>
+  </VCard>
+
+  <VCard>
+    <VCardText>
+      <p class="text-xs mb-5">
+        OVERVIEW
+      </p>
+
+      <VList class="card-list text-medium-emphasis">
+        <VListItem
+          v-for="item in props.data.overview"
+          :key="item.property"
+        >
+          <template #prepend>
+            <VIcon
+              :icon="item.icon"
+              size="24"
+              class="me-2"
+            />
+          </template>
+          <VListItemTitle>
+            <span class="font-weight-medium me-1">{{ item.property }}:</span>
+            <span>{{ item.value }}</span>
+          </VListItemTitle>
+        </VListItem>
+      </VList>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.card-list {
+  --v-card-list-gap: 16px;
+}
+</style>

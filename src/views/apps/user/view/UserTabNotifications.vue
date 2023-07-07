@@ -1,0 +1,104 @@
+<script setup>
+const notifications = ref([
+  {
+    type: 'New for you',
+    email: true,
+    browser: false,
+    app: false,
+  },
+  {
+    type: 'Account activity',
+    email: false,
+    browser: true,
+    app: true,
+  },
+  {
+    type: 'A new browser used to sign in',
+    email: true,
+    browser: true,
+    app: true,
+  },
+  {
+    type: 'A new device is linked',
+    email: false,
+    browser: true,
+    app: false,
+  },
+])
+</script>
+
+<template>
+  <VCard
+    title="Notifications"
+    class="user-tab-notification"
+  >
+    <VDivider />
+
+    <div class="text-sm my-4 mx-5 text-high-emphasis font-weight-medium">
+      You will receive notification for the below selected items.
+    </div>
+
+    <VDivider />
+
+    <VTable class="text-no-wrap text-sm">
+      <thead>
+        <tr>
+          <th scope="col">
+            TYPE
+          </th>
+          <th scope="col">
+            EMAIL
+          </th>
+          <th scope="col">
+            BROWSER
+          </th>
+          <th scope="col">
+            APP
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          v-for="notification in notifications"
+          :key="notification.type"
+        >
+          <td class="text-high-emphasis">
+            {{ notification.type }}
+          </td>
+          <td>
+            <VCheckbox v-model="notification.email" />
+          </td>
+          <td>
+            <VCheckbox v-model="notification.browser" />
+          </td>
+          <td>
+            <VCheckbox v-model="notification.app" />
+          </td>
+        </tr>
+      </tbody>
+    </VTable>
+
+    <VDivider />
+
+    <VCardText class="d-flex flex-wrap gap-4">
+      <VBtn>Save changes</VBtn>
+      <VBtn
+        color="secondary"
+        variant="outlined"
+      >
+        Discard
+      </VBtn>
+    </VCardText>
+  </VCard>
+</template>
+
+<style lang="scss" scoped>
+.v-table {
+  --v-table-header-height: 48px !important;
+}
+
+.v-table--density-default > .v-table__wrapper > table > tbody > tr > td {
+  block-size: 48px !important;
+}
+</style>

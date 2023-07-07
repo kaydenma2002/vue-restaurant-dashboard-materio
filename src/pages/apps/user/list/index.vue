@@ -1,0 +1,537 @@
+<script setup>
+import { VDataTableServer } from "vuetify/labs/VDataTable";
+import Swal from 'sweetalert2'
+
+import { paginationMeta } from "@/@fake-db/utils";
+import AddNewUserDrawer from "@/views/apps/user/list/AddNewUserDrawer.vue";
+import { useUserListStore } from "@/views/apps/user/useUserListStore";
+import { avatarText } from "@core/utils/formatters";
+import { debounce } from "lodash";
+
+
+const userListStore = useUserListStore();
+const searchQuery = ref("");
+const selectedRole = ref("");
+const selectedPlan = ref("");
+const selectedStatus = ref("null");
+const totalPage = ref(1);
+const totalUsers = ref(0);
+const users = ref([]);
+
+const options = ref({
+  page: 1,
+  itemsPerPage: 10,
+  sortBy: [],
+  groupBy: [],
+  search: undefined,
+});
+
+// Headers
+const headers = [
+  {
+    title: "OWNER",
+    key: "user.name",
+  },
+  {
+    title: "EMAIL",
+    key: "email",
+  },
+  {
+    title: "PHONE",
+    key: "phone",
+  },
+  {
+    title: "COMPANY",
+    key: "company",
+  },
+  {
+    title: "STREET",
+    key: "street",
+  },
+  {
+    title: "CITY",
+    key: "city",
+  },
+  {
+    title: "ZIP CODE",
+    key: "zip_code",
+  },
+
+  
+
+  {
+    title: "STATUS",
+    key: "status",
+  },
+  {
+    title: "ACTION",
+    key: "actions",
+    sortable: false,
+  },
+];
+
+// 👉 Fetching users
+const fetchUsers = debounce(() => {
+  userListStore
+    .fetchUsers({
+      q: searchQuery.value,
+      status: selectedStatus.value,
+
+      options: options.value,
+    })
+    .then((response) => {
+      console.log(response);
+      users.value = response.data.data;
+      totalPage.value = response.data.total;
+      totalUsers.value = response.data.total;
+      options.value.page = response.data.current_page;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, 100);
+fetchUsers();
+
+watch(
+  () => options.value.itemsPerPage,
+  (count) => {
+    fetchUsers();
+  }
+);
+
+watch(
+  () => options.value.page,
+  (count) => {
+    fetchUsers();
+  }
+);
+watch(
+  () => options.value.sortBy,
+  (count) => {
+    fetchUsers();
+  }
+);
+watch([searchQuery, selectedStatus], () => {
+  fetchUsers();
+});
+// 👉 search filters
+const roles = [
+  {
+    title: "Admin",
+    value: "admin",
+  },
+  {
+    title: "Author",
+    value: "author",
+  },
+  {
+    title: "Editor",
+    value: "editor",
+  },
+  {
+    title: "Maintainer",
+    value: "maintainer",
+  },
+  {
+    title: "Subscriber",
+    value: "subscriber",
+  },
+];
+
+const plans = [
+  {
+    title: "Basic",
+    value: "basic",
+  },
+  {
+    title: "Company",
+    value: "company",
+  },
+  {
+    title: "Enterprise",
+    value: "enterprise",
+  },
+  {
+    title: "Team",
+    value: "team",
+  },
+];
+
+const status = [
+  {
+    title: "All",
+    value: "null",
+  },
+  {
+    title: "Deactive",
+    value: "0",
+  },
+  {
+    title: "Online",
+    value: "1",
+  },
+  {
+    title: "Offline",
+    value: "2",
+  },
+];
+
+// const resolveUserRoleVariant = role => {
+//   const roleLowerCase = role.toLowerCase()
+//   if (roleLowerCase === 'subscriber')
+//     return {
+//       color: 'primary',
+//       icon: 'mdi-account-outline',
+//     }
+//   if (roleLowerCase === 'author')
+//     return {
+//       color: 'warning',
+//       icon: 'mdi-cog-outline',
+//     }
+//   if (roleLowerCase === 'maintainer')
+//     return {
+//       color: 'success',
+//       icon: 'mdi-chart-donut',
+//     }
+//   if (roleLowerCase === 'editor')
+//     return {
+//       color: 'info',
+//       icon: 'mdi-pencil-outline',
+//     }
+//   if (roleLowerCase === 'admin')
+//     return {
+//       color: 'error',
+//       icon: 'mdi-laptop',
+//     }
+
+//   return {
+//     color: 'primary',
+//     icon: 'mdi-account-outline',
+//   }
+// }
+
+const resolveUserStatusVariant = (stat) => {
+  const statLowerCase = stat;
+  if (statLowerCase === "0") return "warning";
+  if (statLowerCase === "1") return "success";
+  if (statLowerCase === "2") return "secondary";
+
+  return "primary";
+};
+const resolveUserStatusText = (stat) => {
+  if (stat === "0") return "Deactive";
+  if (stat === "1") return "Online";
+  if (stat === "2") return "Offline";
+
+  return "";
+};
+
+const isAddNewUserDrawerVisible = ref(false);
+
+const addNewUser = (userData) => {
+  userListStore.addUser(userData);
+
+  // refetch User
+  fetchUsers();
+};
+
+const deleteUser = (id) => {
+  Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#9155FD',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+    userListStore.deleteUser(id)
+
+  // refetch User
+  fetchUsers();
+  }
+})
+};
+</script>
+
+<template>
+  <section>
+    <VCard title="Filters" class="mb-6">
+      <VCardText>
+        <VRow>
+          <!-- 👉 Select Role -->
+          <VCol cols="12" sm="4">
+            <VSelect
+              v-model="selectedRole"
+              label="Select Role"
+              :items="roles"
+              clearable
+              clear-icon="mdi-close"
+            />
+          </VCol>
+
+          <!-- 👉 Select Plan -->
+          <VCol cols="12" sm="4">
+            <VSelect
+              v-model="selectedPlan"
+              label="Select Plan"
+              :items="plans"
+              clearable
+              clear-icon="mdi-close"
+            />
+          </VCol>
+
+          <!-- 👉 Select Status -->
+          <VCol cols="12" sm="4">
+            <VSelect
+              v-model="selectedStatus"
+              label="Select Status"
+              :items="status"
+              clearable
+              clear-icon="mdi-close"
+            />
+          </VCol>
+        </VRow>
+      </VCardText>
+    </VCard>
+
+    <VCard>
+      <VCardText class="d-flex flex-wrap gap-4">
+        <!-- 👉 Export button -->
+        <VBtn
+          variant="outlined"
+          color="secondary"
+          prepend-icon="mdi-tray-arrow-up"
+        >
+          Export
+        </VBtn>
+
+        <VSpacer />
+
+        <div class="app-user-search-filter d-flex align-center gap-6">
+          <!-- 👉 Search  -->
+          <VTextField
+            v-model="searchQuery"
+            placeholder="Search Owner"
+            density="compact"
+          />
+
+          <!-- 👉 Add Owner button -->
+          <VBtn @click="isAddNewUserDrawerVisible = true"> Add Owner </VBtn>
+        </div>
+      </VCardText>
+
+      <!-- SECTION data table -->
+      <VDataTableServer
+        v-model:items-per-page="options.itemsPerPage"
+        v-model:page="options.page"
+        :items="users"
+        :items-length="totalUsers"
+        :headers="headers"
+        show-select
+        class="rounded-0"
+        @update:options="options = $event"
+      >
+        <!-- User -->
+        <template #item.user.name="{ item }">
+          <div class="d-flex">
+            <!-- <VAvatar
+              size="34"
+              :variant="!item.raw.avatar ? 'tonal' : undefined"
+              :color="!item.raw.avatar ? resolveUserRoleVariant(item.raw.role).color : undefined"
+              class="me-3"
+            >
+              <VImg
+                v-if="item.raw.avatar"
+                :src="item.raw.avatar"
+              />
+              <span v-else>{{ avatarText(item.raw.name) }}</span>
+            </VAvatar> -->
+
+            <div class="d-flex flex-column">
+              <h6 class="text-sm">
+                <RouterLink
+                  :to="{
+                    name: 'apps-user-view-id',
+                    params: { id: item.raw.id },
+                  }"
+                  class="font-weight-medium user-list-name"
+                >
+                  {{ item.raw.name }}
+                </RouterLink>
+              </h6>
+
+              <span class="text-xs text-medium-emphasis"
+                >@{{ item.raw.username }}</span
+              >
+            </div>
+          </div>
+        </template>
+
+        <!-- Email -->
+        <template #item.email="{ item }">
+          <span class="text-sm">
+            {{ item.raw.email }}
+          </span>
+        </template>
+        <template #item.phone="{ item }">
+          <span class="text-sm">
+            {{ item.raw.phone }}
+          </span>
+        </template>
+        <template #item.company="{ item }">
+          <span class="text-sm">
+            {{ item.raw.company }}
+          </span>
+        </template>
+        <template #item.street="{ item }">
+          <span class="text-sm">
+            {{ item.raw.street }}
+          </span>
+        </template>
+        <template #item.city="{ item }">
+          <span class="text-sm">
+            {{ item.raw.city }}
+          </span>
+        </template>
+        <template #item.zip_code="{ item }">
+          <span class="text-sm">
+            {{ item.raw.zip_code }}
+          </span>
+        </template>
+        
+        <!-- Role -->
+        <!-- <template #item.user_type="{ item }">
+          <span class="text-capitalize text-high-emphasis">{{
+            item.raw.user_type
+          }}</span>
+        </template>
+
+         Plan -->
+        <!-- <template #item.plan="{ item }">
+          <span class="text-capitalize text-high-emphasis">{{
+            item.raw.currentPlan
+          }}</span>
+        </template> -->
+
+        <!-- Status -->
+        <template #item.status="{ item }">
+          <VChip
+            :color="resolveUserStatusVariant(item.raw.status)"
+            density="comfortable"
+            class="text-capitalize"
+          >
+            {{ resolveUserStatusText(item.raw.status) }}
+          </VChip>
+        </template>
+
+        <!-- Actions -->
+        <template #item.actions="{ item }">
+          <VBtn icon variant="text" size="small" color="medium-emphasis">
+            <VIcon size="24" icon="mdi-dots-vertical" />
+
+            <VMenu activator="parent">
+              <VList>
+                <VListItem
+                  :to="{
+                    name: 'apps-user-view-id',
+                    params: { id: item.raw.id },
+                  }"
+                >
+                  <template #prepend>
+                    <VIcon icon="mdi-eye-outline" />
+                  </template>
+                  <VListItemTitle>View/Edit</VListItemTitle>
+                </VListItem>
+
+                
+                
+                <VListItem @click="deleteUser(item.raw.id)">
+                  <template #prepend>
+                    <VIcon icon="mdi-delete-outline" />
+                  </template>
+                  <VListItemTitle>Delete</VListItemTitle>
+                </VListItem>
+              </VList>
+            </VMenu>
+          </VBtn>
+        </template>
+
+        <!-- Pagination -->
+        <template #bottom>
+          <VDivider />
+
+          <div class="d-flex justify-end gap-x-6 pa-2 flex-wrap">
+            <div class="d-flex align-center gap-x-2 text-sm">
+              Rows Per Page:
+              <VSelect
+                v-model="options.itemsPerPage"
+                class="per-page-select text-high-emphasis"
+                variant="plain"
+                density="compact"
+                :items="[10, 20, 25, 50, 100]"
+              />
+            </div>
+
+            <span class="d-flex align-center text-sm me-2 text-high-emphasis">{{
+              paginationMeta(options, totalUsers)
+            }}</span>
+
+            <div class="d-flex gap-x-2 align-center me-2">
+              <VBtn
+                icon="mdi-chevron-left"
+                class="flip-in-rtl"
+                variant="text"
+                density="comfortable"
+                color="default"
+                :disabled="options.page <= 1"
+                @click="options.page <= 1 ? (options.page = 1) : options.page--"
+              />
+
+              <VBtn
+                icon="mdi-chevron-right"
+                class="flip-in-rtl"
+                density="comfortable"
+                variant="text"
+                color="default"
+                :disabled="
+                  options.page >= Math.ceil(totalUsers / options.itemsPerPage)
+                "
+                @click="
+                  options.page >= Math.ceil(totalUsers / options.itemsPerPage)
+                    ? (options.page = Math.ceil(
+                        totalUsers / options.itemsPerPage
+                      ))
+                    : options.page++
+                "
+              />
+            </div>
+          </div>
+        </template>
+      </VDataTableServer>
+      <!-- SECTION -->
+    </VCard>
+
+    <!-- 👉 Add New User -->
+    <AddNewUserDrawer
+      v-model:isDrawerOpen="isAddNewUserDrawerVisible"
+      @user-data="addNewUser"
+    />
+  </section>
+</template>
+
+<style lang="scss">
+.app-user-search-filter {
+  inline-size: 24.0625rem;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.user-list-name:not(:hover) {
+  color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+}
+
+</style>
