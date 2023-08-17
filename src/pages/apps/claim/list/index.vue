@@ -203,7 +203,6 @@ const resolveUserStatusText = (stat) => {
   return "";
 };
 
-
 const addNewUser = (claimData) => {
   claimListStore.addUser(claimData);
 
@@ -211,9 +210,9 @@ const addNewUser = (claimData) => {
   fetchClaims();
 };
 const approveClaim = (id) => {
-  claimListStore.approveClaim(id).then(res =>{
-    console.log(res)
-  })
+  claimListStore.approveClaim(id).then((res) => {
+    console.log(res);
+  });
 
   // refetch User
   fetchClaims();
@@ -332,8 +331,6 @@ const deleteUser = (id) => {
                 </RouterLink> -->
                 {{ item.raw.user.email }}
               </h6>
-
-              
             </div>
           </div>
         </template>
@@ -380,12 +377,10 @@ const deleteUser = (id) => {
 
                 <VListItem link @click="approveClaim(item.raw.id)">
                   <template #prepend>
-                    <VIcon color="success" icon="mdi-check-decagram" />
+                    <VIcon color="primary" icon="mdi-check-decagram" />
                   </template>
                   <VListItemTitle>Approve</VListItemTitle>
                 </VListItem>
-
-                
               </VList>
             </VMenu>
           </VBtn>
@@ -447,7 +442,6 @@ const deleteUser = (id) => {
     </VCard>
 
     <!-- 👉 Add New User -->
-    
   </section>
 </template>
 

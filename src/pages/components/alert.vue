@@ -1,5 +1,5 @@
 <script setup>
-import * as demoCode from '@/views/demos/components/alert/demoCodeAlert'
+import * as demoCode from '@/views/demos/components/alert/demoCodeAlert';
 </script>
 
 <template>

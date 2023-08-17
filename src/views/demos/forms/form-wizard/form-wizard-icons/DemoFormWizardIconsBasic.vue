@@ -1,63 +1,60 @@
 <script setup>
 const iconsSteps = [
   {
-    title: 'Account Details',
-    icon: 'custom-wizard-account',
+    title: "Account Details",
+    icon: "custom-wizard-account",
   },
   {
-    title: 'Personal Info',
-    icon: 'custom-wizard-personal',
+    title: "Personal Info",
+    icon: "custom-wizard-personal",
   },
   {
-    title: 'Address',
-    icon: 'custom-wizard-address',
+    title: "Address",
+    icon: "custom-wizard-address",
   },
   {
-    title: 'Social Links',
-    icon: 'custom-wizard-social-link',
+    title: "Social Links",
+    icon: "custom-wizard-social-link",
   },
   {
-    title: 'Review & Submit',
-    icon: 'custom-wizard-submit',
+    title: "Review & Submit",
+    icon: "custom-wizard-submit",
   },
-]
+];
 
-const currentStep = ref(0)
-const isPasswordVisible = ref(false)
-const isCPasswordVisible = ref(false)
+const currentStep = ref(0);
+const isPasswordVisible = ref(false);
+const isCPasswordVisible = ref(false);
 
 const formData = ref({
-  username: 'johndoe',
-  email: 'john.doe@email.com',
-  password: 'johndoe@J2',
-  c_password: 'johndoe@J2',
-  firstName: 'John',
-  lastName: 'Doe',
-  country: 'UK',
-  language: 'English',
-  address: '98 Borough bridge Road, Birmingham',
-  landmark: 'Borough bridge',
-  pincode: '658921',
-  city: 'Birmingham',
-  twitter: 'https://twitter.com/abc',
-  facebook: 'https://facebook.com/abc',
-  googlePlus: 'https://plus.google.com/abc',
-  linkedIn: 'https://linkedin.com/abc',
-})
+  username: "johndoe",
+  email: "john.doe@email.com",
+  password: "johndoe@J2",
+  c_password: "johndoe@J2",
+  firstName: "John",
+  lastName: "Doe",
+  country: "UK",
+  language: "English",
+  address: "98 Borough bridge Road, Birmingham",
+  landmark: "Borough bridge",
+  pincode: "658921",
+  city: "Birmingham",
+  twitter: "https://twitter.com/abc",
+  facebook: "https://facebook.com/abc",
+  googlePlus: "https://plus.google.com/abc",
+  linkedIn: "https://linkedin.com/abc",
+});
 
 const onSubmit = () => {
-  console.log(formData.value)
-}
+  console.log(formData.value);
+};
 </script>
 
 <template>
   <VCard>
     <VCardText>
       <!-- 👉 Stepper -->
-      <AppStepper
-        v-model:current-step="currentStep"
-        :items="iconsSteps"
-      />
+      <AppStepper v-model:current-step="currentStep" :items="iconsSteps" />
     </VCardText>
 
     <VDivider />
@@ -65,25 +62,15 @@ const onSubmit = () => {
     <VCardText>
       <!-- 👉 stepper content -->
       <VForm>
-        <VWindow
-          v-model="currentStep"
-          class="disable-tab-transition"
-        >
+        <VWindow v-model="currentStep" class="disable-tab-transition">
           <VWindowItem>
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Account Details
-                </h6>
-                <p class="text-xs mb-0">
-                  Enter your Account Details
-                </p>
+                <h6 class="text-sm font-weight-medium">Account Details</h6>
+                <p class="text-xs mb-0">Enter your Account Details</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.username"
                   placeholder="CarterLeonardo"
@@ -91,10 +78,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.email"
                   placeholder="carterleonardo@gmail.com"
@@ -102,30 +86,32 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.password"
                   label="Password"
                   placeholder="Enter Password"
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                  :append-inner-icon="
+                    isPasswordVisible
+                      ? 'mdi-eye-outline'
+                      : 'mdi-eye-off-outline'
+                  "
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.c_password"
                   label="Confirm Password"
                   placeholder="Enter Confirm Password"
                   :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                  :append-inner-icon="
+                    isCPasswordVisible
+                      ? 'mdi-eye-outline'
+                      : 'mdi-eye-off-outline'
+                  "
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
               </VCol>
@@ -135,18 +121,11 @@ const onSubmit = () => {
           <VWindowItem>
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Personal Info
-                </h6>
-                <p class="text-xs mb-0">
-                  Setup Information
-                </p>
+                <h6 class="text-sm font-weight-medium">Personal Info</h6>
+                <p class="text-xs mb-0">Setup Information</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.firstName"
                   label="First Name"
@@ -154,10 +133,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.lastName"
                   label="Last Name"
@@ -165,10 +141,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="formData.country"
                   label="Country"
@@ -177,10 +150,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="formData.language"
                   label="Language"
@@ -194,18 +164,11 @@ const onSubmit = () => {
           <VWindowItem>
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Address
-                </h6>
-                <p class="text-xs mb-0">
-                  Enter Your Address.
-                </p>
+                <h6 class="text-sm font-weight-medium">Address</h6>
+                <p class="text-xs mb-0">Enter Your Address.</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.address"
                   placeholder="98 Borough bridge Road, Birmingham"
@@ -213,10 +176,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.landmark"
                   placeholder="Borough bridge"
@@ -224,10 +184,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.pincode"
                   placeholder="658921"
@@ -236,10 +193,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.city"
                   placeholder="City"
@@ -252,18 +206,11 @@ const onSubmit = () => {
           <VWindowItem>
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Social Links
-                </h6>
-                <p class="text-xs mb-0">
-                  Add Social Links
-                </p>
+                <h6 class="text-sm font-weight-medium">Social Links</h6>
+                <p class="text-xs mb-0">Add Social Links</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.twitter"
                   placeholder="https://twitter.com/abc"
@@ -271,10 +218,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.facebook"
                   placeholder="https://facebook.com/abc"
@@ -282,10 +226,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.googlePlus"
                   placeholder="https://plus.google.com/abc"
@@ -293,10 +234,7 @@ const onSubmit = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="formData.linkedIn"
                   placeholder="https://linkedin.com/abc"
@@ -308,9 +246,7 @@ const onSubmit = () => {
 
           <VWindowItem>
             <div class="text-base">
-              <h6 class="text-base font-weight-medium mb-2">
-                Account
-              </h6>
+              <h6 class="text-base font-weight-medium mb-2">Account</h6>
 
               <p class="mb-1">
                 {{ formData.username }}
@@ -321,9 +257,7 @@ const onSubmit = () => {
 
               <VDivider class="my-4" />
 
-              <h6 class="text-base font-weight-medium mb-2">
-                Personal Info
-              </h6>
+              <h6 class="text-base font-weight-medium mb-2">Personal Info</h6>
 
               <p class="mb-1">
                 {{ formData.firstName }}
@@ -340,9 +274,7 @@ const onSubmit = () => {
 
               <VDivider class="my-4" />
 
-              <h6 class="text-base font-weight-medium mb-2">
-                Address
-              </h6>
+              <h6 class="text-base font-weight-medium mb-2">Address</h6>
 
               <p class="mb-1">
                 {{ formData.address }}
@@ -359,9 +291,7 @@ const onSubmit = () => {
 
               <VDivider class="my-4" />
 
-              <h6 class="text-base font-weight-medium mb-2">
-                Social Links
-              </h6>
+              <h6 class="text-base font-weight-medium mb-2">Social Links</h6>
 
               <p class="mb-1">
                 {{ formData.twitter }}
@@ -379,41 +309,32 @@ const onSubmit = () => {
           </VWindowItem>
         </VWindow>
 
-        <div class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-8">
+        <div
+          class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-8"
+        >
           <VBtn
             :color="currentStep === 0 ? 'secondary' : 'default'"
             variant="outlined"
             :disabled="currentStep === 0"
             @click="currentStep--"
           >
-            <VIcon
-              icon="mdi-arrow-left"
-              start
-              class="flip-in-rtl"
-            />
+            <VIcon icon="mdi-arrow-left" start class="flip-in-rtl" />
             Previous
           </VBtn>
 
           <VBtn
             v-if="iconsSteps.length - 1 === currentStep"
-            color="success"
+            color="primary"
             append-icon="mdi-check"
             @click="onSubmit"
           >
             submit
           </VBtn>
 
-          <VBtn
-            v-else
-            @click="currentStep++"
-          >
+          <VBtn v-else @click="currentStep++">
             Next
 
-            <VIcon
-              icon="mdi-arrow-right"
-              end
-              class="flip-in-rtl"
-            />
+            <VIcon icon="mdi-arrow-right" end class="flip-in-rtl" />
           </VBtn>
         </div>
       </VForm>

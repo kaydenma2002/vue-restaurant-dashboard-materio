@@ -1,44 +1,56 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
-import { useThemeConfig } from '@core/composable/useThemeConfig'
-import { hexToRgb } from '@layouts/utils'
+import { useOrderListStore } from "@/views/apps/order/useOrderListStore";
+import { useThemeConfig } from "@core/composable/useThemeConfig";
+import { hexToRgb } from "@layouts/utils";
+import { computed, ref, watch } from "vue";
+import VueApexCharts from "vue3-apexcharts";
+import { useTheme } from "vuetify";
 
-const vuetifyTheme = useTheme()
-const { theme } = useThemeConfig()
+const orderListStore = useOrderListStore();
 
-const options = controlledComputed(theme, () => {
-  const currentTheme = ref(vuetifyTheme.current.value.colors)
-  const variableTheme = ref(vuetifyTheme.current.value.variables)
-  const secondaryTextColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['medium-emphasis-opacity'] })`
-  const primaryTextColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['high-emphasis-opacity'] })`
-  
+const vuetifyTheme = useTheme();
+const { theme } = useThemeConfig();
+const props = defineProps({
+  saleData: {
+    type: Object,
+    required: true,
+  },
+});
+
+const labels = ref([]);
+const sales = ref([]);
+const totalSales = ref("");
+const options = computed(() => {
+  const currentTheme = vuetifyTheme.current.value.colors;
+  const variableTheme = vuetifyTheme.current.value.variables;
+  const secondaryTextColor = `rgba(${hexToRgb(currentTheme["on-surface"])},${
+    variableTheme["medium-emphasis-opacity"]
+  })`;
+  const primaryTextColor = `rgba(${hexToRgb(currentTheme["on-surface"])},${
+    variableTheme["high-emphasis-opacity"]
+  })`;
+
   return {
     chart: { sparkline: { enabled: true } },
     colors: [
-      currentTheme.value.primary,
-      `rgba(${ hexToRgb(currentTheme.value.primary) }, 0.7)`,
-      `rgba(${ hexToRgb(currentTheme.value.primary) }, 0.5)`,
-      currentTheme.value['grey-100'],
+      currentTheme.primary,
+      `rgba(${hexToRgb(currentTheme.primary)}, 0.7)`,
+      `rgba(${hexToRgb(currentTheme.primary)}, 0.5)`,
+      currentTheme["grey-100"],
     ],
     stroke: { width: 0 },
     legend: { show: false },
     dataLabels: { enabled: false },
-    labels: [
-      'Apparel',
-      'Electronics',
-      'FMCG',
-      'Other Sales',
-    ],
+    labels: labels.value,
     states: {
-      hover: { filter: { type: 'none' } },
-      active: { filter: { type: 'none' } },
+      hover: { filter: { type: "none" } },
+      active: { filter: { type: "none" } },
     },
     plotOptions: {
       pie: {
         customScale: 0.9,
         donut: {
-          size: '70%',
+          size: "70%",
           labels: {
             show: true,
             name: {
@@ -48,49 +60,69 @@ const options = controlledComputed(theme, () => {
             value: {
               offsetY: -15,
               fontWeight: 600,
-              fontSize: '24px',
+              fontSize: "24px",
               color: primaryTextColor,
-              formatter: value => `${ value }k`,
+              formatter: (value) => `$${Number(value).toFixed(2)}`,
             },
             total: {
               show: true,
-              label: 'Weekly Sales',
-              fontSize: '12px',
+              label: "Sales Overview",
+              fontSize: "12px",
               color: secondaryTextColor,
-              formatter: value => `${ value.globals.seriesTotals.reduce((total, num) => total + num) }k`,
+              formatter: (value) => {
+                const total = value.globals.seriesTotals.reduce(
+                  (acc, num) => acc + num
+                );
+                return `$${total?.toFixed(2)}`;
+              },
             },
           },
         },
       },
     },
+    tooltip: { enabled: false },
+  };
+});
+
+const series = ref([]);
+const timeRange = ref(["Today"]);
+watch(
+  () => props.saleData.topRestaurants,
+  (newTopRestaurants) => {
+    sales.value = newTopRestaurants?.map((item) => ({
+      total_sales: item.total_sales,
+      name: item.name,
+    }));
+    totalSales.value = props.saleData.sales;
+
+    series.value = newTopRestaurants?.map((item) => item.total_sales) || [];
+    labels.value = newTopRestaurants?.map((item) => item.name) || [];
+
+    if (series.value?.length === 0 && labels.value?.length === 0) {
+      series.value.push(0);
+      labels.value.push("No sales yet");
+      console.log(1);
+    }
   }
-})
-
-const series = [
-  12,
-  25,
-  13,
-  50,
-]
-
-const salesOverviews = [
-  {
-    product: 'Apparel',
-    sales: '$1,840',
-  },
-  {
-    product: 'Electronic',
-    sales: '$11,420',
-  },
-  {
-    product: 'FMCG',
-    sales: '$1,840',
-  },
-  {
-    product: 'Other Sales',
-    sales: '$11,420',
-  },
-]
+);
+watch(timeRange, () => {
+  orderListStore.fetchSales(timeRange.value).then((res) => {
+    console.log(res);
+    totalSales.value = res.data.sales;
+    sales.value = res.data.topRestaurants?.map((item) => ({
+      total_sales: item.total_sales,
+      name: item.name,
+    }));
+    series.value =
+      res.data.topRestaurants?.map((item) => item.total_sales) || [];
+    labels.value = res.data.topRestaurants?.map((item) => item.name) || [];
+    console.log(series.value);
+    if (series.value?.length === 0 && labels.value?.length === 0) {
+      series.value.push(0);
+      labels.value.push("No sales yet");
+    }
+  });
+});
 </script>
 
 <template>
@@ -99,58 +131,47 @@ const salesOverviews = [
       <VCardTitle>Sales Overview</VCardTitle>
 
       <template #append>
-        <div class="me-n3">
-          <MoreBtn />
+        <div style="inline-size: 13.5rem">
+          <VSelect
+            v-model="timeRange"
+            label="Select Time Range"
+            :items="['Today', 'This Week', 'This Month']"
+          />
         </div>
       </template>
     </VCardItem>
 
     <VCardText class="pt-4">
       <VRow>
-        <VCol
-          sm="6"
-          cols="12"
-        >
+        <VCol sm="6" cols="12">
           <VueApexCharts
             type="donut"
             :options="options"
             :series="series"
             :height="220"
+            :labels="labels.value"
           />
         </VCol>
 
-        <VCol
-          cols="12"
-          sm="6"
-        >
+        <VCol cols="12" sm="6">
           <div class="d-flex align-center">
             <div class="me-3">
-              <VAvatar
-                rounded
-                color="primary"
-                variant="tonal"
-              >
+              <VAvatar rounded color="primary" variant="tonal">
                 <VIcon icon="mdi-currency-usd" />
               </VAvatar>
             </div>
 
             <div>
-              <p class="mb-0">
-                Number of Sales
-              </p>
+              <p class="mb-0">Number of Sales</p>
               <h6 class="text-h6">
-                $86,400
+                {{ parseFloat(totalSales)?.toFixed(2) }}
               </h6>
             </div>
           </div>
 
           <VDivider class="my-3" />
           <VRow>
-            <VCol
-              v-for="sale in salesOverviews"
-              :key="sale.product"
-              cols="6"
-            >
+            <VCol v-for="sale in sales" :key="sale.id" cols="6">
               <p class="mb-1">
                 <VIcon
                   icon="mdi-checkbox-blank-circle"
@@ -158,10 +179,12 @@ const salesOverviews = [
                   size="12"
                   class="me-2"
                 />
-                <span>{{ sale.product }}</span>
+                <span class="text-ellipsis overflow-hidden">{{
+                  sale.name
+                }}</span>
               </p>
               <p class="text-base font-weight-medium mb-0">
-                {{ sale.sales }}
+                ${{ sale?.total_sales?.toFixed(2) }}
               </p>
             </VCol>
           </VRow>

@@ -8,7 +8,7 @@ export const colors = { ts: `<template>
       SE
     </VAvatar>
 
-    <VAvatar color="success">
+    <VAvatar color="primary">
       SU
     </VAvatar>
 
@@ -35,7 +35,7 @@ export const colors = { ts: `<template>
       SE
     </VAvatar>
 
-    <VAvatar color="success">
+    <VAvatar color="primary">
       SU
     </VAvatar>
 
@@ -313,7 +313,7 @@ export const icons = { ts: `<template>
     />
 
     <VAvatar
-      color="success"
+      color="primary"
       icon="mdi-bell-outline"
     />
 
@@ -346,7 +346,7 @@ export const icons = { ts: `<template>
     />
 
     <VAvatar
-      color="success"
+      color="primary"
       icon="mdi-bell-outline"
     />
 
@@ -434,7 +434,7 @@ export const rounded = { ts: `<template>
 
     <VAvatar
       rounded
-      color="success"
+      color="primary"
       icon="mdi-account-outline"
     />
 
@@ -472,7 +472,7 @@ export const rounded = { ts: `<template>
 
     <VAvatar
       rounded
-      color="success"
+      color="primary"
       icon="mdi-account-outline"
     />
 
@@ -512,7 +512,7 @@ export const sizes = { ts: `<template>
       PI
     </VAvatar>
 
-    <VAvatar color="success">
+    <VAvatar color="primary">
       PI
     </VAvatar>
 
@@ -547,7 +547,7 @@ export const sizes = { ts: `<template>
       PI
     </VAvatar>
 
-    <VAvatar color="success">
+    <VAvatar color="primary">
       PI
     </VAvatar>
 
@@ -584,7 +584,7 @@ export const tonal = { ts: `<template>
       SE
     </VAvatar>
     <VAvatar
-      color="success"
+      color="primary"
       variant="tonal"
     >
       SU
@@ -625,7 +625,7 @@ export const tonal = { ts: `<template>
       SE
     </VAvatar>
     <VAvatar
-      color="success"
+      color="primary"
       variant="tonal"
     >
       SU

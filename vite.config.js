@@ -11,9 +11,20 @@ import vuetify from 'vite-plugin-vuetify'
 
 // @ts-expect-error Known error: https://github.com/sxzz/unplugin-vue-macros/issues/257#issuecomment-1410752890
 import DefineOptions from 'unplugin-vue-define-options/vite'
-
+const { createServer } = require('vite')
+const { readFileSync } = require('fs')
+const sslCertificate = {
+  key: readFileSync('./domain.pem'),
+  cert: readFileSync('./certificate.pem')
+}
 // https://vitejs.dev/config/
-export default defineConfig({
+export default ({ command }) => {
+  let host = '127.0.0.1'
+  if (command === 'build') {
+    host = '142.11.239.33'
+  }
+
+return defineConfig({
   plugins: [
     vue(),
     vueJsx(),
@@ -96,6 +107,11 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 5000,
   },
+  server: {
+    // Enable HTTPS for development
+    https: sslCertificate,
+    port: 5173
+  },
   optimizeDeps: {
     exclude: ['vuetify'],
     entries: [
@@ -103,3 +119,4 @@ export default defineConfig({
     ],
   },
 })
+}

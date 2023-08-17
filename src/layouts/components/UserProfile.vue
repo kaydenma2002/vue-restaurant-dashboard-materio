@@ -11,8 +11,8 @@ const logout = () => {
   // Remove "userData" from localStorage
   localStorage.removeItem("userData");
 
-  // Remove "accessToken" from localStorage
-  localStorage.removeItem("accessToken");
+  // Remove "adminToken" from localStorage
+  localStorage.removeItem("adminToken");
   localStorage.removeItem("userAbilities");
 
   // Reset ability to initial ability

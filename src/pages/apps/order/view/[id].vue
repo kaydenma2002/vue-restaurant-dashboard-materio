@@ -1,17 +1,18 @@
 <script setup>
-import { useUserListStore } from '@/views/apps/user/useUserListStore'
-import UserBioPanel from '@/views/apps/user/view/UserBioPanel.vue'
-import UserTabBillingsPlans from '@/views/apps/user/view/UserTabBillingsPlans.vue'
-import UserTabConnections from '@/views/apps/user/view/UserTabConnections.vue'
-import UserTabNotifications from '@/views/apps/user/view/UserTabNotifications.vue'
-import UserTabOverview from '@/views/apps/user/view/UserTabOverview.vue'
-import UserTabSecurity from '@/views/apps/user/view/UserTabSecurity.vue'
+import { useOrderListStore } from '@/views/apps/order/useOrderListStore'
+import OrderBioPanel from '@/views/apps/order/view/OrderBioPanel.vue'
+import OrderTabBillingsPlans from '@/views/apps/order/view/OrderTabBillingsPlans.vue'
+import OrderTabConnections from '@/views/apps/order/view/OrderTabConnections.vue'
+import OrderTabNotifications from '@/views/apps/order/view/OrderTabNotifications.vue'
+import OrderTabOverview from '@/views/apps/order/view/OrderTabOverview.vue'
+import OrderTabSecurity from '@/views/apps/order/view/OrderTabSecurity.vue'
 import router from '@/router'
 
-const userListStore = useUserListStore()
+const orderListStore = useOrderListStore()
 const route = useRoute()
-const userData = ref()
-const userTab = ref(null)
+const orderData = ref()
+const orderTab = ref(null)
+import { ref, watch } from 'vue'
 
 const tabs = [
   {
@@ -35,73 +36,37 @@ const tabs = [
     title: 'Connections',
   },
 ]
-userListStore.fetchUser(Number(route.params.id)).then(response => {
-  userData.value = response.data
+orderListStore.fetchItemsByOrderId(Number(route.params.id)).then(response => {
+  orderData.value = response.data
+  console.log(response.data)
+  console.log(orderData)
 })
-const userUpdateInfo =() => {
-  userListStore.fetchUser(Number(route.params.id)).then(response => {
-  userData.value = response.data
+const orderUpdateInfo =() => {
+  orderListStore.fetchItemsByOrderId(Number(route.params.id)).then(response => {
+  orderData.value = response.data
   
 })
 }
+watch(() => route.params.id, async (newOrderId) => {
+  try {
+    const response = await orderListStore.fetchItemsByOrderId(Number(newOrderId))
+    orderData.value = response.data
+  } catch (error) {
+    console.error('Error fetching order data', error)
+  }
+})
 </script>
 
 <template>
-  <VRow v-if="userData">
+  <VRow v-if="orderData">
     <VCol
       cols="12"
-      md="5"
-      lg="4"
+      md="12"
+      lg="12"
     >
-      <UserBioPanel :user-data="userData" @userUpdateInfo="userUpdateInfo()" />
+      <OrderBioPanel :order-data="orderData" @orderUpdateInfo="orderUpdateInfo()" />
     </VCol>
 
-    <VCol
-      cols="12"
-      md="7"
-      lg="8"
-    >
-      <VTabs
-        v-model="userTab"
-        class="v-tabs-pill"
-      >
-        <VTab
-          v-for="tab in tabs"
-          :key="tab.icon"
-        >
-          <VIcon
-            start
-            :icon="tab.icon"
-          />
-          <span>{{ tab.title }}</span>
-        </VTab>
-      </VTabs>
-
-      <VWindow
-        v-model="userTab"
-        class="mt-6 disable-tab-transition"
-        :touch="false"
-      >
-        <VWindowItem>
-          <UserTabOverview :user-data="userData" />
-        </VWindowItem>
-
-        <VWindowItem>
-          <UserTabSecurity />
-        </VWindowItem>
-
-        <VWindowItem>
-          <UserTabBillingsPlans />
-        </VWindowItem>
-
-        <VWindowItem>
-          <UserTabNotifications />
-        </VWindowItem>
-
-        <VWindowItem>
-          <UserTabConnections />
-        </VWindowItem>
-      </VWindow>
-    </VCol>
+    
   </VRow>
 </template>

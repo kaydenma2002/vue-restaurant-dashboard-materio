@@ -3,6 +3,7 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { useChat } from './useChat'
 import ChatContact from '@/views/apps/chat/ChatContact.vue'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
+import { avatarText, formatDateToMonthShort } from "@core/utils/formatters";
 
 const props = defineProps({
   search: {
@@ -25,6 +26,19 @@ const emit = defineEmits([
 const { resolveAvatarBadgeVariant } = useChat()
 const search = useVModel(props, 'search', emit)
 const store = useChatStore()
+store.contacts.map(item =>{
+  console.log(item)
+})
+const uniqueContacts = computed(() => {
+  const uniqueIds = new Set();
+  return store.chatsContacts.filter((contact) => {
+    if (!uniqueIds.has(contact.owner_id)) {
+      uniqueIds.add(contact.owner_id);
+      return true;
+    }
+    return false;
+  });
+});
 </script>
 
 <template>
@@ -42,15 +56,25 @@ const store = useChatStore()
       :color="resolveAvatarBadgeVariant(store.profileUser.status)"
       bordered
     >
-      <VAvatar
+    <VAvatar
+      :variant="!store.profileUser?.avatar ? 'tonal' : undefined"
+        :color="
+          !store.profileUser?.avatar
+            ? resolveAvatarBadgeVariant(store.profileUser?.status)
+            : undefined
+        "
         size="40"
         class="cursor-pointer"
         @click="$emit('showUserProfile')"
       >
         <VImg
-          :src="store.profileUser.avatar"
+        v-if="store.profileUser?.avatar"
+          :src="store?.profileUser?.avatar"
           alt="John Doe"
         />
+        <span v-else>{{
+          avatarText(store.profileUser.name) || avatarText(user?.owner?.name)
+        }}</span>
       </VAvatar>
     </VBadge>
 
@@ -83,12 +107,13 @@ const store = useChatStore()
       <span class="chat-contact-header d-block text-primary text-xl font-weight-medium">Chats</span>
     </li>
     <ChatContact
-      v-for="contact in store.chatsContacts"
+      v-for="contact in uniqueContacts"
       :key="`chat-${contact.id}`"
-      :user="contact"
+      :user="contact.owner"
       is-chat-contact
-      @click="$emit('openChatOfContact', contact.id)"
+      @click="$emit('openChatOfContact', contact.owner_id)"
     />
+    
     <span
       v-show="!store.chatsContacts.length"
       class="no-chat-items-text text-disabled"

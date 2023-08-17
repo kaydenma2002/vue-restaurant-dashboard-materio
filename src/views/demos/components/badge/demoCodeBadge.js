@@ -7,7 +7,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
     <VBadge
       dot
       bordered
-      color="success"
+      color="primary"
       location="bottom end"
       :offset-x="5"
       :offset-y="1"
@@ -53,7 +53,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
     <VBadge
       dot
       bordered
-      color="success"
+      color="primary"
       location="bottom end"
       :offset-x="5"
       :offset-y="1"
@@ -96,7 +96,7 @@ export const color = { ts: `<template>
   <div class="demo-space-x">
     <VBadge
       dot
-      color="success"
+      color="primary"
       offset-x="-1"
       offset-y="-1"
     >
@@ -120,7 +120,7 @@ export const color = { ts: `<template>
 
     <VBadge
       dot
-      color="success"
+      color="primary"
       offset-x="-1"
       offset-y="-1"
     >
@@ -171,7 +171,7 @@ export const color = { ts: `<template>
   <div class="demo-space-x">
     <VBadge
       dot
-      color="success"
+      color="primary"
       offset-x="-1"
       offset-y="-1"
     >
@@ -195,7 +195,7 @@ export const color = { ts: `<template>
 
     <VBadge
       dot
-      color="success"
+      color="primary"
       offset-x="-1"
       offset-y="-1"
     >
@@ -253,7 +253,7 @@ const notifications = ref<number>()
     <VBadge
       :content="notifications"
       :model-value="!!notifications"
-      color="success"
+      color="primary"
       class="me-5"
     >
       <VIcon
@@ -285,7 +285,7 @@ const notifications = ref()
     <VBadge
       :content="notifications"
       :model-value="!!notifications"
-      color="success"
+      color="primary"
       class="me-5"
     >
       <VIcon

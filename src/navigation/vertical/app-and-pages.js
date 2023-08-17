@@ -15,22 +15,7 @@ export default [
     icon: { icon: "mdi-calendar-blank-outline" },
     to: "apps-calendar",
   },
-  {
-    title: "Invoice",
-    icon: { icon: "mdi-file-document-outline" },
-    children: [
-      { title: "List", to: "apps-invoice-list" },
-      {
-        title: "Preview",
-        to: { name: "apps-invoice-preview-id", params: { id: "5036" } },
-      },
-      {
-        title: "Edit",
-        to: { name: "apps-invoice-edit-id", params: { id: "5036" } },
-      },
-      { title: "Add", to: "apps-invoice-add" },
-    ],
-  },
+  
   {
     title: "Order",
     icon: { icon: "mdi-history" },
@@ -38,7 +23,7 @@ export default [
       { title: "List", to: "apps-order-list" },
       {
         title: "View",
-        to: { name: "apps-order-view-id", params: { id: "5036" } },
+        to: { name: "apps-order-view-id", params: { id: JSON.parse(localStorage.getItem("userData")).id } },
       },
       
     ],

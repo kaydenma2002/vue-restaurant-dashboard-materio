@@ -1,41 +1,41 @@
 <script setup>
-import PersonalDetails from '@/views/wizard-examples/property-listing/PersonalDetails.vue'
-import PriceDetails from '@/views/wizard-examples/property-listing/PriceDetails.vue'
-import PropertyArea from '@/views/wizard-examples/property-listing/PropertyArea.vue'
-import PropertyDetails from '@/views/wizard-examples/property-listing/PropertyDetails.vue'
-import PropertyFeatures from '@/views/wizard-examples/property-listing/PropertyFeatures.vue'
+import PersonalDetails from "@/views/wizard-examples/property-listing/PersonalDetails.vue";
+import PriceDetails from "@/views/wizard-examples/property-listing/PriceDetails.vue";
+import PropertyArea from "@/views/wizard-examples/property-listing/PropertyArea.vue";
+import PropertyDetails from "@/views/wizard-examples/property-listing/PropertyDetails.vue";
+import PropertyFeatures from "@/views/wizard-examples/property-listing/PropertyFeatures.vue";
 
 const propertyListingSteps = [
   {
-    title: 'Personal Details',
-    subtitle: 'Your Name/Email',
+    title: "Personal Details",
+    subtitle: "Your Name/Email",
   },
   {
-    title: 'Property Details',
-    subtitle: 'Property Type',
+    title: "Property Details",
+    subtitle: "Property Type",
   },
   {
-    title: 'Property Features',
-    subtitle: 'Bedrooms/Floor No',
+    title: "Property Features",
+    subtitle: "Bedrooms/Floor No",
   },
   {
-    title: 'Property Area',
-    subtitle: 'covered Area',
+    title: "Property Area",
+    subtitle: "covered Area",
   },
   {
-    title: 'Price Details',
-    subtitle: 'Expected Price',
+    title: "Price Details",
+    subtitle: "Expected Price",
   },
-]
+];
 
 const propertyListingData = ref({
   personalDetails: {
-    userType: 'builder',
-    firstName: '',
-    lastName: '',
-    username: '',
-    password: '',
-    email: '',
+    userType: "builder",
+    firstName: "",
+    lastName: "",
+    username: "",
+    password: "",
+    email: "",
     contact: null,
   },
   priceDetails: {
@@ -45,50 +45,46 @@ const propertyListingData = ref({
     maintenancePeriod: undefined,
     bookingAmount: null,
     otherAmount: null,
-    priceDisplayType: 'Negotiable',
-    priceIncludes: ['Car Parking'],
+    priceDisplayType: "Negotiable",
+    priceIncludes: ["Car Parking"],
   },
   propertyFeatures: {
-    bedroomCount: '',
-    floorNo: '',
-    bathroomCount: '',
+    bedroomCount: "",
+    floorNo: "",
+    bathroomCount: "",
     isCommonArea: true,
     furnishedStatus: undefined,
-    furnishingDetails: [
-      'AC',
-      'TV',
-      'Fridge',
-    ],
-    isCommonArea1: 'true',
-    isCommonArea2: 'false',
+    furnishingDetails: ["AC", "TV", "Fridge"],
+    isCommonArea1: "true",
+    isCommonArea2: "false",
   },
   propertyArea: {
     totalArea: null,
     carpetArea: null,
     plotArea: null,
     availableFrom: null,
-    possessionStatus: 'Under Construciton',
-    transactionType: 'New Property',
-    isOnMainRoad: 'No',
-    isGatedColony: 'No',
+    possessionStatus: "Under Construciton",
+    transactionType: "New Property",
+    isOnMainRoad: "No",
+    isGatedColony: "No",
   },
   propertyDetails: {
-    propertyDealType: 'sell',
+    propertyDealType: "sell",
     propertyType: undefined,
     zipCode: null,
     country: undefined,
-    state: '',
-    city: '',
-    landmark: '',
-    address: '',
+    state: "",
+    city: "",
+    landmark: "",
+    address: "",
   },
-})
+});
 
-const currentStep = ref(0)
+const currentStep = ref(0);
 
 const onSubmit = () => {
-  console.log('propertyListingData :>> ', propertyListingData.value)
-}
+  console.log("propertyListingData :>> ", propertyListingData.value);
+};
 </script>
 
 <template>
@@ -108,71 +104,66 @@ const onSubmit = () => {
         </VCardText>
       </VCol>
 
-      <VCol
-        cols="12"
-        md="8"
-      >
+      <VCol cols="12" md="8">
         <VCardText>
-          <VWindow
-            v-model="currentStep"
-            class="disable-tab-transition"
-          >
+          <VWindow v-model="currentStep" class="disable-tab-transition">
             <VWindowItem>
-              <PersonalDetails v-model:form-data="propertyListingData.personalDetails" />
+              <PersonalDetails
+                v-model:form-data="propertyListingData.personalDetails"
+              />
             </VWindowItem>
 
             <VWindowItem>
-              <PropertyDetails v-model:form-data="propertyListingData.propertyDetails" />
+              <PropertyDetails
+                v-model:form-data="propertyListingData.propertyDetails"
+              />
             </VWindowItem>
 
             <VWindowItem>
-              <PropertyFeatures v-model:form-data="propertyListingData.propertyFeatures" />
+              <PropertyFeatures
+                v-model:form-data="propertyListingData.propertyFeatures"
+              />
             </VWindowItem>
 
             <VWindowItem>
-              <PropertyArea v-model:form-data="propertyListingData.propertyArea" />
+              <PropertyArea
+                v-model:form-data="propertyListingData.propertyArea"
+              />
             </VWindowItem>
 
             <VWindowItem>
-              <PriceDetails v-model:form-data="propertyListingData.priceDetails" />
+              <PriceDetails
+                v-model:form-data="propertyListingData.priceDetails"
+              />
             </VWindowItem>
           </VWindow>
 
-          <div class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-6">
+          <div
+            class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-6"
+          >
             <VBtn
               :color="currentStep === 0 ? 'secondary' : 'default'"
               variant="outlined"
               :disabled="currentStep === 0"
               @click="currentStep--"
             >
-              <VIcon
-                icon="mdi-arrow-left"
-                start
-                class="flip-in-rtl"
-              />
+              <VIcon icon="mdi-arrow-left" start class="flip-in-rtl" />
               Previous
             </VBtn>
 
             <VBtn
               v-if="propertyListingSteps.length - 1 === currentStep"
-              color="success"
+              color="primary"
               append-icon="mdi-check"
               @click="onSubmit"
             >
               submit
             </VBtn>
 
-            <VBtn
-              v-else
-              @click="currentStep++"
-            >
+            <VBtn v-else @click="currentStep++">
               Next
 
-              <VIcon
-                icon="mdi-arrow-right"
-                end
-                class="flip-in-rtl"
-              />
+              <VIcon icon="mdi-arrow-right" end class="flip-in-rtl" />
             </VBtn>
           </div>
         </VCardText>

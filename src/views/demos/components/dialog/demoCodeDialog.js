@@ -182,7 +182,7 @@ const interest = ref<string[]>([])
           Close
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Save
@@ -299,7 +299,7 @@ const interest = ref([])
           Close
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Save
@@ -827,7 +827,7 @@ const isDialogVisible = ref(false)
           Disagree
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Agree
@@ -884,7 +884,7 @@ const isDialogVisible = ref(false)
           Disagree
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Agree
@@ -933,7 +933,7 @@ const isDialogVisible = ref(false)
           Disagree
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Agree
@@ -980,7 +980,7 @@ const isDialogVisible = ref(false)
           Disagree
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Agree
@@ -1069,7 +1069,7 @@ const isDialogVisible = ref(false)
           Close
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Save
@@ -1202,7 +1202,7 @@ const isDialogVisible = ref(false)
           Close
         </VBtn>
         <VBtn
-          color="success"
+          color="primary"
           @click="isDialogVisible = false"
         >
           Save

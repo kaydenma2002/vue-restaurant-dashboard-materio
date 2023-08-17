@@ -1,68 +1,78 @@
 <script setup>
-import { useChatStore } from '@/views/apps/chat/useChatStore'
-import { formatDate } from '@core/utils/formatters'
+import { useChatStore } from "@/views/apps/chat/useChatStore";
+import { formatDate } from "@core/utils/formatters";
 
-const store = useChatStore()
+const store = useChatStore();
 
 const contact = computed(() => ({
-  id: store.activeChat?.contact.id,
-  avatar: store.activeChat?.contact.avatar,
-}))
-
-const resolveFeedbackIcon = feedback => {
+  id: store.activeChat.data.owner.id,
+  avatar: store.activeChat?.data.owner.avatar,
+}));
+console.log(store.activeChat.data.owner);
+const resolveFeedbackIcon = (feedback) => {
   if (feedback.isSeen)
     return {
-      icon: 'mdi-check-all',
-      color: 'success',
-    }
+      icon: "mdi-check-all",
+      color: "success",
+    };
   else if (feedback.isDelivered)
     return {
-      icon: 'mdi-check-all',
+      icon: "mdi-check-all",
       color: undefined,
-    }
+    };
   else
     return {
-      icon: 'mdi-check',
+      icon: "mdi-check",
       color: undefined,
-    }
-}
+    };
+};
 
 const msgGroups = computed(() => {
-  let messages = []
-  const _msgGroups = []
-  if (store.activeChat.chat) {
-    messages = store.activeChat.chat.messages
-    let msgSenderId = messages[0].senderId
+  let messages = [];
+  const _msgGroups = [];
+  if (store.activeChat) {
+    console.log(store.activeChat);
+    store.activeChat.data.chat.map((item) => {
+      messages.push({
+        message: item.message,
+        senderId: item?.super_admin_id,
+        time: item?.created_at,
+        type: item?.type,
+      });
+    });
+    console.log(messages);
+    let msgSenderId = store?.activeChat?.data?.chat[0]?.super_admin_id;
     let msgGroup = {
       senderId: msgSenderId,
       messages: [],
-    }
+    };
     messages.forEach((msg, index) => {
       if (msgSenderId === msg.senderId) {
         msgGroup.messages.push({
           message: msg.message,
           time: msg.time,
-          feedback: msg.feedback,
-        })
+          type: msg.type,
+        });
       } else {
-        msgSenderId = msg.senderId
-        _msgGroups.push(msgGroup)
+        msgSenderId = msg.senderId;
+        _msgGroups.push(msgGroup);
         msgGroup = {
           senderId: msg.senderId,
-          messages: [{
-            message: msg.message,
-            time: msg.time,
-            feedback: msg.feedback,
-          }],
-        }
+          messages: [
+            {
+              message: msg.message,
+            },
+          ],
+          time: msg.time,
+          type: msg.type,
+        };
       }
-      if (index === messages.length - 1)
-        _msgGroups.push(msgGroup)
-    })
+      if (index === messages.length - 1) _msgGroups.push(msgGroup);
+    });
   }
-  
-  return _msgGroups
-})
+
+  return _msgGroups;
+});
 </script>
 
 <template>
@@ -70,51 +80,45 @@ const msgGroups = computed(() => {
     <div
       v-for="(msgGrp, index) in msgGroups"
       :key="msgGrp.senderId + String(index)"
-      class="chat-group d-flex align-start"
-      :class="[{
-        'flex-row-reverse': msgGrp.senderId !== contact.id,
-        'mb-8': msgGroups.length - 1 !== index,
-      }]"
+      class=""
+      
     >
-      <div
-        class="chat-avatar"
-        :class="msgGrp.senderId !== contact.id ? 'ms-4' : 'me-4'"
-      >
-        <VAvatar size="32">
-          <VImg :src="msgGrp.senderId === contact.id ? contact.avatar : store.profileUser?.avatar" />
-        </VAvatar>
-      </div>
-      <div
-        class="chat-body d-inline-flex flex-column"
-        :class="msgGrp.senderId !== contact.id ? 'align-end' : 'align-start'"
-      >
-        <p
-          v-for="(msgData, msgIndex) in msgGrp.messages"
-          :key="msgData.time"
-          class="chat-content text-sm py-3 px-4 elevation-1"
-          :class="[
-            msgGrp.senderId === contact.id ? 'bg-surface chat-left' : 'bg-primary text-white chat-right',
-            msgGrp.messages.length - 1 !== msgIndex ? 'mb-3' : 'mb-1',
-          ]"
+  
+      <div>
+        <div
+          class=""
+         
         >
-          {{ msgData.message }}
-        </p>
-        <div :class="{ 'text-right': msgGrp.senderId !== contact.id }">
-          <span class="text-xs me-1 text-disabled">{{ formatDate(msgGrp.messages[msgGrp.messages.length - 1].time, { hour: 'numeric', minute: 'numeric' }) }}</span>
-          <VIcon
-            v-if="msgGrp.senderId !== contact.id"
-            size="16"
-            :color="resolveFeedbackIcon(msgGrp.messages[msgGrp.messages.length - 1].feedback).color"
+          <p
+            v-for="(msgData, msgIndex) in msgGrp.messages"
+            :key="msgIndex"
+            style="width: fit-content"
+            class="chat-content text-sm py-3 px-4 elevation-1 "
+            :class="[
+              msgData.type !== 0
+                ? 'bg-surface chat-left align-end me-auto'
+                : 'bg-primary text-white chat-right align-start ms-auto',
+              msgGrp.messages.length - 1 !== msgIndex ? 'mb-3' : 'mb-1',
+            ]"
           >
-            {{ resolveFeedbackIcon(msgGrp.messages[msgGrp.messages.length - 1].feedback).icon }}
-          </VIcon>
+            {{ msgData.message }}
+          </p>
+          <p v-if="msgGrp.messages.length > 0" :class="[
+              msgGrp.messages[msgGrp.messages.length - 1].type !== 0
+                ? ' chat-left align-end me-auto text-left'
+                : ' chat-right align-start ms-auto text-right',
+              msgGrp.messages.length - 1 !== msgIndex ? 'mb-3' : 'mb-1',
+            ]" class="message-time text-xs text-gray-500">
+            {{ msgGrp.messages[msgGrp.messages.length - 1].time }}
+          </p>
+          
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style lang=scss>
+<style lang="scss">
 .chat-log {
   .chat-content {
     border-end-end-radius: 6px;

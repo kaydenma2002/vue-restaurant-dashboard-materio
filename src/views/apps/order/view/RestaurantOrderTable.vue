@@ -53,9 +53,9 @@ const headers = [
 ]
 
 // 👉 Fetch Orders
-const fetchOrdersByRestaurantId = (restaurant_id) => {
+const fetchItemsByOrderId = (order_id) => {
   isLoading.value = true
-  OrderListStore.fetchOrdersByRestaurantId(restaurant_id).then(response => {
+  OrderListStore.fetchItemsByOrderId(order_id).then(response => {
     console.log(response)
     
     Orders.value = response.data
@@ -123,7 +123,7 @@ const resolveOrderStatusVariantAndIcon = status => {
 
 // 👉 watch for data table options like itemsPerPage,page,searchQuery,sortBy etc...
 watchEffect(() => {
-   fetchOrdersByRestaurantId(props.restaurantData.restaurant_id)
+  //  fetchItemsByOrderId(props.restaurantData.order_id)
 })
 </script>
 

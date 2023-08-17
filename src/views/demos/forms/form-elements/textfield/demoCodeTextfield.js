@@ -84,13 +84,13 @@ const rules = [v => v.length <= 25 || 'Max 25 characters']
 
 export const customColors = { ts: `<template>
   <VTextField
-    color="success"
+    color="primary"
     label="First name"
   />
 </template>
 `, js: `<template>
   <VTextField
-    color="success"
+    color="primary"
     label="First name"
   />
 </template>

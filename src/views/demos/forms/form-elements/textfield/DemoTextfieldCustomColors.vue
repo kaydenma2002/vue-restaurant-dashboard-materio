@@ -1,6 +1,3 @@
 <template>
-  <VTextField
-    color="success"
-    label="First name"
-  />
+  <VTextField color="primary" label="First name" />
 </template>

@@ -1,110 +1,143 @@
 <script setup>
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { useDisplay } from 'vuetify'
-import ChatActiveChatUserProfileSidebarContent from '@/views/apps/chat/ChatActiveChatUserProfileSidebarContent.vue'
-import ChatLeftSidebarContent from '@/views/apps/chat/ChatLeftSidebarContent.vue'
-import ChatLog from '@/views/apps/chat/ChatLog.vue'
-import ChatUserProfileSidebarContent from '@/views/apps/chat/ChatUserProfileSidebarContent.vue'
-import { useChat } from '@/views/apps/chat/useChat'
-import { useChatStore } from '@/views/apps/chat/useChatStore'
-import { useResponsiveLeftSidebar } from '@core/composable/useResponsiveSidebar'
-import { avatarText } from '@core/utils/formatters'
-
-const vuetifyDisplays = useDisplay()
-const store = useChatStore()
-const { isLeftSidebarOpen } = useResponsiveLeftSidebar(vuetifyDisplays.smAndDown)
-const { resolveAvatarBadgeVariant } = useChat()
+import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import { useDisplay } from "vuetify";
+import ChatActiveChatUserProfileSidebarContent from "@/views/apps/chat/ChatActiveChatUserProfileSidebarContent.vue";
+import ChatLeftSidebarContent from "@/views/apps/chat/ChatLeftSidebarContent.vue";
+import ChatLog from "@/views/apps/chat/ChatLog.vue";
+import ChatUserProfileSidebarContent from "@/views/apps/chat/ChatUserProfileSidebarContent.vue";
+import { useChat } from "@/views/apps/chat/useChat";
+import { useChatStore } from "@/views/apps/chat/useChatStore";
+import { useResponsiveLeftSidebar } from "@core/composable/useResponsiveSidebar";
+import { avatarText } from "@core/utils/formatters";
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+const vuetifyDisplays = useDisplay();
+const store = useChatStore();
+const { isLeftSidebarOpen } = useResponsiveLeftSidebar(
+  vuetifyDisplays.smAndDown
+);
+const { resolveAvatarBadgeVariant } = useChat();
 
 // Perfect scrollbar
-const chatLogPS = ref()
+const chatLogPS = ref();
 
 const scrollToBottomInChatLog = () => {
-  const scrollEl = chatLogPS.value.$el || chatLogPS.value
+  const scrollEl = chatLogPS.value.$el || chatLogPS.value;
 
-  scrollEl.scrollTop = scrollEl.scrollHeight
-}
+  scrollEl.scrollTop = scrollEl.scrollHeight;
+};
 
 // Search query
-const q = ref('')
+const q = ref("");
 
-watch(q, val => store.fetchChatsAndContacts(val), { immediate: true })
+watch(q, (val) => store.fetchChatsAndContacts(val), { immediate: true }, {});
 
 // Open Sidebar in smAndDown when "start conversation" is clicked
 const startConversation = () => {
-  if (vuetifyDisplays.mdAndUp.value)
-    return
-  isLeftSidebarOpen.value = true
-}
+  if (vuetifyDisplays.mdAndUp.value) return;
+  isLeftSidebarOpen.value = true;
+};
 
 // Chat message
-const msg = ref('')
+const msg = ref("");
 
 const sendMessage = async () => {
-  if (!msg.value)
-    return
-  await store.sendMsg(msg.value)
+  if (!msg.value) return;
+  await store.sendMsg(msg.value);
 
   // Reset message input
-  msg.value = ''
+  msg.value = "";
 
   // Scroll to bottom
   nextTick(() => {
-    scrollToBottomInChatLog()
-  })
-}
-
-const openChatOfContact = async userId => {
-  await store.getChat(userId)
+    scrollToBottomInChatLog();
+  });
+};
+const pusher = new Pusher("68572aaa73079990a7d7", {
+  cluster: "mt1",
+  encrypted: true,
+});
+const token = localStorage.getItem("adminToken")?.substring(1, localStorage.getItem("adminToken").length - 1)
+const isProduction = process.env.NODE_ENV === "production";
+const echo = new Echo({
+  broadcaster: "pusher",
+  key: "68572aaa73079990a7d7",
+  cluster: "mt1",
+  encrypted: true,
+  pusher:pusher,
+  authEndpoint: isProduction
+            ? "https://ehl.ai:8000/broadcasting/auth"
+            : "https://127.0.0.1/broadcasting/auth",
+  auth: {
+    headers: {
+      Authorization: `Bearer ${token}` || null,
+    },
+  },
+});
+const openChatOfContact = async (userId) => {
+  
+  // Listen for the private event on the private channel
+  echo
+    .private("private-super-admin-owner-chat." + store.profileUser.id + "." + userId)
+    .listen("SuperAdminOwnerChat", (data) => {
+      // Handle the private event data here
+      store.getChat(userId).then(() =>{
+        scrollToBottomInChatLog();
+      })
+      const contact = store.chatsContacts;
+      if (vuetifyDisplays.smAndDown.value) isLeftSidebarOpen.value = false;
+    });
+  
+  await store.getChat(userId);
 
   // Reset message input
-  msg.value = ''
+  msg.value = "";
 
-  // Set unseenMsgs to 0
-  const contact = store.chatsContacts.find(c => c.id === userId)
-  if (contact)
-    contact.chat.unseenMsgs = 0
+  // Set unseenMsgs to
+
+  const contact = store.chatsContacts;
+  console.log(contact);
 
   // if smAndDown =>  Close Chat & Contacts left sidebar
-  if (vuetifyDisplays.smAndDown.value)
-    isLeftSidebarOpen.value = false
+  if (vuetifyDisplays.smAndDown.value) isLeftSidebarOpen.value = false;
 
   // Scroll to bottom
   nextTick(() => {
-    scrollToBottomInChatLog()
-  })
-}
+    scrollToBottomInChatLog();
+  });
+};
 
 // User profile sidebar
-const isUserProfileSidebarOpen = ref(false)
+const isUserProfileSidebarOpen = ref(false);
 
 // Active chat user profile sidebar
-const isActiveChatUserProfileSidebarOpen = ref(false)
+const isActiveChatUserProfileSidebarOpen = ref(false);
 
 // file input
-const refInputEl = ref()
+const refInputEl = ref();
 
 const moreList = [
   {
-    title: 'View Contact',
-    value: 'View Contact',
+    title: "View Contact",
+    value: "View Contact",
   },
   {
-    title: 'Mute Notifications',
-    value: 'Mute Notifications',
+    title: "Mute Notifications",
+    value: "Mute Notifications",
   },
   {
-    title: 'Block Contact',
-    value: 'Block Contact',
+    title: "Block Contact",
+    value: "Block Contact",
   },
   {
-    title: 'Clear Chat',
-    value: 'Clear Chat',
+    title: "Clear Chat",
+    value: "Clear Chat",
   },
   {
-    title: 'Report',
-    value: 'Report',
+    title: "Report",
+    value: "Report",
   },
-]
+];
 </script>
 
 <template>
@@ -119,7 +152,9 @@ const moreList = [
       location="start"
       width="370"
     >
-      <ChatUserProfileSidebarContent @close="isUserProfileSidebarOpen = false" />
+      <ChatUserProfileSidebarContent
+        @close="isUserProfileSidebarOpen = false"
+      />
     </VNavigationDrawer>
 
     <!-- 👉 Active Chat sidebar -->
@@ -132,7 +167,9 @@ const moreList = [
       touchless
       class="active-chat-user-profile-sidebar"
     >
-      <ChatActiveChatUserProfileSidebarContent @close="isActiveChatUserProfileSidebarOpen = false" />
+      <ChatActiveChatUserProfileSidebarContent
+        @close="isActiveChatUserProfileSidebarOpen = false"
+      />
     </VNavigationDrawer>
 
     <!-- 👉 Left sidebar   -->
@@ -158,17 +195,13 @@ const moreList = [
     <!-- 👉 Chat content -->
     <VMain class="chat-content-container">
       <!-- 👉 Right content: Active Chat -->
-      <div
-        v-if="store.activeChat"
-        class="d-flex flex-column h-100"
-      >
+      <div v-if="store.activeChat" class="d-flex flex-column h-100">
         <!-- 👉 Active chat header -->
-        <div class="active-chat-header d-flex align-center text-medium-emphasis">
+        <div
+          class="active-chat-header d-flex align-center text-medium-emphasis"
+        >
           <!-- Sidebar toggler -->
-          <IconBtn
-            class="d-md-none me-3"
-            @click="isLeftSidebarOpen = true"
-          >
+          <IconBtn class="d-md-none me-3" @click="isLeftSidebarOpen = true">
             <VIcon icon="mdi-menu" />
           </IconBtn>
 
@@ -182,29 +215,33 @@ const moreList = [
               location="bottom right"
               offset-x="3"
               offset-y="3"
-              :color="resolveAvatarBadgeVariant(store.activeChat.contact.status)"
+              :color="
+                resolveAvatarBadgeVariant(store?.activeChat?.contact?.status)
+              "
               bordered
             >
-              <VAvatar
+              <!-- <VAvatar
                 size="40"
                 :variant="!store.activeChat.contact.avatar ? 'tonal' : undefined"
-                :color="!store.activeChat.contact.avatar ? resolveAvatarBadgeVariant(store.activeChat.contact.status) : undefined"
+                :color="!store.activeChat.contact.avatar ? resolveAvatarBadgeVariant(store?.activeChat?.contact?.status) : undefined"
                 class="cursor-pointer"
               >
                 <VImg
                   v-if="store.activeChat.contact.avatar"
                   :src="store.activeChat.contact.avatar"
-                  :alt="store.activeChat.contact.fullName"
+                  :alt="store?.activeChat?.contact?.fullName"
                 />
-                <span v-else>{{ avatarText(store.activeChat.contact.fullName) }}</span>
-              </VAvatar>
+                
+              </VAvatar> -->
             </VBadge>
 
             <div class="flex-grow-1 ms-4 overflow-hidden">
               <h6 class="text-base font-weight-regular text-medium-emphasis">
-                {{ store.activeChat.contact.fullName }}
+                {{ store.activeChat?.contact?.name }}
               </h6>
-              <span class="d-block text-sm text-truncate text-disabled">{{ store.activeChat.contact.role }}</span>
+              <span class="d-block text-sm text-truncate text-disabled">{{
+                store.activeChat?.contact?.role
+              }}</span>
             </div>
           </div>
 
@@ -244,7 +281,6 @@ const moreList = [
           @submit.prevent="sendMessage"
         >
           <VTextField
-            :key="store.activeChat?.contact.id"
             v-model="msg"
             variant="solo"
             class="chat-message-input"
@@ -253,25 +289,14 @@ const moreList = [
           >
             <template #append-inner>
               <IconBtn>
-                <VIcon
-                  icon="mdi-microphone-outline"
-                  size="22"
-                />
+                <VIcon icon="mdi-microphone-outline" size="22" />
               </IconBtn>
 
-              <IconBtn
-                class="me-4"
-                @click="refInputEl?.click()"
-              >
-                <VIcon
-                  icon="mdi-attachment"
-                  size="22"
-                />
+              <IconBtn class="me-4" @click="refInputEl?.click()">
+                <VIcon icon="mdi-attachment" size="22" />
               </IconBtn>
 
-              <VBtn @click="sendMessage">
-                Send
-              </VBtn>
+              <VBtn @click="sendMessage"> Send </VBtn>
             </template>
           </VTextField>
 
@@ -281,32 +306,26 @@ const moreList = [
             name="file"
             accept=".jpeg,.png,.jpg,GIF"
             hidden
-          >
+          />
         </VForm>
       </div>
 
       <!-- 👉 Start conversation -->
-      <div
-        v-else
-        class="d-flex h-100 align-center justify-center flex-column"
-      >
-        <VAvatar
-          size="109"
-          class="elevation-3 mb-6 bg-surface"
-        >
+      <div v-else class="d-flex h-100 align-center justify-center flex-column">
+        <VAvatar size="109" class="elevation-3 mb-6 bg-surface">
           <VIcon
             size="50"
             class="rounded-0 text-high-emphasis"
             icon="mdi-message-outline"
           />
         </VAvatar>
-        <p
+        <button
           class="mb-0 px-6 py-1 font-weight-medium text-lg elevation-3 rounded-xl text-high-emphasis bg-surface"
           :class="[{ 'cursor-pointer': $vuetify.display.smAndDown }]"
           @click="startConversation"
         >
           Start Conversation
-        </p>
+        </button>
       </div>
     </VMain>
   </VLayout>

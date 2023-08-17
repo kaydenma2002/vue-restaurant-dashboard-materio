@@ -8,82 +8,82 @@ const props = defineProps({
     type: null,
     required: true,
   },
-})
+});
 
-const emit = defineEmits([
-  'update:currentStep',
-  'update:checkout-data',
-])
+const emit = defineEmits(["update:currentStep", "update:checkout-data"]);
 
-const checkoutAddressDataLocal = ref(props.checkoutData)
+const checkoutAddressDataLocal = ref(props.checkoutData);
 
 const deliveryOptions = [
   {
-    icon: 'mdi-account-outline',
-    title: 'Standard',
-    desc: 'Get your product in 1 Week.',
-    value: 'free',
+    icon: "mdi-account-outline",
+    title: "Standard",
+    desc: "Get your product in 1 Week.",
+    value: "free",
   },
   {
-    icon: 'mdi-crown-outline',
-    title: 'Express',
-    desc: 'Get your product in 3-4 days.',
-    value: 'express',
+    icon: "mdi-crown-outline",
+    title: "Express",
+    desc: "Get your product in 3-4 days.",
+    value: "express",
   },
   {
-    icon: 'mdi-rocket-launch-outline',
-    title: 'Overnight',
-    desc: 'Get your product in 1 day.',
-    value: 'overnight',
+    icon: "mdi-rocket-launch-outline",
+    title: "Overnight",
+    desc: "Get your product in 1 day.",
+    value: "overnight",
   },
-]
+];
 
 const resolveAddressBadgeColor = {
-  home: 'primary',
-  office: 'success',
-}
+  home: "primary",
+  office: "success",
+};
 
 const resolveDeliveryBadgeData = {
   free: {
-    color: 'success',
-    price: 'Free',
+    color: "success",
+    price: "Free",
   },
   express: {
-    color: 'secondary',
+    color: "secondary",
     price: 10,
   },
   overnight: {
-    color: 'secondary',
+    color: "secondary",
     price: 15,
   },
-}
+};
 
 const totalPriceWithDeliveryCharges = computed(() => {
-  checkoutAddressDataLocal.value.deliveryCharges = 0
-  if (checkoutAddressDataLocal.value.deliverySpeed !== 'free')
-    checkoutAddressDataLocal.value.deliveryCharges = resolveDeliveryBadgeData[checkoutAddressDataLocal.value.deliverySpeed].price
-  
-  return checkoutAddressDataLocal.value.orderAmount + checkoutAddressDataLocal.value.deliveryCharges
-})
+  checkoutAddressDataLocal.value.deliveryCharges = 0;
+  if (checkoutAddressDataLocal.value.deliverySpeed !== "free")
+    checkoutAddressDataLocal.value.deliveryCharges =
+      resolveDeliveryBadgeData[
+        checkoutAddressDataLocal.value.deliverySpeed
+      ].price;
+
+  return (
+    checkoutAddressDataLocal.value.orderAmount +
+    checkoutAddressDataLocal.value.deliveryCharges
+  );
+});
 
 const updateAddressData = () => {
-  emit('update:checkout-data', checkoutAddressDataLocal.value)
-}
+  emit("update:checkout-data", checkoutAddressDataLocal.value);
+};
 
 const nextStep = () => {
-  updateAddressData()
-  emit('update:currentStep', props.currentStep ? props.currentStep + 1 : 1)
-}
+  updateAddressData();
+  emit("update:currentStep", props.currentStep ? props.currentStep + 1 : 1);
+};
 
-watch(() => props.currentStep, updateAddressData)
+watch(() => props.currentStep, updateAddressData);
 </script>
 
 <template>
   <VRow>
-    <VCol
-      cols="12"
-      md="8"
-    >
+    <VCol cols="12" md="8">
       <!-- 👉 Address options -->
       <h6 class="text-base font-weight-regular mb-4">
         Select your preferable address
@@ -115,17 +115,12 @@ watch(() => props.currentStep, updateAddressData)
               {{ item.desc }}
             </p>
 
-            <p class="text-sm mb-3">
-              Mobile: {{ item.subtitle }}
-            </p>
+            <p class="text-sm mb-3">Mobile: {{ item.subtitle }}</p>
 
             <VDivider />
 
             <div class="pt-4">
-              <a
-                href="#"
-                class="me-3"
-              >Edit</a>
+              <a href="#" class="me-3">Edit</a>
 
               <a href="#">Remove</a>
             </div>
@@ -134,17 +129,10 @@ watch(() => props.currentStep, updateAddressData)
       </CustomRadios>
 
       <!-- 👉 Add New Address -->
-      <VBtn
-        variant="outlined"
-        class="mt-4 mb-9"
-      >
-        Add New Address
-      </VBtn>
+      <VBtn variant="outlined" class="mt-4 mb-9"> Add New Address </VBtn>
 
       <!-- 👉 Delivery options -->
-      <h6 class="text-base font-weight-regular mb-4">
-        Choose Delivery Speed
-      </h6>
+      <h6 class="text-base font-weight-regular mb-4">Choose Delivery Speed</h6>
 
       <!-- 👉 Delivery options custom input -->
       <CustomRadiosWithIcon
@@ -160,16 +148,14 @@ watch(() => props.currentStep, updateAddressData)
                 density="compact"
               >
                 {{
-                  resolveDeliveryBadgeData[item.value].price === 'Free'
-                    ? resolveDeliveryBadgeData[item.value].price : `$${resolveDeliveryBadgeData[item.value].price}`
+                  resolveDeliveryBadgeData[item.value].price === "Free"
+                    ? resolveDeliveryBadgeData[item.value].price
+                    : `$${resolveDeliveryBadgeData[item.value].price}`
                 }}
               </VChip>
             </div>
 
-            <VIcon
-              size="28"
-              :icon="item.icon"
-            />
+            <VIcon size="28" :icon="item.icon" />
 
             <h6 class="text-base font-weight-medium">
               {{ item.title }}
@@ -182,14 +168,8 @@ watch(() => props.currentStep, updateAddressData)
       </CustomRadiosWithIcon>
     </VCol>
 
-    <VCol
-      cols="12"
-      md="4"
-    >
-      <VCard
-        flat
-        variant="outlined"
-      >
+    <VCol cols="12" md="4">
+      <VCard flat variant="outlined">
         <!-- 👉 Delivery estimate date -->
         <VCardText>
           <h6 class="text-base font-weight-medium mb-4">
@@ -202,11 +182,7 @@ watch(() => props.currentStep, updateAddressData)
               :key="product.name"
             >
               <template #prepend>
-                <VImg
-                  width="60"
-                  :src="product.image"
-                  class="me-2"
-                />
+                <VImg width="60" :src="product.image" class="me-2" />
               </template>
 
               <VListItemSubtitle>{{ product.name }}</VListItemSubtitle>
@@ -221,9 +197,7 @@ watch(() => props.currentStep, updateAddressData)
 
         <!-- 👉 Price details -->
         <VCardText>
-          <h6 class="text-base font-weight-medium mb-4">
-            Price Details
-          </h6>
+          <h6 class="text-base font-weight-medium mb-4">Price Details</h6>
 
           <div class="d-flex align-center justify-space-between mb-2">
             <span class="text-high-emphasis">Order Total</span>
@@ -234,22 +208,27 @@ watch(() => props.currentStep, updateAddressData)
             <span class="text-high-emphasis">Delivery Charges</span>
             <div>
               <span v-if="checkoutAddressDataLocal.deliverySpeed === 'free'">
-                <span class="text-disabled text-decoration-line-through me-2">$5.00</span>
-                <VChip
-                  density="compact"
-                  color="success"
+                <span class="text-disabled text-decoration-line-through me-2"
+                  >$5.00</span
                 >
-                  Free
-                </VChip>
+                <VChip density="compact" color="primary"> Free </VChip>
               </span>
-              <span v-else>${{ resolveDeliveryBadgeData[checkoutAddressDataLocal.deliverySpeed ].price }}.00</span>
+              <span v-else
+                >${{
+                  resolveDeliveryBadgeData[
+                    checkoutAddressDataLocal.deliverySpeed
+                  ].price
+                }}.00</span
+              >
             </div>
           </div>
         </VCardText>
 
         <VDivider />
 
-        <VCardText class="d-flex align-center justify-space-between text-high-emphasis py-3">
+        <VCardText
+          class="d-flex align-center justify-space-between text-high-emphasis py-3"
+        >
           <span class="text-base font-weight-medium">Total</span>
           <span class="text-base font-weight-medium">
             ${{ totalPriceWithDeliveryCharges }}
@@ -257,13 +236,7 @@ watch(() => props.currentStep, updateAddressData)
         </VCardText>
       </VCard>
 
-      <VBtn
-        block
-        class="mt-4"
-        @click="nextStep"
-      >
-        Place Order
-      </VBtn>
+      <VBtn block class="mt-4" @click="nextStep"> Place Order </VBtn>
     </VCol>
   </VRow>
 </template>

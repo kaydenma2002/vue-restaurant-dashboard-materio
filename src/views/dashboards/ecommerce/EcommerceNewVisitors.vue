@@ -1,22 +1,16 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
-import { hexToRgb } from '@layouts/utils'
+import VueApexCharts from "vue3-apexcharts";
+import { useTheme } from "vuetify";
+import { hexToRgb } from "@layouts/utils";
 
-const vuetifyTheme = useTheme()
-const currentTheme = vuetifyTheme.current.value.colors
+const vuetifyTheme = useTheme();
+const currentTheme = vuetifyTheme.current.value.colors;
 
-const series = [{
-  data: [
-    40,
-    60,
-    50,
-    60,
-    90,
-    40,
-    50,
-  ],
-}]
+const series = [
+  {
+    data: [40, 60, 50, 60, 90, 40, 50],
+  },
+];
 
 const options = {
   chart: {
@@ -36,45 +30,37 @@ const options = {
     bar: {
       borderRadius: 4,
       distributed: true,
-      columnWidth: '60%',
-      endingShape: 'rounded',
-      startingShape: 'rounded',
+      columnWidth: "60%",
+      endingShape: "rounded",
+      startingShape: "rounded",
     },
   },
   legend: { show: false },
   dataLabels: { enabled: false },
   colors: [
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
     currentTheme.primary,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
-    `rgba(${ hexToRgb(currentTheme.primary) },0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
+    `rgba(${hexToRgb(currentTheme.primary)},0.1)`,
   ],
   states: {
-    hover: { filter: { type: 'none' } },
-    active: { filter: { type: 'none' } },
+    hover: { filter: { type: "none" } },
+    active: { filter: { type: "none" } },
   },
   xaxis: {
-    tickPlacement: 'on',
+    tickPlacement: "on",
     labels: { show: false },
     axisTicks: { show: false },
     axisBorder: { show: false },
-    categories: [
-      'S',
-      'M',
-      'T',
-      'W',
-      'T',
-      'F',
-      'S',
-    ],
+    categories: ["S", "M", "T", "W", "T", "F", "S"],
   },
   yaxis: { show: false },
   tooltip: { enabled: false },
-}
+};
 </script>
 
 <template>
@@ -87,19 +73,13 @@ const options = {
 
         <VCardText class="pt-3">
           <p class="text-xs mb-1">
-            48% new visitors <br>
+            48% new visitors <br />
             this week.
           </p>
 
           <div class="d-flex align-center">
-            <h6 class="text-h6">
-              12,480
-            </h6>
-            <VIcon
-              icon="mdi-chevron-up"
-              size="24"
-              color="success"
-            />
+            <h6 class="text-h6">12,480</h6>
+            <VIcon icon="mdi-chevron-up" size="24" color="primary" />
             <span class="text-success font-weight-medium">28</span>
           </div>
         </VCardText>

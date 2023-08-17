@@ -44,12 +44,12 @@ const register = () => {
     email: email.value,
     password: password.value,
   }).then(r => {
-    const { accessToken, userData, userAbilities } = r.data
+    const { adminToken, userData, userAbilities } = r.data
 
     localStorage.setItem('userAbilities', JSON.stringify(userAbilities))
     ability.update(userAbilities)
     localStorage.setItem('userData', JSON.stringify(userData))
-    localStorage.setItem('accessToken', JSON.stringify(accessToken))
+    localStorage.setItem('adminToken', JSON.stringify(adminToken))
 
     // Redirect to `to` query if exist or redirect to index route
     router.replace(route.query.to ? String(route.query.to) : '/')

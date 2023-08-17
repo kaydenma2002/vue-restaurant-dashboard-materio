@@ -8,75 +8,64 @@ const props = defineProps({
     type: null,
     required: true,
   },
-})
+});
 
-const emit = defineEmits([
-  'update:currentStep',
-  'update:checkout-data',
-])
+const emit = defineEmits(["update:currentStep", "update:checkout-data"]);
 
-const prop = __props
-const checkoutPaymentDataLocal = ref(prop.checkoutData)
-const selectedPaymentMethod = ref('card')
+const prop = __props;
+const checkoutPaymentDataLocal = ref(prop.checkoutData);
+const selectedPaymentMethod = ref("card");
 
 const cardFormData = ref({
   cardNumber: null,
-  cardName: '',
-  cardExpiry: '',
+  cardName: "",
+  cardExpiry: "",
   cardCvv: null,
   isCardSave: true,
-})
+});
 
 const giftCardFormData = ref({
   giftCardNumber: null,
   giftCardPin: null,
-})
+});
 
 const selectedDeliveryAddress = computed(() => {
-  return checkoutPaymentDataLocal.value.addresses.filter(address => {
-    return address.value === checkoutPaymentDataLocal.value.deliveryAddress
-  })
-})
+  return checkoutPaymentDataLocal.value.addresses.filter((address) => {
+    return address.value === checkoutPaymentDataLocal.value.deliveryAddress;
+  });
+});
 
 const updateCartData = () => {
-  emit('update:checkout-data', checkoutPaymentDataLocal.value)
-}
+  emit("update:checkout-data", checkoutPaymentDataLocal.value);
+};
 
 const nextStep = () => {
-  updateCartData()
-  emit('update:currentStep', prop.currentStep ? prop.currentStep + 1 : 1)
-}
+  updateCartData();
+  emit("update:currentStep", prop.currentStep ? prop.currentStep + 1 : 1);
+};
 
-watch(() => prop.currentStep, updateCartData)
+watch(() => prop.currentStep, updateCartData);
 </script>
 
 <template>
   <VRow>
-    <VCol
-      cols="12"
-      md="8"
-    >
+    <VCol cols="12" md="8">
       <!-- 👉 Offers alert -->
-      <VAlert
-        color="success"
-        variant="tonal"
-        class="mb-6"
-      >
+      <VAlert color="primary" variant="tonal" class="mb-6">
         <template #prepend>
-          <VIcon
-            icon="mdi-check-circle-outline"
-            size="22"
-          />
+          <VIcon icon="mdi-check-circle-outline" size="22" />
         </template>
         <VAlertTitle class="text-body-1 text-success mb-1">
           Available Offers
         </VAlertTitle>
 
         <p class="mb-1">
-          - 10% Instant Discount on Bank of America Corp Bank Debit and Credit cards
+          - 10% Instant Discount on Bank of America Corp Bank Debit and Credit
+          cards
         </p>
         <p class="mb-0">
-          - 25% Cashback Voucher of up to $60 on first ever PayPal transaction. TCA
+          - 25% Cashback Voucher of up to $60 on first ever PayPal transaction.
+          TCA
         </p>
       </VAlert>
 
@@ -85,21 +74,15 @@ watch(() => prop.currentStep, updateCartData)
         class="v-tabs-pill"
         density="comfortable"
       >
-        <VTab value="card">
-          Card
-        </VTab>
-        <VTab value="cash-on-delivery">
-          Cash on Delivery
-        </VTab>
-        <VTab value="gift-card">
-          Gift Card
-        </VTab>
+        <VTab value="card"> Card </VTab>
+        <VTab value="cash-on-delivery"> Cash on Delivery </VTab>
+        <VTab value="gift-card"> Gift Card </VTab>
       </VTabs>
 
       <VWindow
         v-model="selectedPaymentMethod"
         class="mt-3"
-        style="max-width: 600px;"
+        style="max-width: 600px"
       >
         <VWindowItem value="card">
           <VForm class="mt-3">
@@ -112,40 +95,22 @@ watch(() => prop.currentStep, updateCartData)
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
-                <VTextField
-                  v-model="cardFormData.cardName"
-                  label="Name"
-                />
+              <VCol cols="12" md="6">
+                <VTextField v-model="cardFormData.cardName" label="Name" />
               </VCol>
 
-              <VCol
-                cols="6"
-                md="3"
-              >
-                <VTextField
-                  v-model="cardFormData.cardExpiry"
-                  label="Expiry"
-                />
+              <VCol cols="6" md="3">
+                <VTextField v-model="cardFormData.cardExpiry" label="Expiry" />
               </VCol>
 
-              <VCol
-                cols="6"
-                md="3"
-              >
+              <VCol cols="6" md="3">
                 <VTextField
                   v-model="cardFormData.cardCvv"
                   label="CVV"
                   type="number"
                 >
                   <template #append-inner>
-                    <VTooltip
-                      text="Card Verification Value"
-                      location="bottom"
-                    >
+                    <VTooltip text="Card Verification Value" location="bottom">
                       <template #activator="{ props }">
                         <VIcon
                           v-bind="props"
@@ -161,46 +126,32 @@ watch(() => prop.currentStep, updateCartData)
               <VCol cols="12">
                 <VSwitch v-model="cardFormData.isCardSave">
                   <template #label>
-                    <span class="text-high-emphasis">Save Card for future billing?</span>
+                    <span class="text-high-emphasis"
+                      >Save Card for future billing?</span
+                    >
                   </template>
                 </VSwitch>
 
                 <div class="mt-4">
-                  <VBtn
-                    class="me-3"
-                    @click="nextStep"
-                  >
-                    Checkout
-                  </VBtn>
-                  <VBtn
-                    variant="outlined"
-                    color="secondary"
-                  >
-                    Reset
-                  </VBtn>
+                  <VBtn class="me-3" @click="nextStep"> Checkout </VBtn>
+                  <VBtn variant="outlined" color="secondary"> Reset </VBtn>
                 </div>
               </VCol>
             </VRow>
           </VForm>
         </VWindowItem>
 
-        <VWindowItem
-          value="cash-on-delivery"
-          class="mt-3"
-        >
+        <VWindowItem value="cash-on-delivery" class="mt-3">
           <p class="text-base text-high-emphasis">
-            Cash on Delivery is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance.
+            Cash on Delivery is a type of payment method where the recipient
+            make payment for the order at the time of delivery rather than in
+            advance.
           </p>
 
-          <VBtn @click="nextStep">
-            Pay on delivery
-          </VBtn>
+          <VBtn @click="nextStep"> Pay on delivery </VBtn>
         </VWindowItem>
 
-        <VWindowItem
-          value="gift-card"
-          class="mt-3"
-        >
+        <VWindowItem value="gift-card" class="mt-3">
           <h6 class="text-base font-weight-medium mb-4">
             Enter Gift Card Details
           </h6>
@@ -221,9 +172,7 @@ watch(() => prop.currentStep, updateCartData)
               </VCol>
 
               <VCol cols="12">
-                <VBtn @click="nextStep">
-                  Redeem Gift Card
-                </VBtn>
+                <VBtn @click="nextStep"> Redeem Gift Card </VBtn>
               </VCol>
             </VRow>
           </VForm>
@@ -231,18 +180,10 @@ watch(() => prop.currentStep, updateCartData)
       </VWindow>
     </VCol>
 
-    <VCol
-      cols="12"
-      md="4"
-    >
-      <VCard
-        flat
-        variant="outlined"
-      >
+    <VCol cols="12" md="4">
+      <VCard flat variant="outlined">
         <VCardText>
-          <h6 class="text-base font-weight-medium mb-4">
-            Price Details
-          </h6>
+          <h6 class="text-base font-weight-medium mb-4">Price Details</h6>
 
           <div class="d-flex justify-space-between text-base mb-2">
             <span class="text-high-emphasis">Order Total</span>
@@ -252,13 +193,10 @@ watch(() => prop.currentStep, updateCartData)
           <div class="d-flex justify-space-between text-base">
             <span class="text-high-emphasis">Delivery Charges</span>
             <div v-if="checkoutPaymentDataLocal.deliverySpeed === 'free'">
-              <span class="text-decoration-line-through text-disabled me-2">$5.00</span>
-              <VChip
-                color="success"
-                density="compact"
+              <span class="text-decoration-line-through text-disabled me-2"
+                >$5.00</span
               >
-                Free
-              </VChip>
+              <VChip color="primary" density="compact"> Free </VChip>
             </div>
             <div v-else>
               <span>${{ checkoutPaymentDataLocal.deliveryCharges }}</span>
@@ -271,39 +209,34 @@ watch(() => prop.currentStep, updateCartData)
         <VCardText>
           <div class="d-flex justify-space-between text-base mb-2">
             <span class="text-high-emphasis font-weight-medium">Total</span>
-            <span>${{ checkoutPaymentDataLocal.orderAmount + checkoutPaymentDataLocal.deliveryCharges }}.00</span>
+            <span
+              >${{
+                checkoutPaymentDataLocal.orderAmount +
+                checkoutPaymentDataLocal.deliveryCharges
+              }}.00</span
+            >
           </div>
 
           <div class="d-flex justify-space-between text-base mb-4">
-            <span class="text-high-emphasis font-weight-medium">Deliver to:</span>
-            <VChip
-              color="primary"
-              density="compact"
-              class="text-capitalize"
+            <span class="text-high-emphasis font-weight-medium"
+              >Deliver to:</span
             >
+            <VChip color="primary" density="compact" class="text-capitalize">
               {{ checkoutPaymentDataLocal.deliveryAddress }}
             </VChip>
           </div>
 
-          <template
-            v-for="item in selectedDeliveryAddress"
-            :key="item.value"
-          >
+          <template v-for="item in selectedDeliveryAddress" :key="item.value">
             <h6 class="text-base font-weight-medium">
               {{ item.title }}
             </h6>
             <p class="text-sm mb-1">
               {{ item.desc }}
             </p>
-            <p class="text-sm mb-4">
-              Mobile : {{ item.subtitle }}
-            </p>
+            <p class="text-sm mb-4">Mobile : {{ item.subtitle }}</p>
           </template>
 
-          <a
-            href="#"
-            class="font-weight-medium text-base"
-          >Change address</a>
+          <a href="#" class="font-weight-medium text-base">Change address</a>
         </VCardText>
       </VCard>
     </VCol>

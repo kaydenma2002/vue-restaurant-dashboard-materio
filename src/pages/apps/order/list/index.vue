@@ -1,11 +1,10 @@
 <script setup>
-import { VDataTableServer } from "vuetify/labs/VDataTable";
 import Swal from "sweetalert2";
+import { VDataTableServer } from "vuetify/labs/VDataTable";
 
 import { paginationMeta } from "@/@fake-db/utils";
 import AddNewOrderDrawer from "@/views/apps/order/list/AddNewOrderDrawer.vue";
 import { useOrderListStore } from "@/views/apps/order/useOrderListStore";
-import { avatarText } from "@core/utils/formatters";
 import { debounce } from "lodash";
 
 const orderListStore = useOrderListStore();
@@ -123,7 +122,7 @@ watch(
 );
 watch([searchQuery, selectedStatus], () => {
   fetchOrders();
-  console.log(searchQuery)
+  console.log(searchQuery);
 });
 // 👉 search filters
 const roles = [
@@ -146,25 +145,6 @@ const roles = [
   {
     title: "Subscriber",
     value: "subscriber",
-  },
-];
-
-const plans = [
-  {
-    title: "Basic",
-    value: "basic",
-  },
-  {
-    title: "Company",
-    value: "company",
-  },
-  {
-    title: "Enterprise",
-    value: "enterprise",
-  },
-  {
-    title: "Team",
-    value: "team",
   },
 ];
 
@@ -385,6 +365,9 @@ const deleteOrder = (id) => {
           <span class="text-sm">
             {{ item.raw.user.name }}
           </span>
+        </template>
+        <template #item.total="{ item }">
+          <span class="text-sm"> ${{ item.raw.total }} </span>
         </template>
         <template #item.order_id="{ item }">
           <span class="text-sm">

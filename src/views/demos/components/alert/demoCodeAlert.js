@@ -30,7 +30,7 @@ export const border = { ts: `<template>
 
     <VAlert
       border="bottom"
-      color="success"
+      color="primary"
       variant="tonal"
     >
       Good Morning! Start your day with some alerts.
@@ -65,7 +65,7 @@ export const border = { ts: `<template>
 
     <VAlert
       border="bottom"
-      color="success"
+      color="primary"
       variant="tonal"
     >
       Good Morning! Start your day with some alerts.
@@ -148,7 +148,7 @@ export const coloredBorder = { ts: `<template>
     </VAlert>
     <VAlert
       border="start"
-      border-color="success"
+      border-color="primary"
     >
       Gingerbread jelly beans macaroon croissant soufflé. Muffin halvah cake brownie cake.
     </VAlert>
@@ -190,7 +190,7 @@ export const coloredBorder = { ts: `<template>
     </VAlert>
     <VAlert
       border="start"
-      border-color="success"
+      border-color="primary"
     >
       Gingerbread jelly beans macaroon croissant soufflé. Muffin halvah cake brownie cake.
     </VAlert>
@@ -228,7 +228,7 @@ export const colors = { ts: `<template>
       I'm an alert with secondary background color.
     </VAlert>
 
-    <VAlert color="success">
+    <VAlert color="primary">
       I'm an alert with success background color.
     </VAlert>
 
@@ -255,7 +255,7 @@ export const colors = { ts: `<template>
       I'm an alert with secondary background color.
     </VAlert>
 
-    <VAlert color="success">
+    <VAlert color="primary">
       I'm an alert with success background color.
     </VAlert>
 
@@ -294,7 +294,7 @@ export const density = { ts: `<template>
 
     <VAlert
       density="default"
-      color="success"
+      color="primary"
       variant="tonal"
     >
       I'm a default alert with the <strong>color</strong> of success.
@@ -321,7 +321,7 @@ export const density = { ts: `<template>
 
     <VAlert
       density="default"
-      color="success"
+      color="primary"
       variant="tonal"
     >
       I'm a default alert with the <strong>color</strong> of success.
@@ -391,7 +391,7 @@ export const icons = { ts: `<template>
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="mdi-nodejs"
     >
       Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
@@ -415,7 +415,7 @@ export const icons = { ts: `<template>
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="mdi-nodejs"
     >
       Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.
@@ -442,7 +442,7 @@ export const outlined = { ts: `<template>
 
     <VAlert
       variant="outlined"
-      color="success"
+      color="primary"
     >
       Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Suspendisse non nisl sit amet velit hendrerit rutrum.
     </VAlert>
@@ -487,7 +487,7 @@ export const outlined = { ts: `<template>
 
     <VAlert
       variant="outlined"
-      color="success"
+      color="primary"
     >
       Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Suspendisse non nisl sit amet velit hendrerit rutrum.
     </VAlert>
@@ -528,7 +528,7 @@ export const prominent = { ts: `<template>
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="mdi-school-outline"
       prominent
     >
@@ -556,7 +556,7 @@ export const prominent = { ts: `<template>
     </VAlert>
 
     <VAlert
-      color="success"
+      color="primary"
       icon="mdi-school-outline"
       prominent
     >
@@ -592,7 +592,7 @@ export const tonal = { ts: `<template>
 
     <VAlert
       variant="tonal"
-      color="success"
+      color="primary"
     >
       Vestibulum ullamcorper mauris at ligula. Nulla porta dolor.
     </VAlert>
@@ -637,7 +637,7 @@ export const tonal = { ts: `<template>
 
     <VAlert
       variant="tonal"
-      color="success"
+      color="primary"
     >
       Vestibulum ullamcorper mauris at ligula. Nulla porta dolor.
     </VAlert>

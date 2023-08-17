@@ -1,91 +1,73 @@
 <script setup>
-import {
-  avatarText,
-  kFormatter,
-} from '@core/utils/formatters'
 import { useUserListStore } from "@/views/apps/user/useUserListStore";
-import router from '@/router'
-import { defineProps, ref, toRef, watch } from 'vue';
+import { avatarText } from "@core/utils/formatters";
+import { defineProps, ref } from "vue";
 
-const userListStore = useUserListStore()
-const route = useRoute()
+const userListStore = useUserListStore();
+const route = useRoute();
 const props = defineProps({
   userData: {
     type: Object,
     required: true,
   },
-})
-
-
-
+});
 
 const standardPlan = {
-  plan: 'Standard',
+  plan: "Standard",
   price: 99,
-  benefits: [
-    '10 Users',
-    'Up to 10GB storage',
-    'Basic Support',
-  ],
-}
-const resolveUserStatusText = stat =>{
-  if (stat === '0')
-    return 'Deactive'
-  if (stat === '1')
-    return 'Online'
-  if (stat === '2')
-    return 'Offline'
+  benefits: ["10 Users", "Up to 10GB storage", "Basic Support"],
+};
+const resolveUserStatusText = (stat) => {
+  if (stat === "0") return "Deactive";
+  if (stat === "1") return "Online";
+  if (stat === "2") return "Offline";
 
-   return '' 
-}
-const isUserInfoEditDialogVisible = ref(false)
-const isUpgradePlanDialogVisible = ref(false)
+  return "";
+};
+const isUserInfoEditDialogVisible = ref(false);
+const isUpgradePlanDialogVisible = ref(false);
 
-const resolveUserStatusVariant = stat => {
-  const statLowerCase = stat
-  if (statLowerCase === '0')
-    return 'warning'
-  if (statLowerCase === '1')
-    return 'success'
-  if (statLowerCase === '2')
-    return 'secondary'
-  
-  return 'primary'
-}
+const resolveUserStatusVariant = (stat) => {
+  const statLowerCase = stat;
+  if (statLowerCase === "0") return "warning";
+  if (statLowerCase === "1") return "success";
+  if (statLowerCase === "2") return "secondary";
 
-const resolveUserRoleVariant = role => {
-  if (role === 'subscriber')
+  return "primary";
+};
+
+const resolveUserRoleVariant = (role) => {
+  if (role === "subscriber")
     return {
-      color: 'primary',
-      icon: 'mdi-account-outline',
-    }
-  if (role === 'author')
+      color: "primary",
+      icon: "mdi-account-outline",
+    };
+  if (role === "author")
     return {
-      color: 'warning',
-      icon: 'mdi-cog-outline',
-    }
-  if (role === 'maintainer')
+      color: "warning",
+      icon: "mdi-cog-outline",
+    };
+  if (role === "maintainer")
     return {
-      color: 'success',
-      icon: 'mdi-database-outline',
-    }
-  if (role === 'editor')
+      color: "success",
+      icon: "mdi-database-outline",
+    };
+  if (role === "editor")
     return {
-      color: 'info',
-      icon: 'mdi-pencil-outline',
-    }
-  if (role === 'admin')
+      color: "info",
+      icon: "mdi-pencil-outline",
+    };
+  if (role === "admin")
     return {
-      color: 'error',
-      icon: 'mdi-dns-outline',
-    }
-  
+      color: "error",
+      icon: "mdi-dns-outline",
+    };
+
   return {
-    color: 'primary',
-    icon: 'mdi-account-outline',
-  }
-}
-
+    color: "primary",
+    icon: "mdi-account-outline",
+  };
+};
 </script>
 
 <template>
@@ -94,94 +76,27 @@ const resolveUserRoleVariant = role => {
     <VCol cols="12">
       <VCard v-if="props.userData">
         <VCardText class="text-center pt-15">
-          <!-- 👉 Avatar -->
+          <!-- 👉 Avatar -->1
           <VAvatar
             rounded="sm"
             :size="120"
             :color="!props.userData.avatar ? 'primary' : undefined"
             :variant="!props.userData.avatar ? 'tonal' : undefined"
           >
-            <VImg
-              v-if="props.userData.avatar"
-              :src="props.userData.avatar"
-            />
-            <span
-              v-else
-              class="text-5xl font-weight-medium"
-            >
+            <VImg v-if="props.userData.avatar" :src="props.userData.avatar" />
+            <span v-else class="text-5xl font-weight-medium">
               {{ avatarText(props.userData.fullName) }}
             </span>
           </VAvatar>
 
           <!-- 👉 User fullName -->
-          <h6 class="text-h6 mt-4">
-            {{ props.userData.fullName }}
-          </h6>
 
           <!-- 👉 Role chip -->
-          <VChip
-            label
-            :color="resolveUserRoleVariant(props.userData.role).color"
-            density="comfortable"
-            class="text-capitalize mt-4"
-          >
-            {{ props.userData.role }}
-          </VChip>
-        </VCardText>
-
-        <VCardText class="d-flex justify-space-between flex-wrap mt-1">
-          <!-- 👉 Done task -->
-          <div class="d-flex align-center">
-            <VAvatar
-              :size="44"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-4"
-            >
-              <VIcon
-                size="24"
-                icon="mdi-check"
-              />
-            </VAvatar>
-
-            <div>
-              <h6 class="text-h6">
-                {{ kFormatter(props.userData.taskDone) }}
-              </h6>
-              <span>Task Done</span>
-            </div>
-          </div>
-
-          <!-- 👉 Done Project -->
-          <div class="d-flex align-center">
-            <VAvatar
-              :size="44"
-              rounded
-              color="primary"
-              variant="tonal"
-              class="me-4"
-            >
-              <VIcon
-                size="24"
-                icon="mdi-star-outline"
-              />
-            </VAvatar>
-
-            <div>
-              <h6 class="text-h6">
-                {{ kFormatter(props.userData.projectDone) }}
-              </h6>
-              <span>Project Done</span>
-            </div>
-          </div>
         </VCardText>
 
         <!-- 👉 Details -->
         <VCardText>
-          <h6 class="text-h6">
-            Details
-          </h6>
+          <h6 class="text-h6">Details</h6>
 
           <VDivider class="my-4" />
 
@@ -191,9 +106,7 @@ const resolveUserRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Name:
-                  <span class="text-body-2">
-                    @{{ props.userData.name }}
-                  </span>
+                  <span class="text-body-2"> @{{ props.userData.name }} </span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -228,7 +141,9 @@ const resolveUserRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Phone:
-                  <span class="text-capitalize text-body-2">{{ props.userData.phone }}</span>
+                  <span class="text-capitalize text-body-2">{{
+                    props.userData.phone
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -268,7 +183,6 @@ const resolveUserRoleVariant = role => {
                 </h6>
               </VListItemTitle>
             </VListItem>
-            
 
             <VListItem>
               <VListItemTitle>
@@ -283,18 +197,10 @@ const resolveUserRoleVariant = role => {
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText class="d-flex justify-center gap-4">
-          <VBtn
-            variant="elevated"
-            @click="isUserInfoEditDialogVisible = true"
-          >
+          <VBtn variant="elevated" @click="isUserInfoEditDialogVisible = true">
             Edit
           </VBtn>
-          <VBtn
-            variant="outlined"
-            color="error"
-          >
-            Deactivate
-          </VBtn>
+          <VBtn variant="outlined" color="error"> Deactivate </VBtn>
         </VCardText>
       </VCard>
     </VCol>
@@ -302,39 +208,27 @@ const resolveUserRoleVariant = role => {
 
     <!-- SECTION Current Plan -->
     <VCol cols="12">
-      <VCard
-        flat
-        class="current-plan"
-      >
+      <VCard flat class="current-plan">
         <VCardText class="d-flex">
           <!-- 👉 Standard Chip -->
-          <VChip
-            label
-            color="primary"
-            density="comfortable"
-          >
-            Standard
-          </VChip>
+          <VChip label color="primary" density="comfortable"> Standard </VChip>
 
           <VSpacer />
 
           <!-- 👉 Current Price  -->
           <div class="d-flex align-center">
             <sup class="text-primary text-sm font-weight-regular">$</sup>
-            <h3 class="text-h3 text-primary font-weight-regular">
-              99
-            </h3>
-            <sub class="mt-3"><h6 class="text-sm font-weight-regular">/ month</h6></sub>
+            <h3 class="text-h3 text-primary font-weight-regular">99</h3>
+            <sub class="mt-3"
+              ><h6 class="text-sm font-weight-regular">/ month</h6></sub
+            >
           </div>
         </VCardText>
 
         <VCardText>
           <!-- 👉 Price Benefits -->
           <VList class="card-list">
-            <VListItem
-              v-for="benefit in standardPlan.benefits"
-              :key="benefit"
-            >
+            <VListItem v-for="benefit in standardPlan.benefits" :key="benefit">
               <VIcon
                 size="10"
                 color="#E0E0E0"
@@ -348,13 +242,9 @@ const resolveUserRoleVariant = role => {
           <!-- 👉 Days -->
           <div class="my-6">
             <div class="d-flex mt-3 mb-2">
-              <h6 class="text-sm font-weight-medium">
-                Days
-              </h6>
+              <h6 class="text-sm font-weight-medium">Days</h6>
               <VSpacer />
-              <h6 class="text-sm font-weight-medium">
-                26 of 30 Days
-              </h6>
+              <h6 class="text-sm font-weight-medium">26 of 30 Days</h6>
             </div>
 
             <!-- 👉 Progress -->
@@ -365,16 +255,11 @@ const resolveUserRoleVariant = role => {
               color="primary"
             />
 
-            <p class="text-xs mt-2">
-              4 days remaining
-            </p>
+            <p class="text-xs mt-2">4 days remaining</p>
           </div>
 
           <!-- 👉 Upgrade Plan -->
-          <VBtn
-            block
-            @click="isUpgradePlanDialogVisible = true"
-          >
+          <VBtn block @click="isUpgradePlanDialogVisible = true">
             Upgrade Plan
           </VBtn>
         </VCardText>
@@ -385,7 +270,7 @@ const resolveUserRoleVariant = role => {
 
   <!-- 👉 Edit user info dialog -->
   <UserInfoEditDialog
-    @userUpdateInfo="$emit('userUpdateInfo',true)"
+    @userUpdateInfo="$emit('userUpdateInfo', true)"
     v-model:isDialogVisible="isUserInfoEditDialogVisible"
     :user-data="props.userData"
   />

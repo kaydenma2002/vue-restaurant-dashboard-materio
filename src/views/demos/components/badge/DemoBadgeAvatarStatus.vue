@@ -1,5 +1,5 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import avatar1 from "@images/avatars/avatar-1.png";
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import avatar1 from '@images/avatars/avatar-1.png'
     <VBadge
       dot
       bordered
-      color="success"
+      color="primary"
       location="bottom end"
       :offset-x="5"
       :offset-y="1"

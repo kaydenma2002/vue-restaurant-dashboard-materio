@@ -1,67 +1,40 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
-import { getAreaChartSplineConfig } from '@core/libs/apex-chart/apexCharConfig'
+import { defineProps, computed } from "vue";
+import VueApexCharts from "vue3-apexcharts";
+import { useTheme } from "vuetify";
+import { getAreaChartSplineConfig } from "@core/libs/apex-chart/apexCharConfig";
 
-const vuetifyTheme = useTheme()
-const chartConfig = computed(() => getAreaChartSplineConfig(vuetifyTheme.current.value))
+const props = defineProps({
+  restaurantData: {
+    type: Object,
+    required: true,
+  },
+});
 
+const vuetifyTheme = useTheme();
+const chartConfig = computed(() => {
+  const config = getAreaChartSplineConfig(vuetifyTheme.current.value);
+  const xaxisCategories = Object.keys(
+    props.restaurantData.totalOrdersAndSalesPerDay
+  );
+  config.yaxis.labels.formatter = (value) => "$" + value.toFixed(2)
+  config.xaxis.categories = xaxisCategories;
+  return config;
+});
 const series = [
   {
-    name: 'Visits',
-    data: [
-      100,
-      120,
-      90,
-      170,
-      130,
-      160,
-      140,
-      240,
-      220,
-      180,
-      270,
-      280,
-      375,
-    ],
+    name: "Sales",
+    data: Object.values(props.restaurantData.totalOrdersAndSalesPerDay).map(
+      (item) => + `${parseInt(item.totalSales)}`
+    ),
   },
   {
-    name: 'Clicks',
-    data: [
-      60,
-      80,
-      70,
-      110,
-      80,
-      100,
-      90,
-      180,
-      160,
-      140,
-      200,
-      220,
-      275,
-    ],
+    name: "Orders",
+    data: Object.values(props.restaurantData.totalOrdersAndSalesPerDay).map(
+      (item) => parseInt(item.totalOrders)
+    ),
   },
-  {
-    name: 'Sales',
-    data: [
-      20,
-      40,
-      30,
-      70,
-      40,
-      60,
-      50,
-      140,
-      120,
-      100,
-      140,
-      180,
-      220,
-    ],
-  },
-]
+];
 </script>
 
 <template>

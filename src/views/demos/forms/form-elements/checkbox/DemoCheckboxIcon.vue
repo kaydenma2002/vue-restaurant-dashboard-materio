@@ -1,13 +1,13 @@
 <script setup>
-const toggleCheckboxOne = ref(true)
-const toggleCheckboxTwo = ref(true)
-const toggleCheckboxThree = ref(true)
+const toggleCheckboxOne = ref(true);
+const toggleCheckboxTwo = ref(true);
+const toggleCheckboxThree = ref(true);
 
-const capitalizedLabel = label => {
-  const convertLabelText = label.toString()
-  
-  return convertLabelText.charAt(0).toUpperCase() + convertLabelText.slice(1)
-}
+const capitalizedLabel = (label) => {
+  const convertLabelText = label.toString();
+
+  return convertLabelText.charAt(0).toUpperCase() + convertLabelText.slice(1);
+};
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const capitalizedLabel = label => {
       :label="capitalizedLabel(toggleCheckboxTwo)"
       true-icon="mdi-alarm-check"
       false-icon="mdi-alarm"
-      color="success"
+      color="primary"
     />
 
     <VCheckbox

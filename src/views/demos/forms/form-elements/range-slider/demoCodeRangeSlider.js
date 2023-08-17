@@ -24,7 +24,7 @@ const sliderValues = ref([10, 60])
 <template>
   <VRangeSlider
     v-model="sliderValues"
-    color="success"
+    color="primary"
     track-color="secondary"
   />
 </template>
@@ -38,7 +38,7 @@ const sliderValues = ref([
 <template>
   <VRangeSlider
     v-model="sliderValues"
-    color="success"
+    color="primary"
     track-color="secondary"
   />
 </template>

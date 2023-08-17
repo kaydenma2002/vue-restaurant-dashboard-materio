@@ -1,12 +1,12 @@
 <script setup>
-const loadings = ref([])
+const loadings = ref([]);
 
-const load = i => {
-  loadings.value[i] = true
+const load = (i) => {
+  loadings.value[i] = true;
   setTimeout(() => {
-    loadings.value[i] = false
-  }, 3000)
-}
+    loadings.value[i] = false;
+  }, 3000);
+};
 </script>
 
 <template>
@@ -27,16 +27,13 @@ const load = i => {
       @click="load(1)"
     >
       Upload
-      <VIcon
-        end
-        icon="mdi-cloud-upload-outline"
-      />
+      <VIcon end icon="mdi-cloud-upload-outline" />
     </VBtn>
 
     <VBtn
       :loading="loadings[2]"
       :disabled="loadings[2]"
-      color="success"
+      color="primary"
       @click="load(2)"
     >
       Loader slot
@@ -69,19 +66,19 @@ const load = i => {
   </div>
 </template>
 
-  <style lang="scss" scoped>
-  .custom-loader {
-    display: flex;
-    animation: loader 1s infinite;
+<style lang="scss" scoped>
+.custom-loader {
+  display: flex;
+  animation: loader 1s infinite;
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0);
   }
 
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  </style>
+}
+</style>

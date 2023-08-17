@@ -66,7 +66,7 @@ const checkboxString = ref('Show')
       v-model="checkboxString"
       true-value="Show"
       false-value="Hide"
-      color="success"
+      color="primary"
       :label="\`\${checkboxString.toString()}\`"
     />
   </div>
@@ -89,7 +89,7 @@ const checkboxString = ref('Show')
       v-model="checkboxString"
       true-value="Show"
       false-value="Hide"
-      color="success"
+      color="primary"
       :label="\`\${checkboxString.toString()}\`"
     />
   </div>
@@ -220,7 +220,7 @@ const capitalizedLabel = (label: boolean) => {
       :label="capitalizedLabel(toggleCheckboxTwo)"
       true-icon="mdi-alarm-check"
       false-icon="mdi-alarm"
-      color="success"
+      color="primary"
     />
 
     <VCheckbox
@@ -258,7 +258,7 @@ const capitalizedLabel = label => {
       :label="capitalizedLabel(toggleCheckboxTwo)"
       true-icon="mdi-alarm-check"
       false-icon="mdi-alarm"
-      color="success"
+      color="primary"
     />
 
     <VCheckbox
@@ -429,7 +429,7 @@ const selected = ref(['John'])
     <VCheckbox
       v-model="selected"
       label="Jacob"
-      color="success"
+      color="primary"
       value="Jacob"
     />
 
@@ -460,7 +460,7 @@ const selected = ref(['John'])
     <VCheckbox
       v-model="selected"
       label="Jacob"
-      color="success"
+      color="primary"
       value="Jacob"
     />
 

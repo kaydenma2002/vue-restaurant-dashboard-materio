@@ -713,7 +713,7 @@ const isSnackbarVisible = ref(false)
 
     <template #actions>
       <VBtn
-        color="success"
+        color="primary"
         @click="isSnackbarVisible = false"
       >
         Undo
@@ -745,7 +745,7 @@ const isSnackbarVisible = ref(false)
 
     <template #actions>
       <VBtn
-        color="success"
+        color="primary"
         @click="isSnackbarVisible = false"
       >
         Undo

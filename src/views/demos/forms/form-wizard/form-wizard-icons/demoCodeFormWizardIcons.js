@@ -396,7 +396,7 @@ const onSubmit = () => {
 
           <VBtn
             v-if="iconsSteps.length - 1 === currentStep"
-            color="success"
+            color="primary"
             append-icon="mdi-check"
             @click="onSubmit"
           >
@@ -818,7 +818,7 @@ const onSubmit = () => {
 
           <VBtn
             v-if="iconsSteps.length - 1 === currentStep"
-            color="success"
+            color="primary"
             append-icon="mdi-check"
             @click="onSubmit"
           >
@@ -2279,7 +2279,7 @@ const onSubmit = () => {
 
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
+                color="primary"
                 append-icon="mdi-check"
                 @click="onSubmit"
               >
@@ -2572,7 +2572,7 @@ const onSubmit = () => {
 
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
+                color="primary"
                 append-icon="mdi-check"
                 @click="onSubmit"
               >

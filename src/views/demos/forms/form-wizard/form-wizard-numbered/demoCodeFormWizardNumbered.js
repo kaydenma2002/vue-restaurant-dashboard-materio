@@ -256,7 +256,7 @@ const onSubmit = () => {
 
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"
-            color="success"
+            color="primary"
             append-icon="mdi-check"
             @click="onSubmit"
           >
@@ -537,7 +537,7 @@ const onSubmit = () => {
 
           <VBtn
             v-if="numberedSteps.length - 1 === currentStep"
-            color="success"
+            color="primary"
             append-icon="mdi-check"
             @click="onSubmit"
           >
@@ -940,7 +940,7 @@ const validateSocialLinkForm = () => {
                   </VBtn>
 
                   <VBtn
-                    color="success"
+                    color="primary"
                     type="submit"
                   >
                     submit
@@ -1339,7 +1339,7 @@ const validateSocialLinkForm = () => {
                   </VBtn>
 
                   <VBtn
-                    color="success"
+                    color="primary"
                     type="submit"
                   >
                     submit
@@ -1621,7 +1621,7 @@ const onSubmit = () => {
 
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
+                color="primary"
                 append-icon="mdi-check"
                 @click="onSubmit"
               >
@@ -1912,7 +1912,7 @@ const onSubmit = () => {
 
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
+                color="primary"
                 append-icon="mdi-check"
                 @click="onSubmit"
               >

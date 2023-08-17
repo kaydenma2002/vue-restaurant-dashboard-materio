@@ -1,56 +1,57 @@
 <script setup>
-const statistics = [
-  {
-    title: 'Sales',
-    stats: '245k',
-    icon: 'mdi-trending-up',
-    color: 'primary',
+const props = defineProps({
+  saleData: {
+    type: Object,
+    required: true,
   },
-  {
-    title: 'Customers',
-    stats: '12.5k',
-    icon: 'mdi-account-outline',
-    color: 'success',
-  },
-  {
-    title: 'Product',
-    stats: '1.54k',
-    icon: 'mdi-cellphone-link',
-    color: 'warning',
-  },
-]
+});
 </script>
 
 <template>
-  <VCard title="Transactions">
+  <VCard title="Dashboard">
     <VCardText>
       <VRow>
-        <VCol
-          v-for="item in statistics"
-          :key="item.title"
-          cols="12"
-          sm="4"
-        >
+        <VCol cols="12" sm="4">
           <div class="d-flex align-center">
             <div class="me-3">
-              <VAvatar
-                :color="item.color"
-                rounded
-                size="40"
-                class="elevation-1"
-              >
-                <VIcon
-                  size="24"
-                  :icon="item.icon"
-                />
+              <VAvatar color="primary" rounded size="40" class="elevation-1">
+                <VIcon size="24" icon="mdi-trending-up" />
               </VAvatar>
             </div>
 
             <div class="d-flex flex-column">
-              <span class="text-xs">
-                {{ item.title }}
-              </span>
-              <span class="text-h6">{{ item.stats }}</span>
+              <span class="text-xs">Sales</span>
+              <span class="text-h6"
+                >${{ props.saleData.sales?.toFixed(2) }}</span
+              >
+            </div>
+          </div>
+        </VCol>
+        <VCol cols="12" sm="4">
+          <div class="d-flex align-center">
+            <div class="me-3">
+              <VAvatar color="primary" rounded size="40" class="elevation-1">
+                <VIcon size="24" icon="mdi-account-outline" />
+              </VAvatar>
+            </div>
+
+            <div class="d-flex flex-column">
+              <span class="text-xs"> Customers </span>
+              <span class="text-h6">{{ props.saleData.owners }}</span>
+            </div>
+          </div>
+        </VCol>
+        <VCol cols="12" sm="4">
+          <div class="d-flex align-center">
+            <div class="me-3">
+              <VAvatar color="primary" rounded size="40" class="elevation-1">
+                <VIcon size="24" icon="mdi-cellphone-link" />
+              </VAvatar>
+            </div>
+
+            <div class="d-flex flex-column">
+              <span class="text-xs"> Products </span>
+              <span class="text-h6">{{ props.saleData.items }} </span>
             </div>
           </div>
         </VCol>

@@ -1,34 +1,18 @@
 <template>
   <div class="demo-space-y">
-    <VAlert
-      color="primary"
-      border="top"
-      variant="tonal"
-    >
+    <VAlert color="primary" border="top" variant="tonal">
       Good Morning! Start your day with some alerts.
     </VAlert>
 
-    <VAlert
-      border="end"
-      color="secondary"
-      variant="tonal"
-    >
+    <VAlert border="end" color="secondary" variant="tonal">
       Good Morning! Start your day with some alerts.
     </VAlert>
 
-    <VAlert
-      border="bottom"
-      color="success"
-      variant="tonal"
-    >
+    <VAlert border="bottom" color="primary" variant="tonal">
       Good Morning! Start your day with some alerts.
     </VAlert>
 
-    <VAlert
-      border="start"
-      color="info"
-      variant="tonal"
-    >
+    <VAlert border="start" color="info" variant="tonal">
       Good Morning! Start your day with some alerts.
     </VAlert>
   </div>

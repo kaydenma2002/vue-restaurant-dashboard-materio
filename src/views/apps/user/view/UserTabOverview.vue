@@ -1,39 +1,31 @@
 <script setup>
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import UserRestaurantTable from './UserRestaurantTable.vue'
+import { VDataTable } from "vuetify/labs/VDataTable";
+import UserRestaurantTable from "./UserRestaurantTable.vue";
 
 // Images
-import avatar2 from '@images/avatars/avatar-2.png'
-import figma from '@images/icons/project-icons/figma.png'
-import html5 from '@images/icons/project-icons/html5.png'
-import python from '@images/icons/project-icons/python.png'
-import react from '@images/icons/project-icons/react.png'
-import sketch from '@images/icons/project-icons/sketch.png'
-import vue from '@images/icons/project-icons/vue.png'
-import xamarin from '@images/icons/project-icons/xamarin.png'
+import avatar2 from "@images/avatars/avatar-2.png";
+import figma from "@images/icons/project-icons/figma.png";
+import html5 from "@images/icons/project-icons/html5.png";
+import python from "@images/icons/project-icons/python.png";
+import react from "@images/icons/project-icons/react.png";
+import sketch from "@images/icons/project-icons/sketch.png";
+import vue from "@images/icons/project-icons/vue.png";
+import xamarin from "@images/icons/project-icons/xamarin.png";
 const props = defineProps({
   userData: {
     type: Object,
     required: true,
   },
-})
+});
 
+const resolveUserProgressVariant = (progress) => {
+  if (progress <= 25) return "error";
+  if (progress > 25 && progress <= 50) return "warning";
+  if (progress > 50 && progress <= 75) return "primary";
+  if (progress > 75 && progress <= 100) return "success";
 
-
-
-
-const resolveUserProgressVariant = progress => {
-  if (progress <= 25)
-    return 'error'
-  if (progress > 25 && progress <= 50)
-    return 'warning'
-  if (progress > 50 && progress <= 75)
-    return 'primary'
-  if (progress > 75 && progress <= 100)
-    return 'success'
-  
-  return 'secondary'
-}
+  return "secondary";
+};
 </script>
 
 <template>
@@ -52,11 +44,10 @@ const resolveUserProgressVariant = progress => {
             truncate-line="both"
             class="v-timeline-density-compact"
           >
-            <VTimelineItem
-              dot-color="error"
-              size="x-small"
-            >
-              <div class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3">
+            <VTimelineItem dot-color="error" size="x-small">
+              <div
+                class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3"
+              >
                 <span class="app-timeline-title">
                   12 Invoices have been paid
                 </span>
@@ -76,20 +67,15 @@ const resolveUserProgressVariant = progress => {
                   class="me-2"
                 />
 
-                <h6 class="font-weight-medium text-sm">
-                  Invoices.pdf
-                </h6>
+                <h6 class="font-weight-medium text-sm">Invoices.pdf</h6>
               </div>
             </VTimelineItem>
 
-            <VTimelineItem
-              dot-color="primary"
-              size="x-small"
-            >
-              <div class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3">
-                <span class="app-timeline-title">
-                  Meeting with john
-                </span>
+            <VTimelineItem dot-color="primary" size="x-small">
+              <div
+                class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3"
+              >
+                <span class="app-timeline-title"> Meeting with john </span>
 
                 <span class="app-timeline-meta">45 min ago</span>
               </div>
@@ -99,11 +85,7 @@ const resolveUserProgressVariant = progress => {
               </p>
 
               <div class="d-flex align-center mt-2">
-                <VAvatar
-                  size="34"
-                  class="me-2"
-                  :image="avatar2"
-                />
+                <VAvatar size="34" class="me-2" :image="avatar2" />
 
                 <div>
                   <h6 class="text-sm font-weight-medium mb-0">
@@ -115,11 +97,10 @@ const resolveUserProgressVariant = progress => {
               </div>
             </VTimelineItem>
 
-            <VTimelineItem
-              dot-color="info"
-              size="x-small"
-            >
-              <div class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3">
+            <VTimelineItem dot-color="info" size="x-small">
+              <div
+                class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3"
+              >
                 <span class="app-timeline-title">
                   Create a new react project for client
                 </span>
@@ -132,11 +113,10 @@ const resolveUserProgressVariant = progress => {
               </p>
             </VTimelineItem>
 
-            <VTimelineItem
-              dot-color="success"
-              size="x-small"
-            >
-              <div class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3">
+            <VTimelineItem dot-color="primary" size="x-small">
+              <div
+                class="d-flex justify-space-between align-center flex-wrap gap-2 mb-3"
+              >
                 <span class="app-timeline-title">
                   12 Create invoices for client
                 </span>
@@ -152,7 +132,5 @@ const resolveUserProgressVariant = progress => {
         </VCardText>
       </VCard>
     </VCol>
-
-    
   </VRow>
 </template>

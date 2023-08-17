@@ -92,8 +92,8 @@ export const color = { ts: `<template>
 
     <VProgressLinear
       model-value="45"
-      bg-color="success"
-      color="success"
+      bg-color="primary"
+      color="primary"
     />
   </div>
 </template>
@@ -113,8 +113,8 @@ export const color = { ts: `<template>
 
     <VProgressLinear
       model-value="45"
-      bg-color="success"
-      color="success"
+      bg-color="primary"
+      color="primary"
     />
   </div>
 </template>

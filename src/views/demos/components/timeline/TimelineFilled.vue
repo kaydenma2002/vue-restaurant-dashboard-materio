@@ -1,8 +1,8 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
-import avatar2 from '@images/avatars/avatar-2.png'
-import pdf from '@images/icons/project-icons/pdf.png'
-import pumaShoes from '@images/pages/puma-shoes.jpeg'
+import avatar1 from "@images/avatars/avatar-1.png";
+import avatar2 from "@images/avatars/avatar-2.png";
+import pdf from "@images/icons/project-icons/pdf.png";
+import pumaShoes from "@images/pages/puma-shoes.jpeg";
 </script>
 
 <template>
@@ -17,65 +17,45 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
         class="v-timeline-variant-outlined"
       >
         <!-- SECTION Flight -->
-        <VTimelineItem
-          fill-dot
-          size="x-small"
-          dot-color="error"
-        >
+        <VTimelineItem fill-dot size="x-small" dot-color="error">
           <!-- 👉 Header -->
-          <div class="d-flex justify-space-between flex-wrap align-center gap-2">
-            <span class="app-timeline-title">
-              Get on the flight
-            </span>
+          <div
+            class="d-flex justify-space-between flex-wrap align-center gap-2"
+          >
+            <span class="app-timeline-title"> Get on the flight </span>
             <small class="app-timeline-meta">Wednesday</small>
           </div>
 
           <!-- 👉 Content -->
           <p class="app-timeline-text mb-1">
             <span>Charles de Gaulle Airport, Paris</span>
-            <VIcon
-              size="20"
-              icon="mdi-arrow-right"
-              class="mx-2"
-            />
+            <VIcon size="20" icon="mdi-arrow-right" class="mx-2" />
             <span>Heathrow Airport, London</span>
           </p>
 
-          <p class="app-timeline-meta">
-            6:30 AM
-          </p>
+          <p class="app-timeline-meta">6:30 AM</p>
 
           <div class="d-flex align-center">
-            <img
-              :src="pdf"
-              width="22"
-              class="me-2"
-              alt="img"
-            >
+            <img :src="pdf" width="22" class="me-2" alt="img" />
 
-            <span class="app-timeline-text">
-              booking-card.pdf
-            </span>
+            <span class="app-timeline-text"> booking-card.pdf </span>
           </div>
         </VTimelineItem>
         <!-- !SECTION -->
 
         <!-- SECTION Interview Schedule -->
-        <VTimelineItem
-          size="x-small"
-          fill-dot
-          dot-color="primary"
-        >
+        <VTimelineItem size="x-small" fill-dot dot-color="primary">
           <!-- 👉 Header -->
-          <div class="d-flex justify-space-between align-center flex-wrap gap-2">
-            <span class="app-timeline-title">
-              Interview Schedule
-            </span>
+          <div
+            class="d-flex justify-space-between align-center flex-wrap gap-2"
+          >
+            <span class="app-timeline-title"> Interview Schedule </span>
             <span class="app-timeline-meta">April, 18</span>
           </div>
 
           <p class="app-timeline-text mb-0">
-            Bonbon gummies caramels brownie topping fruitcake gingerbread jelly-o marzipan.
+            Bonbon gummies caramels brownie topping fruitcake gingerbread
+            jelly-o marzipan.
           </p>
 
           <!-- 👉 Divider -->
@@ -85,11 +65,7 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
           <div class="d-flex justify-space-between align-center flex-wrap">
             <!-- 👉 Avatar & Personal Info -->
             <span class="d-flex align-bottom mt-2">
-              <VAvatar
-                size="32"
-                class="me-2"
-                :image="avatar2"
-              />
+              <VAvatar size="32" class="me-2" :image="avatar2" />
               <div>
                 <h6 class="text-sm font-weight-medium">Rebecca Godman</h6>
                 <span class="text-xs">Javascript Developer</span>
@@ -99,16 +75,10 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
             <!-- 👉 Person Actions -->
             <div>
               <IconBtn class="me-2">
-                <VIcon
-                  size="20"
-                  icon="mdi-message-outline"
-                />
+                <VIcon size="20" icon="mdi-message-outline" />
               </IconBtn>
               <IconBtn>
-                <VIcon
-                  size="20"
-                  icon="mdi-phone"
-                />
+                <VIcon size="20" icon="mdi-phone" />
               </IconBtn>
             </div>
           </div>
@@ -116,11 +86,7 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
         <!-- !SECTION -->
 
         <!-- SECTION Puma Shoes -->
-        <VTimelineItem
-          fill-dot
-          size="x-small"
-          dot-color="info"
-        >
+        <VTimelineItem fill-dot size="x-small" dot-color="info">
           <div class="d-flex align-start flex-sm-row flex-column mb-3">
             <VImg
               height="100"
@@ -131,34 +97,35 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
 
             <div>
               <!-- Header -->
-              <div class="d-flex justify-space-between flex-wrap align-center gap-2">
+              <div
+                class="d-flex justify-space-between flex-wrap align-center gap-2"
+              >
                 <span class="app-timeline-title">
                   Sold Puma POPX Blue Color
                 </span>
                 <span class="app-timeline-meta">January, 10</span>
               </div>
-              <span class="app-timeline-text">PUMA presents the latest shoes from its collection. Light &amp; comfortable made with highly durable material.</span>
+              <span class="app-timeline-text"
+                >PUMA presents the latest shoes from its collection. Light &amp;
+                comfortable made with highly durable material.</span
+              >
             </div>
           </div>
 
           <!-- 👉 Timeline Item: Meta Content -->
-          <div class="d-flex justify-space-between flex-column flex-sm-row gap-3">
+          <div
+            class="d-flex justify-space-between flex-column flex-sm-row gap-3"
+          >
             <div class="text-sm-center">
-              <h6 class="text-sm font-weight-medium mb-1">
-                Customer
-              </h6>
+              <h6 class="text-sm font-weight-medium mb-1">Customer</h6>
               <span class="text-xs">Micheal Scott</span>
             </div>
             <div class="text-sm-center">
-              <h6 class="text-sm font-weight-medium mb-1">
-                Price
-              </h6>
+              <h6 class="text-sm font-weight-medium mb-1">Price</h6>
               <span class="text-xs">$375.00</span>
             </div>
             <div class="text-sm-center">
-              <h6 class="text-sm font-weight-medium mb-1">
-                Quantity
-              </h6>
+              <h6 class="text-sm font-weight-medium mb-1">Quantity</h6>
               <span class="text-xs">1</span>
             </div>
           </div>
@@ -166,16 +133,12 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
         <!-- !SECTION -->
 
         <!-- 👉 Design Review -->
-        <VTimelineItem
-          fill-dot
-          size="x-small"
-          dot-color="success"
-        >
+        <VTimelineItem fill-dot size="x-small" dot-color="primary">
           <!-- 👉 Header -->
-          <div class="d-flex justify-space-between align-center flex-wrap gap-2">
-            <span class="app-timeline-title">
-              Design Review
-            </span>
+          <div
+            class="d-flex justify-space-between align-center flex-wrap gap-2"
+          >
+            <span class="app-timeline-title"> Design Review </span>
             <span class="app-timeline-meta">September, 20</span>
           </div>
 
@@ -184,14 +147,8 @@ import pumaShoes from '@images/pages/puma-shoes.jpeg'
             Weekly review of freshly prepared design for our new application.
           </p>
           <div class="d-flex align-center">
-            <VAvatar
-              size="32"
-              :image="avatar1"
-              class="me-2"
-            />
-            <h6 class="text-sm font-weight-medium">
-              John Doe (Client)
-            </h6>
+            <VAvatar size="32" :image="avatar1" class="me-2" />
+            <h6 class="text-sm font-weight-medium">John Doe (Client)</h6>
           </div>
         </VTimelineItem>
       </VTimeline>

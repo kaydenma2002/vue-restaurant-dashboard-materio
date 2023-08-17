@@ -1,50 +1,59 @@
 <script setup>
-import CrmActivityTimeline from '@/views/dashboards/crm/CrmActivityTimeline.vue'
-import CrmAreaCharts from '@/views/dashboards/crm/CrmAreaCharts.vue'
-import CrmDeveloperMeetup from '@/views/dashboards/crm/CrmDeveloperMeetup.vue'
-import CrmMeetingSchedule from '@/views/dashboards/crm/CrmMeetingSchedule.vue'
-import CrmRevenueReport from '@/views/dashboards/crm/CrmRevenueReport.vue'
-import CrmSalesOverview from '@/views/dashboards/crm/CrmSalesOverview.vue'
-import CrmTotalSales from '@/views/dashboards/crm/CrmTotalSales.vue'
-import CrmTransactions from '@/views/dashboards/crm/CrmTransactions.vue'
-import CrmUpgradeYourPlan from '@/views/dashboards/crm/CrmUpgradeYourPlan.vue'
-import CrmWeeklySales from '@/views/dashboards/crm/CrmWeeklySales.vue'
-import illustration1 from '@images/cards/illustration-1.png'
-import illustration2 from '@images/cards/illustration-2.png'
+import { useOrderListStore } from "@/views/apps/order/useOrderListStore";
+import CrmDeveloperMeetup from "@/views/dashboards/crm/CrmDeveloperMeetup.vue";
+import CrmMeetingSchedule from "@/views/dashboards/crm/CrmMeetingSchedule.vue";
+import CrmSalesOverview from "@/views/dashboards/crm/CrmSalesOverview.vue";
+import CrmTotalSales from "@/views/dashboards/crm/CrmTotalSales.vue";
+import CrmTransactions from "@/views/dashboards/crm/CrmTransactions.vue";
+import CrmUpgradeYourPlan from "@/views/dashboards/crm/CrmUpgradeYourPlan.vue";
+import illustration1 from "@images/cards/illustration-1.png";
+import illustration2 from "@images/cards/illustration-2.png";
+const orderListStore = useOrderListStore();
+const totalSales = ref(0);
+const fetchSales = () => {
+  orderListStore
+    .fetchSales()
+    .then((response) => {
+      totalSales.value = response.data;
+      console.log(response.data);
+    })
+    .catch((error) => console.log(error));
+};
 
 const statisticsWithImages = [
   {
-    title: 'Ratings',
-    subtitle: 'Year of 2021',
-    stats: '13k',
+    title: "Ratings",
+    subtitle: "Year of 2021",
+    stats: "13k",
     change: 15.6,
     image: illustration1,
-    color: 'primary',
+    color: "primary",
   },
   {
-    title: 'Sessions',
-    subtitle: 'Last Week',
-    stats: '24.5k',
+    title: "Sessions",
+    subtitle: "Last Week",
+    stats: "24.5k",
     change: -22,
     image: illustration2,
-    color: 'secondary',
+    color: "secondary",
   },
-]
+];
 
 const statistic = {
-  title: 'New Project',
-  color: 'primary',
-  icon: 'mdi-briefcase-variant-outline',
-  stats: '862',
+  title: "New Project",
+  color: "primary",
+  icon: "mdi-briefcase-variant-outline",
+  stats: "862",
   change: -18,
-  subtitle: 'Yearly Project',
-}
+  subtitle: "Yearly Project",
+};
+fetchSales();
 </script>
 
 <template>
   <section>
     <VRow class="match-height">
-      <VCol
+      <!-- <VCol
         v-for="statistics in statisticsWithImages"
         :key="statistics.title"
         cols="12"
@@ -53,95 +62,39 @@ const statistic = {
         class="d-flex flex-column align-self-end"
       >
         <CardStatisticsWithImages v-bind="statistics" />
+      </VCol> -->
+
+      <VCol cols="12" md="12">
+        <CrmTransactions :sale-data="totalSales" />
       </VCol>
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <CrmTransactions />
+      <VCol cols="12" sm="12" md="12">
+        <CrmTotalSales :sale-data="totalSales" />
       </VCol>
 
-      <VCol
-        cols="12"
-        sm="6"
-        md="3"
-      >
-        <CrmTotalSales />
-      </VCol>
-
-      <VCol
+      <!-- <VCol
         cols="12"
         sm="6"
-        md="3"
+        md="2"
       >
         <CrmRevenueReport />
-      </VCol>
+      </VCol> -->
 
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <CrmSalesOverview />
+      <VCol cols="12" sm="12" md="12">
+        <CrmSalesOverview :sale-data="totalSales" />
       </VCol>
     </VRow>
 
     <VRow class="match-height">
-      <VCol
-        cols="12"
-        md="6"
-      >
-        <CrmActivityTimeline />
-      </VCol>
-
-      <VCol
-        cols="12"
-        md="4"
-        sm="8"
-      >
-        <CrmWeeklySales />
-      </VCol>
-
-      <VCol
-        cols="12"
-        md="2"
-        sm="4"
-      >
-        <VRow>
-          <VCol
-            cols="6"
-            sm="12"
-          >
-            <CrmAreaCharts />
-          </VCol>
-
-          <VCol
-            cols="6"
-            sm="12"
-          >
-            <CardStatisticsVertical v-bind="statistic" />
-          </VCol>
-        </VRow>
-      </VCol>
-
-      <VCol
-        cols="12"
-        md="4"
-      >
+      <VCol cols="12" md="4">
         <CrmUpgradeYourPlan />
       </VCol>
 
-      <VCol
-        cols="12"
-        md="4"
-      >
+      <VCol cols="12" md="4">
         <CrmMeetingSchedule />
       </VCol>
 
-      <VCol
-        cols="12"
-        md="4"
-      >
+      <VCol cols="12" md="4">
         <CrmDeveloperMeetup />
       </VCol>
     </VRow>

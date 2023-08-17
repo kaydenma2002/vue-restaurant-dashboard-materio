@@ -1,43 +1,43 @@
 <script setup>
-import DealDetails from '@/views/wizard-examples/create-deal/DealDetails.vue'
-import DealReviewComplete from '@/views/wizard-examples/create-deal/DealReviewComplete.vue'
-import CreateDealType from '@/views/wizard-examples/create-deal/DealType.vue'
-import DealUsage from '@/views/wizard-examples/create-deal/DealUsage.vue'
+import DealDetails from "@/views/wizard-examples/create-deal/DealDetails.vue";
+import DealReviewComplete from "@/views/wizard-examples/create-deal/DealReviewComplete.vue";
+import CreateDealType from "@/views/wizard-examples/create-deal/DealType.vue";
+import DealUsage from "@/views/wizard-examples/create-deal/DealUsage.vue";
 
 const createDealSteps = [
   {
-    title: 'Deal Type',
-    subtitle: 'Choose type of deal',
+    title: "Deal Type",
+    subtitle: "Choose type of deal",
   },
   {
-    title: 'Deal Details',
-    subtitle: 'Provide deal details',
+    title: "Deal Details",
+    subtitle: "Provide deal details",
   },
   {
-    title: 'Deal Usage',
-    subtitle: 'Limitations & Offers',
+    title: "Deal Usage",
+    subtitle: "Limitations & Offers",
   },
   {
-    title: 'Review & Complete',
-    subtitle: 'Launch a deal',
+    title: "Review & Complete",
+    subtitle: "Launch a deal",
   },
-]
+];
 
-const currentStep = ref(0)
+const currentStep = ref(0);
 
 const createDealData = ref({
   dealType: {
-    Offer: 'percentage',
+    Offer: "percentage",
     discount: null,
     region: undefined,
   },
   dealDetails: {
-    title: '',
-    code: '',
-    description: '',
+    title: "",
+    code: "",
+    description: "",
     offeredUItems: [],
     cartCondition: undefined,
-    dealDuration: '',
+    dealDuration: "",
     notification: {
       email: false,
       sms: false,
@@ -54,11 +54,11 @@ const createDealData = ref({
     isSingleUserCustomer: false,
   },
   dealReviewComplete: { isDealDetailsConfirmed: true },
-})
+});
 
 const onSubmit = () => {
-  console.log('createDealData :>> ', createDealData.value)
-}
+  console.log("createDealData :>> ", createDealData.value);
+};
 </script>
 
 <template>
@@ -79,16 +79,9 @@ const onSubmit = () => {
         </VCardText>
       </VCol>
 
-      <VCol
-        cols="12"
-        md="8"
-        lg="9"
-      >
+      <VCol cols="12" md="8" lg="9">
         <VCardText>
-          <VWindow
-            v-model="currentStep"
-            class="disable-tab-transition"
-          >
+          <VWindow v-model="currentStep" class="disable-tab-transition">
             <VWindowItem>
               <CreateDealType v-model:form-data="createDealData.dealType" />
             </VWindowItem>
@@ -102,45 +95,38 @@ const onSubmit = () => {
             </VWindowItem>
 
             <VWindowItem>
-              <DealReviewComplete v-model:form-data="createDealData.dealReviewComplete" />
+              <DealReviewComplete
+                v-model:form-data="createDealData.dealReviewComplete"
+              />
             </VWindowItem>
           </VWindow>
 
-          <div class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-5">
+          <div
+            class="d-flex justify-sm-space-between gap-4 flex-wrap justify-center mt-5"
+          >
             <VBtn
               :color="currentStep === 0 ? 'secondary' : 'default'"
               variant="outlined"
               :disabled="currentStep === 0"
               @click="currentStep--"
             >
-              <VIcon
-                icon="mdi-arrow-left"
-                start
-                class="flip-in-rtl"
-              />
+              <VIcon icon="mdi-arrow-left" start class="flip-in-rtl" />
               Previous
             </VBtn>
 
             <VBtn
               v-if="createDealSteps.length - 1 === currentStep"
-              color="success"
+              color="primary"
               append-icon="mdi-check"
               @click="onSubmit"
             >
               submit
             </VBtn>
 
-            <VBtn
-              v-else
-              @click="currentStep++"
-            >
+            <VBtn v-else @click="currentStep++">
               Next
 
-              <VIcon
-                icon="mdi-arrow-right"
-                end
-                class="flip-in-rtl"
-              />
+              <VIcon icon="mdi-arrow-right" end class="flip-in-rtl" />
             </VBtn>
           </div>
         </VCardText>

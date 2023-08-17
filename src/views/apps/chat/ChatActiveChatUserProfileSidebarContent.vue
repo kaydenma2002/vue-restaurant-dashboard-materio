@@ -32,29 +32,29 @@ const { resolveAvatarBadgeVariant } = useChat()
         offset-x="7"
         offset-y="4"
         bordered
-        :color="resolveAvatarBadgeVariant(store.activeChat.contact.status)"
+        :color="resolveAvatarBadgeVariant(store.activeChat.contact?.status)"
         class="chat-user-profile-badge mb-4"
       >
         <VAvatar
           size="84"
-          :variant="!store.activeChat.contact.avatar ? 'tonal' : undefined"
-          :color="!store.activeChat.contact.avatar ? resolveAvatarBadgeVariant(store.activeChat.contact.status) : undefined"
+          :variant="!store?.activeChat?.contact?.avatar ? 'tonal' : undefined"
+          :color="!store?.activeChat?.contact?.avatar ? resolveAvatarBadgeVariant(store.activeChat.contact?.status) : undefined"
         >
           <VImg
-            v-if="store.activeChat.contact.avatar"
-            :src="store.activeChat.contact.avatar"
+            v-if="store?.activeChat?.contact?.avatar"
+            :src="store?.activeChat?.contact?.avatar"
           />
           <span
             v-else
             class="text-3xl"
-          >{{ avatarText(store.activeChat.contact.fullName) }}</span>
+          >{{ avatarText(store.activeChat.contact?.name) }}</span>
         </VAvatar>
       </VBadge>
       <h2 class="mb-1 font-weight-medium text-high-emphasis text-base">
-        {{ store.activeChat.contact.fullName }}
+        {{ store.activeChat.contact?.name }}
       </h2>
       <p class="text-capitalize text-sm text-medium-emphasis">
-        {{ store.activeChat.contact.role }}
+        {{ store.activeChat.contact?.role }}
       </p>
     </div>
 
@@ -70,7 +70,7 @@ const { resolveAvatarBadgeVariant } = useChat()
           class="text-sm text-disabled"
         >ABOUT</span>
         <p class="mt-1 text-sm">
-          {{ store.activeChat.contact.about }}
+          {{ store.activeChat?.contact?.about }}
         </p>
       </div>
 

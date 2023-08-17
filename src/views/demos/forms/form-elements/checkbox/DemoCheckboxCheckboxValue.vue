@@ -1,6 +1,6 @@
 <script setup>
-const checkbox = ref(1)
-const checkboxString = ref('Show')
+const checkbox = ref(1);
+const checkboxString = ref("Show");
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const checkboxString = ref('Show')
       v-model="checkboxString"
       true-value="Show"
       false-value="Hide"
-      color="success"
+      color="primary"
       :label="`${checkboxString.toString()}`"
     />
   </div>

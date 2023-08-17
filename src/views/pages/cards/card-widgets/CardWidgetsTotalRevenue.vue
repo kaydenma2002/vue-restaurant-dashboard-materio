@@ -1,41 +1,41 @@
 <script setup>
-import VueApexCharts from 'vue3-apexcharts'
-import { useTheme } from 'vuetify'
-import { useThemeConfig } from '@core/composable/useThemeConfig'
-import { hexToRgb } from '@layouts/utils'
+import VueApexCharts from "vue3-apexcharts";
+import { useTheme } from "vuetify";
+import { useThemeConfig } from "@core/composable/useThemeConfig";
+import { hexToRgb } from "@layouts/utils";
 
-const vuetifyTheme = useTheme()
-const { theme } = useThemeConfig()
+const vuetifyTheme = useTheme();
+const { theme } = useThemeConfig();
 
 const options = controlledComputed(theme, () => {
-  const currentTheme = ref(vuetifyTheme.current.value.colors)
-  const variableTheme = ref(vuetifyTheme.current.value.variables)
-  const secondaryTextColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['medium-emphasis-opacity'] })`
-  const primaryTextColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['high-emphasis-opacity'] })`
-  
+  const currentTheme = ref(vuetifyTheme.current.value.colors);
+  const variableTheme = ref(vuetifyTheme.current.value.variables);
+  const secondaryTextColor = `rgba(${hexToRgb(
+    currentTheme.value["on-surface"]
+  )},${variableTheme.value["medium-emphasis-opacity"]})`;
+  const primaryTextColor = `rgba(${hexToRgb(
+    currentTheme.value["on-surface"]
+  )},${variableTheme.value["high-emphasis-opacity"]})`;
+
   return {
     chart: { sparkline: { enabled: true } },
-    labels: [
-      'Returning',
-      'New Users',
-      'Referrals',
-    ],
+    labels: ["Returning", "New Users", "Referrals"],
     legend: { show: false },
-    stroke: { lineCap: 'round' },
+    stroke: { lineCap: "round" },
     colors: [
       currentTheme.value.primary,
       currentTheme.value.success,
       currentTheme.value.warning,
     ],
     states: {
-      hover: { filter: { type: 'none' } },
-      active: { filter: { type: 'none' } },
+      hover: { filter: { type: "none" } },
+      active: { filter: { type: "none" } },
     },
     plotOptions: {
       radialBar: {
-        hollow: { size: '40%' },
+        hollow: { size: "40%" },
         track: {
-          background: 'transparent',
+          background: "transparent",
           margin: 10,
         },
         dataLabels: {
@@ -44,33 +44,31 @@ const options = controlledComputed(theme, () => {
             color: secondaryTextColor,
           },
           value: {
-            fontSize: '2.125rem',
+            fontSize: "2.125rem",
             offsetY: -12,
             color: primaryTextColor,
             formatter(value) {
-              return `${ value }k`
+              return `${value}k`;
             },
           },
           total: {
             show: true,
-            label: `${ new Date().getFullYear() }`,
+            label: `${new Date().getFullYear()}`,
             color: secondaryTextColor,
-            fontSize: '12px',
+            fontSize: "12px",
             formatter(value) {
-              return `${ value.globals.seriesTotals.reduce((total, num) => total + num) }k`
+              return `${value.globals.seriesTotals.reduce(
+                (total, num) => total + num
+              )}k`;
             },
           },
         },
       },
     },
-  }
-})
+  };
+});
 
-const series = [
-  71,
-  78,
-  86,
-]
+const series = [71, 78, 86];
 </script>
 
 <template>
@@ -98,13 +96,11 @@ const series = [
           <div class="d-flex align-center">
             <VIcon
               size="12"
-              color="success"
+              color="primary"
               icon="mdi-checkbox-blank-circle"
               class="me-1"
             />
-            <h6 class="text-sm font-weight-medium">
-              856
-            </h6>
+            <h6 class="text-sm font-weight-medium">856</h6>
           </div>
 
           <span class="text-xs">New User</span>
@@ -118,9 +114,7 @@ const series = [
               icon="mdi-checkbox-blank-circle"
               class="me-1"
             />
-            <h6 class="text-sm font-weight-medium">
-              345
-            </h6>
+            <h6 class="text-sm font-weight-medium">345</h6>
           </div>
 
           <span class="text-xs">Returning</span>
@@ -134,9 +128,7 @@ const series = [
               icon="mdi-checkbox-blank-circle"
               class="me-1"
             />
-            <h6 class="text-sm font-weight-medium">
-              258
-            </h6>
+            <h6 class="text-sm font-weight-medium">258</h6>
           </div>
 
           <span class="text-xs">Referrals</span>

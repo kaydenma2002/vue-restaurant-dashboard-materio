@@ -8,65 +8,57 @@ const props = defineProps({
     type: null,
     required: true,
   },
-})
+});
 
-const emit = defineEmits([
-  'update:currentStep',
-  'update:checkout-data',
-])
+const emit = defineEmits(["update:currentStep", "update:checkout-data"]);
 
-const checkoutCartDataLocal = ref(props.checkoutData)
+const checkoutCartDataLocal = ref(props.checkoutData);
 
-const removeItem = item => {
-  checkoutCartDataLocal.value.cartItems = checkoutCartDataLocal.value.cartItems.filter(i => i.id !== item.id)
-  console.log(checkoutCartDataLocal.value.cartItems)
-}
+const removeItem = (item) => {
+  checkoutCartDataLocal.value.cartItems =
+    checkoutCartDataLocal.value.cartItems.filter((i) => i.id !== item.id);
+  console.log(checkoutCartDataLocal.value.cartItems);
+};
 
 //  cart total
 const totalCost = computed(() => {
-  return checkoutCartDataLocal.value.orderAmount = checkoutCartDataLocal.value.cartItems.reduce((acc, item) => {
-    return acc + item.price * item.quantity
-  }, 0)
-})
+  return (checkoutCartDataLocal.value.orderAmount =
+    checkoutCartDataLocal.value.cartItems.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0));
+});
 
 const updateCartData = () => {
-  emit('update:checkout-data', checkoutCartDataLocal.value)
-}
+  emit("update:checkout-data", checkoutCartDataLocal.value);
+};
 
 const nextStep = () => {
-  updateCartData()
-  emit('update:currentStep', props.currentStep ? props.currentStep + 1 : 1)
-}
+  updateCartData();
+  emit("update:currentStep", props.currentStep ? props.currentStep + 1 : 1);
+};
 
-watch(() => props.currentStep, updateCartData)
+watch(() => props.currentStep, updateCartData);
 </script>
 
 <template>
   <VRow v-if="checkoutCartDataLocal">
-    <VCol
-      cols="12"
-      md="8"
-    >
+    <VCol cols="12" md="8">
       <!-- 👉 Offers alert -->
-      <VAlert
-        color="success"
-        variant="tonal"
-      >
+      <VAlert color="primary" variant="tonal">
         <template #prepend>
-          <VIcon
-            icon="mdi-check-circle-outline"
-            size="22"
-          />
+          <VIcon icon="mdi-check-circle-outline" size="22" />
         </template>
         <VAlertTitle class="text-body-1 text-success mb-1">
           Available Offers
         </VAlertTitle>
 
         <p class="mb-1">
-          - 10% Instant Discount on Bank of America Corp Bank Debit and Credit cards
+          - 10% Instant Discount on Bank of America Corp Bank Debit and Credit
+          cards
         </p>
         <p class="mb-0">
-          - 25% Cashback Voucher of up to $60 on first ever PayPal transaction. TCA
+          - 25% Cashback Voucher of up to $60 on first ever PayPal transaction.
+          TCA
         </p>
       </VAlert>
 
@@ -89,22 +81,18 @@ watch(() => props.currentStep, updateCartData)
               class="checkout-item-remove-btn"
               @click="removeItem(item)"
             >
-              <VIcon
-                size="18"
-                icon="mdi-close"
-              />
+              <VIcon size="18" icon="mdi-close" />
             </IconBtn>
 
             <div>
-              <VImg
-                width="140"
-                :src="item.image"
-              />
+              <VImg width="140" :src="item.image" />
             </div>
 
             <div
               class="d-flex w-100"
-              :class="$vuetify.display.width <= 700 ? 'flex-column' : 'flex-row'"
+              :class="
+                $vuetify.display.width <= 700 ? 'flex-column' : 'flex-row'
+              "
             >
               <div>
                 <h6 class="text-base font-weight-regular mb-4">
@@ -120,7 +108,7 @@ watch(() => props.currentStep, updateCartData)
                     density="compact"
                   >
                     <span class="text-xs font-weight-medium">
-                      {{ item.inStock ? 'In Stock' : 'Out of Stock' }}
+                      {{ item.inStock ? "In Stock" : "Out of Stock" }}
                     </span>
                   </VChip>
                 </div>
@@ -136,7 +124,7 @@ watch(() => props.currentStep, updateCartData)
                 <VTextField
                   v-model="item.quantity"
                   type="number"
-                  style="width: 7.5rem;"
+                  style="width: 7.5rem"
                   density="compact"
                 />
               </div>
@@ -145,7 +133,9 @@ watch(() => props.currentStep, updateCartData)
 
               <div
                 class="d-flex flex-column justify-space-between mt-5"
-                :class="$vuetify.display.width <= 700 ? 'text-start' : 'text-end'"
+                :class="
+                  $vuetify.display.width <= 700 ? 'text-start' : 'text-end'
+                "
               >
                 <p class="text-base">
                   <span class="text-primary">${{ item.price }}</span>
@@ -153,10 +143,7 @@ watch(() => props.currentStep, updateCartData)
                 </p>
 
                 <div>
-                  <VBtn
-                    size="small"
-                    variant="outlined"
-                  >
+                  <VBtn size="small" variant="outlined">
                     move to wishlist
                   </VBtn>
                 </div>
@@ -167,28 +154,19 @@ watch(() => props.currentStep, updateCartData)
       </div>
 
       <!-- 👉 Add more from wishlist -->
-      <div class="d-flex align-center justify-space-between border rounded py-2 px-5 text-base mt-4">
+      <div
+        class="d-flex align-center justify-space-between border rounded py-2 px-5 text-base mt-4"
+      >
         <a href="#">Add more products from wishlist</a>
-        <VIcon
-          icon="mdi-chevron-right"
-          class="flip-in-rtl"
-        />
+        <VIcon icon="mdi-chevron-right" class="flip-in-rtl" />
       </div>
     </VCol>
 
-    <VCol
-      cols="12"
-      md="4"
-    >
-      <VCard
-        flat
-        variant="outlined"
-      >
+    <VCol cols="12" md="4">
+      <VCard flat variant="outlined">
         <!-- 👉 payment offer -->
         <VCardText>
-          <h6 class="text-base font-weight-medium mb-4">
-            Offer
-          </h6>
+          <h6 class="text-base font-weight-medium mb-4">Offer</h6>
 
           <div class="d-flex align-center gap-4">
             <VTextField
@@ -197,12 +175,7 @@ watch(() => props.currentStep, updateCartData)
               placeholder="Enter Promo Code"
             />
 
-            <VBtn
-              variant="outlined"
-              @click="updateCartData"
-            >
-              Apply
-            </VBtn>
+            <VBtn variant="outlined" @click="updateCartData"> Apply </VBtn>
           </div>
 
           <!-- 👉 Gift wrap banner -->
@@ -214,10 +187,7 @@ watch(() => props.currentStep, updateCartData)
               Gift wrap and personalized message on card, Only for $2.
             </p>
 
-            <a
-              href="#"
-              class="font-weight-medium"
-            >Add a gift wrap</a>
+            <a href="#" class="font-weight-medium">Add a gift wrap</a>
           </div>
         </VCardText>
 
@@ -225,9 +195,7 @@ watch(() => props.currentStep, updateCartData)
 
         <!-- 👉 Price details -->
         <VCardText>
-          <h6 class="text-base font-weight-medium mb-4">
-            Price Details
-          </h6>
+          <h6 class="text-base font-weight-medium mb-4">Price Details</h6>
 
           <div class="text-high-emphasis">
             <div class="d-flex justify-space-between mb-2">
@@ -237,10 +205,7 @@ watch(() => props.currentStep, updateCartData)
 
             <div class="d-flex justify-space-between mb-2">
               <span>Coupon Discount</span>
-              <a
-                href="#"
-                class="font-weight-medium"
-              >Apply Coupon</a>
+              <a href="#" class="font-weight-medium">Apply Coupon</a>
             </div>
 
             <div class="d-flex justify-space-between mb-2">
@@ -252,13 +217,10 @@ watch(() => props.currentStep, updateCartData)
               <span>Delivery Charges</span>
 
               <div>
-                <span class="text-decoration-line-through text-disabled me-2">$5.00</span>
-                <VChip
-                  density="compact"
-                  color="success"
+                <span class="text-decoration-line-through text-disabled me-2"
+                  >$5.00</span
                 >
-                  Free
-                </VChip>
+                <VChip density="compact" color="primary"> Free </VChip>
               </div>
             </div>
           </div>
@@ -267,22 +229,12 @@ watch(() => props.currentStep, updateCartData)
         <VDivider />
 
         <VCardText class="d-flex justify-space-between py-4">
-          <h6 class="text-base font-weight-medium">
-            Total
-          </h6>
-          <h6 class="text-base font-weight-medium">
-            ${{ totalCost }}.00
-          </h6>
+          <h6 class="text-base font-weight-medium">Total</h6>
+          <h6 class="text-base font-weight-medium">${{ totalCost }}.00</h6>
         </VCardText>
       </VCard>
 
-      <VBtn
-        block
-        class="mt-4"
-        @click="nextStep"
-      >
-        Place Order
-      </VBtn>
+      <VBtn block class="mt-4" @click="nextStep"> Place Order </VBtn>
     </VCol>
   </VRow>
 </template>

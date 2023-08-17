@@ -1,29 +1,18 @@
 <script setup>
-import {
-  emailValidator,
-  requiredValidator,
-} from '@validators'
+import { emailValidator, requiredValidator } from "@validators";
 
-const name = ref('')
-const email = ref('')
+const name = ref("");
+const email = ref("");
 
-const items = [
-  'Item 1',
-  'Item 2',
-  'Item 3',
-  'Item 4',
-]
+const items = ["Item 1", "Item 2", "Item 3", "Item 4"];
 
-const select = ref()
-const checkbox = ref(false)
-const form = ref()
+const select = ref();
+const checkbox = ref(false);
+const form = ref();
 </script>
 
 <template>
-  <VForm
-    ref="form"
-    lazy-validation
-  >
+  <VForm ref="form" lazy-validation>
     <VRow>
       <VCol cols="12">
         <VTextField
@@ -63,28 +52,12 @@ const form = ref()
         />
       </VCol>
 
-      <VCol
-        cols="12"
-        class="d-flex flex-wrap gap-4"
-      >
-        <VBtn
-          color="success"
-          @click="form?.validate()"
-        >
-          Validate
-        </VBtn>
+      <VCol cols="12" class="d-flex flex-wrap gap-4">
+        <VBtn color="primary" @click="form?.validate()"> Validate </VBtn>
 
-        <VBtn
-          color="error"
-          @click="form?.reset()"
-        >
-          Reset Form
-        </VBtn>
+        <VBtn color="error" @click="form?.reset()"> Reset Form </VBtn>
 
-        <VBtn
-          color="warning"
-          @click="form?.resetValidation()"
-        >
+        <VBtn color="warning" @click="form?.resetValidation()">
           Reset Validation
         </VBtn>
       </VCol>

@@ -1,21 +1,12 @@
 <script setup>
-const selected = ref(['John'])
+const selected = ref(["John"]);
 </script>
 
 <template>
   <div class="demo-space-x">
-    <VCheckbox
-      v-model="selected"
-      label="John"
-      value="John"
-    />
+    <VCheckbox v-model="selected" label="John" value="John" />
 
-    <VCheckbox
-      v-model="selected"
-      label="Jacob"
-      color="success"
-      value="Jacob"
-    />
+    <VCheckbox v-model="selected" label="Jacob" color="primary" value="Jacob" />
 
     <VCheckbox
       v-model="selected"

@@ -1,5 +1,5 @@
 <script setup>
-const notifications = ref()
+const notifications = ref();
 </script>
 
 <template>
@@ -7,13 +7,10 @@ const notifications = ref()
     <VBadge
       :content="notifications"
       :model-value="!!notifications"
-      color="success"
+      color="primary"
       class="me-5"
     >
-      <VIcon
-        size="40"
-        icon="mdi-vuetify"
-      />
+      <VIcon size="40" icon="mdi-vuetify" />
     </VBadge>
 
     <div class="demo-space-x">
@@ -21,10 +18,7 @@ const notifications = ref()
         Send Message
       </VBtn>
 
-      <VBtn
-        color="error"
-        @click="notifications = 0"
-      >
+      <VBtn color="error" @click="notifications = 0">
         Clear Notifications
       </VBtn>
     </div>

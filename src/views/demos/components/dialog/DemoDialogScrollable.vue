@@ -1,86 +1,80 @@
 <script setup>
 const countryList = [
   {
-    label: 'Bahamas, The',
-    value: 'bahamas',
+    label: "Bahamas, The",
+    value: "bahamas",
   },
   {
-    label: 'Bahrain',
-    value: 'bahrain',
+    label: "Bahrain",
+    value: "bahrain",
   },
   {
-    label: 'Bangladesh',
-    value: 'bangladesh',
+    label: "Bangladesh",
+    value: "bangladesh",
   },
   {
-    label: 'Barbados',
-    value: 'barbados',
+    label: "Barbados",
+    value: "barbados",
   },
   {
-    label: 'Belarus',
-    value: 'belarus',
+    label: "Belarus",
+    value: "belarus",
   },
   {
-    label: 'Belgium',
-    value: 'belgium',
+    label: "Belgium",
+    value: "belgium",
   },
   {
-    label: 'Belize',
-    value: 'belize',
+    label: "Belize",
+    value: "belize",
   },
   {
-    label: 'Benin',
-    value: 'benin',
+    label: "Benin",
+    value: "benin",
   },
   {
-    label: 'Bhutan',
-    value: 'bhutan',
+    label: "Bhutan",
+    value: "bhutan",
   },
   {
-    label: 'Bolivia',
-    value: 'bolivia',
+    label: "Bolivia",
+    value: "bolivia",
   },
   {
-    label: 'Bosnia and Herzegovina',
-    value: 'bosnia',
+    label: "Bosnia and Herzegovina",
+    value: "bosnia",
   },
   {
-    label: 'Botswana',
-    value: 'botswana',
+    label: "Botswana",
+    value: "botswana",
   },
   {
-    label: 'Brazil',
-    value: 'brazil',
+    label: "Brazil",
+    value: "brazil",
   },
   {
-    label: 'Brunei',
-    value: 'brunei',
+    label: "Brunei",
+    value: "brunei",
   },
   {
-    label: 'Bulgaria',
-    value: 'bulgaria',
+    label: "Bulgaria",
+    value: "bulgaria",
   },
   {
-    label: 'Burkina Faso',
-    value: 'burkina',
+    label: "Burkina Faso",
+    value: "burkina",
   },
-]
+];
 
-const selectedCountry = ref('')
-const isDialogVisible = ref(false)
+const selectedCountry = ref("");
+const isDialogVisible = ref(false);
 </script>
 
 <template>
-  <VDialog
-    v-model="isDialogVisible"
-    scrollable
-    max-width="350"
-  >
+  <VDialog v-model="isDialogVisible" scrollable max-width="350">
     <!-- Dialog Activator -->
     <template #activator="{ props }">
-      <VBtn v-bind="props">
-        Open Dialog
-      </VBtn>
+      <VBtn v-bind="props"> Open Dialog </VBtn>
     </template>
 
     <!-- Dialog Content -->
@@ -96,11 +90,8 @@ const isDialogVisible = ref(false)
       </VCardItem>
 
       <VDivider />
-      <VCardText style="block-size: 300px;">
-        <VRadioGroup
-          v-model="selectedCountry"
-          :inline="false"
-        >
+      <VCardText style="block-size: 300px">
+        <VRadioGroup v-model="selectedCountry" :inline="false">
           <VRadio
             v-for="country in countryList"
             :key="country.label"
@@ -115,18 +106,8 @@ const isDialogVisible = ref(false)
 
       <VCardActions class="pt-3">
         <VSpacer />
-        <VBtn
-          color="error"
-          @click="isDialogVisible = false"
-        >
-          Close
-        </VBtn>
-        <VBtn
-          color="success"
-          @click="isDialogVisible = false"
-        >
-          Save
-        </VBtn>
+        <VBtn color="error" @click="isDialogVisible = false"> Close </VBtn>
+        <VBtn color="primary" @click="isDialogVisible = false"> Save </VBtn>
       </VCardActions>
     </VCard>
   </VDialog>

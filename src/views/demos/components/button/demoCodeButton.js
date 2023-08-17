@@ -56,7 +56,7 @@ export const colors = { ts: `<template>
     <VBtn color="secondary">
       Secondary
     </VBtn>
-    <VBtn color="success">
+    <VBtn color="primary">
       Success
     </VBtn>
     <VBtn color="info">
@@ -78,7 +78,7 @@ export const colors = { ts: `<template>
     <VBtn color="secondary">
       Secondary
     </VBtn>
-    <VBtn color="success">
+    <VBtn color="primary">
       Success
     </VBtn>
     <VBtn color="info">
@@ -109,7 +109,7 @@ export const flat = { ts: `<template>
 
     <VBtn
       variant="flat"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -151,7 +151,7 @@ export const flat = { ts: `<template>
 
     <VBtn
       variant="flat"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -233,7 +233,7 @@ export const icon = { ts: `<template>
       />Cancel
     </VBtn>
 
-    <VBtn color="success">
+    <VBtn color="primary">
       Upload
       <VIcon
         end
@@ -275,7 +275,7 @@ export const icon = { ts: `<template>
       />Cancel
     </VBtn>
 
-    <VBtn color="success">
+    <VBtn color="primary">
       Upload
       <VIcon
         end
@@ -318,7 +318,7 @@ export const iconOnly = { ts: `<template>
     <VBtn
       icon="mdi-magnify"
       variant="text"
-      color="success"
+      color="primary"
     />
 
     <VBtn
@@ -356,7 +356,7 @@ export const iconOnly = { ts: `<template>
     <VBtn
       icon="mdi-magnify"
       variant="text"
-      color="success"
+      color="primary"
     />
 
     <VBtn
@@ -450,7 +450,7 @@ const load = (i: number) => {
     <VBtn
       :loading="loadings[2]"
       :disabled="loadings[2]"
-      color="success"
+      color="primary"
       @click="load(2)"
     >
       Loader slot
@@ -537,7 +537,7 @@ const load = i => {
     <VBtn
       :loading="loadings[2]"
       :disabled="loadings[2]"
-      color="success"
+      color="primary"
       @click="load(2)"
     >
       Loader slot
@@ -601,7 +601,7 @@ export const outlined = { ts: `<template>
     </VBtn>
     <VBtn
       variant="outlined"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -638,7 +638,7 @@ export const outlined = { ts: `<template>
     </VBtn>
     <VBtn
       variant="outlined"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -678,7 +678,7 @@ export const plain = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       variant="plain"
     >
       Success
@@ -720,7 +720,7 @@ export const plain = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       variant="plain"
     >
       Success
@@ -763,7 +763,7 @@ export const rounded = { ts: `<template>
     </VBtn>
     <VBtn
       :rounded="0"
-      color="success"
+      color="primary"
     >
       Tile Button
     </VBtn>
@@ -788,7 +788,7 @@ export const rounded = { ts: `<template>
     </VBtn>
     <VBtn
       :rounded="0"
-      color="success"
+      color="primary"
     >
       Tile Button
     </VBtn>
@@ -816,7 +816,7 @@ export const router = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       :to="{ name: 'components-alert' }"
     >
       Named Router
@@ -844,7 +844,7 @@ export const router = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       :to="{ name: 'components-alert' }"
     >
       Named Router
@@ -867,7 +867,7 @@ export const sizing = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       size="large"
     >
       Large Button
@@ -899,7 +899,7 @@ export const sizing = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       size="large"
     >
       Large Button
@@ -941,7 +941,7 @@ export const text = { ts: `<template>
 
     <VBtn
       variant="text"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -983,7 +983,7 @@ export const text = { ts: `<template>
 
     <VBtn
       variant="text"
-      color="success"
+      color="primary"
     >
       Success
     </VBtn>
@@ -1026,7 +1026,7 @@ export const tonal = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       variant="tonal"
     >
       Success
@@ -1068,7 +1068,7 @@ export const tonal = { ts: `<template>
     </VBtn>
 
     <VBtn
-      color="success"
+      color="primary"
       variant="tonal"
     >
       Success

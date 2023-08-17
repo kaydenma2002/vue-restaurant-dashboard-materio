@@ -39,7 +39,7 @@ const isErrorChipVisible = ref(true)
     <VChip
       v-if="isSuccessChipVisible"
       closable
-      color="success"
+      color="primary"
       @click:close="isSuccessChipVisible = !isSuccessChipVisible"
     >
       Success
@@ -114,7 +114,7 @@ const isErrorChipVisible = ref(true)
     <VChip
       v-if="isSuccessChipVisible"
       closable
-      color="success"
+      color="primary"
       @click:close="isSuccessChipVisible = !isSuccessChipVisible"
     >
       Success
@@ -164,7 +164,7 @@ export const color = { ts: `<template>
       Secondary
     </VChip>
 
-    <VChip color="success">
+    <VChip color="primary">
       Success
     </VChip>
 
@@ -195,7 +195,7 @@ export const color = { ts: `<template>
       Secondary
     </VChip>
 
-    <VChip color="success">
+    <VChip color="primary">
       Success
     </VChip>
 
@@ -235,7 +235,7 @@ export const elevated = { ts: `<template>
     </VChip>
 
     <VChip
-      color="success"
+      color="primary"
       variant="elevated"
     >
       Success
@@ -284,7 +284,7 @@ export const elevated = { ts: `<template>
     </VChip>
 
     <VChip
-      color="success"
+      color="primary"
       variant="elevated"
     >
       Success
@@ -459,7 +459,7 @@ export const label = { ts: `<template>
 
     <VChip
       label
-      color="success"
+      color="primary"
     >
       Success
     </VChip>
@@ -508,7 +508,7 @@ export const label = { ts: `<template>
 
     <VChip
       label
-      color="success"
+      color="primary"
     >
       Success
     </VChip>
@@ -558,7 +558,7 @@ export const outlined = { ts: `<template>
     </VChip>
 
     <VChip
-      color="success"
+      color="primary"
       variant="outlined"
     >
       Success
@@ -607,7 +607,7 @@ export const outlined = { ts: `<template>
     </VChip>
 
     <VChip
-      color="success"
+      color="primary"
       variant="outlined"
     >
       Success
@@ -796,7 +796,7 @@ export const withIcon = { ts: `<template>
       1 Year
     </VChip>
 
-    <VChip color="success">
+    <VChip color="primary">
       <VIcon
         start
         size="18"
@@ -862,7 +862,7 @@ export const withIcon = { ts: `<template>
       1 Year
     </VChip>
 
-    <VChip color="success">
+    <VChip color="primary">
       <VIcon
         start
         size="18"

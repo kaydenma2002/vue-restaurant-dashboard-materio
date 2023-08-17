@@ -68,7 +68,7 @@ mock.onPost('/auth/login').reply(request => {
   const user = database.find(u => u.email === email && u.password === password)
   if (user) {
     try {
-      const accessToken = userTokens[user.id]
+      const adminToken = userTokens[user.id]
 
       // We are duplicating user here
       const userData = { ...user }
@@ -78,12 +78,12 @@ mock.onPost('/auth/login').reply(request => {
 
       const response = {
         userAbilities: userData.abilities,
-        accessToken,
+        adminToken,
         userData: userOutData,
       }
 
 
-      //   const accessToken = jwt.sign({ id: user.id }, jwtSecret)
+      //   const adminToken = jwt.sign({ id: user.id }, jwtSecret)
       return [200, response]
     }
     catch (e) {
@@ -146,12 +146,12 @@ mock.onPost('/auth/register').reply(request => {
 
     database.push(userData)
 
-    const accessToken = userTokens[userData.id]
+    const adminToken = userTokens[userData.id]
     const { password: _, abilities, ...user } = userData
 
     const response = {
       userData: user,
-      accessToken,
+      adminToken,
       userAbilities: abilities,
     }
 

@@ -891,7 +891,7 @@ const form = ref<VForm>()
         class="d-flex flex-wrap gap-4"
       >
         <VBtn
-          color="success"
+          color="primary"
           @click="form?.validate()"
         >
           Validate
@@ -984,7 +984,7 @@ const form = ref()
         class="d-flex flex-wrap gap-4"
       >
         <VBtn
-          color="success"
+          color="primary"
           @click="form?.validate()"
         >
           Validate

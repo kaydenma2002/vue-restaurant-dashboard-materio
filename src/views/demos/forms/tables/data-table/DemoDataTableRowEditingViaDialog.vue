@@ -1,163 +1,158 @@
 <script setup>
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { avatarText } from '@/@core/utils/formatters'
-import data from '@/views/demos/forms/tables/data-table/datatable'
+import { VDataTable } from "vuetify/labs/VDataTable";
+import { avatarText } from "@/@core/utils/formatters";
+import data from "@/views/demos/forms/tables/data-table/datatable";
 
-const editDialog = ref(false)
-const deleteDialog = ref(false)
+const editDialog = ref(false);
+const deleteDialog = ref(false);
 
 const defaultItem = ref({
-  responsive_id: '',
+  responsive_id: "",
   id: -1,
-  avatar: '',
-  full_name: '',
-  post: '',
-  email: '',
-  city: '',
-  start_date: '',
+  avatar: "",
+  full_name: "",
+  post: "",
+  email: "",
+  city: "",
+  start_date: "",
   salary: -1,
-  age: '',
-  experience: '',
+  age: "",
+  experience: "",
   status: -1,
-})
+});
 
-const editedItem = ref(defaultItem.value)
-const editedIndex = ref(-1)
-const userList = ref([])
+const editedItem = ref(defaultItem.value);
+const editedIndex = ref(-1);
+const userList = ref([]);
 
 // status options
 const selectedOptions = [
   {
-    text: 'Current',
+    text: "Current",
     value: 1,
   },
   {
-    text: 'Professional',
+    text: "Professional",
     value: 2,
   },
   {
-    text: 'Rejected',
+    text: "Rejected",
     value: 3,
   },
   {
-    text: 'Resigned',
+    text: "Resigned",
     value: 4,
   },
   {
-    text: 'Applied',
+    text: "Applied",
     value: 5,
   },
-]
+];
 
 // headers
 const headers = [
   {
-    title: 'NAME',
-    key: 'full_name',
+    title: "NAME",
+    key: "full_name",
   },
   {
-    title: 'EMAIL',
-    key: 'email',
+    title: "EMAIL",
+    key: "email",
   },
   {
-    title: 'DATE',
-    key: 'start_date',
+    title: "DATE",
+    key: "start_date",
   },
   {
-    title: 'SALARY',
-    key: 'salary',
+    title: "SALARY",
+    key: "salary",
   },
   {
-    title: 'AGE',
-    key: 'age',
+    title: "AGE",
+    key: "age",
   },
   {
-    title: 'STATUS',
-    key: 'status',
+    title: "STATUS",
+    key: "status",
   },
   {
-    title: 'ACTIONS',
-    key: 'actions',
+    title: "ACTIONS",
+    key: "actions",
   },
-]
+];
 
-const resolveStatusVariant = status => {
+const resolveStatusVariant = (status) => {
   if (status === 1)
     return {
-      color: 'primary',
-      text: 'Current',
-    }
+      color: "primary",
+      text: "Current",
+    };
   else if (status === 2)
     return {
-      color: 'success',
-      text: 'Professional',
-    }
+      color: "success",
+      text: "Professional",
+    };
   else if (status === 3)
     return {
-      color: 'error',
-      text: 'Rejected',
-    }
+      color: "error",
+      text: "Rejected",
+    };
   else if (status === 4)
     return {
-      color: 'warning',
-      text: 'Resigned',
-    }
+      color: "warning",
+      text: "Resigned",
+    };
   else
     return {
-      color: 'info',
-      text: 'Applied',
-    }
-}
+      color: "info",
+      text: "Applied",
+    };
+};
 
-const editItem = item => {
-  editedIndex.value = userList.value.indexOf(item)
-  editedItem.value = { ...item }
-  editDialog.value = true
-}
+const editItem = (item) => {
+  editedIndex.value = userList.value.indexOf(item);
+  editedItem.value = { ...item };
+  editDialog.value = true;
+};
 
-const deleteItem = item => {
-  editedIndex.value = userList.value.indexOf(item)
-  editedItem.value = { ...item }
-  deleteDialog.value = true
-}
+const deleteItem = (item) => {
+  editedIndex.value = userList.value.indexOf(item);
+  editedItem.value = { ...item };
+  deleteDialog.value = true;
+};
 
 const close = () => {
-  editDialog.value = false
-  editedIndex.value = -1
-  editedItem.value = { ...defaultItem.value }
-}
+  editDialog.value = false;
+  editedIndex.value = -1;
+  editedItem.value = { ...defaultItem.value };
+};
 
 const closeDelete = () => {
-  deleteDialog.value = false
-  editedIndex.value = -1
-  editedItem.value = { ...defaultItem.value }
-}
+  deleteDialog.value = false;
+  editedIndex.value = -1;
+  editedItem.value = { ...defaultItem.value };
+};
 
 const save = () => {
   if (editedIndex.value > -1)
-    Object.assign(userList.value[editedIndex.value], editedItem.value)
-  else
-    userList.value.push(editedItem.value)
-  close()
-}
+    Object.assign(userList.value[editedIndex.value], editedItem.value);
+  else userList.value.push(editedItem.value);
+  close();
+};
 
 const deleteItemConfirm = () => {
-  userList.value.splice(editedIndex.value, 1)
-  closeDelete()
-}
+  userList.value.splice(editedIndex.value, 1);
+  closeDelete();
+};
 
 onMounted(() => {
-  userList.value = JSON.parse(JSON.stringify(data))
-})
+  userList.value = JSON.parse(JSON.stringify(data));
+});
 </script>
 
 <template>
   <!-- 👉 Datatable  -->
-  <VDataTable
-    :headers="headers"
-    :items="userList"
-    :items-per-page="5"
-  >
+  <VDataTable :headers="headers" :items="userList" :items-per-page="5">
     <!-- full name -->
     <template #item.full_name="{ item }">
       <div class="d-flex align-center">
@@ -168,15 +163,15 @@ onMounted(() => {
           :class="item.raw.avatar ? '' : 'v-avatar-light-bg primary--text'"
           :variant="!item.raw.avatar ? 'tonal' : undefined"
         >
-          <VImg
-            v-if="item.raw.avatar"
-            :src="item.raw.avatar"
-          />
+          <VImg v-if="item.raw.avatar" :src="item.raw.avatar" />
           <span v-else>{{ avatarText(item.raw.full_name) }}</span>
         </VAvatar>
 
         <div class="d-flex flex-column ms-3">
-          <span class="d-block font-weight-medium text-high-emphasis text-truncate">{{ item.raw.full_name }}</span>
+          <span
+            class="d-block font-weight-medium text-high-emphasis text-truncate"
+            >{{ item.raw.full_name }}</span
+          >
           <small>{{ item.raw.post }}</small>
         </div>
       </div>
@@ -206,10 +201,7 @@ onMounted(() => {
   </VDataTable>
 
   <!-- 👉 Edit Dialog  -->
-  <VDialog
-    v-model="editDialog"
-    max-width="600px"
-  >
+  <VDialog v-model="editDialog" max-width="600px">
     <VCard>
       <VCardTitle>
         <span class="headline">Edit Item</span>
@@ -220,35 +212,17 @@ onMounted(() => {
         <VContainer>
           <VRow>
             <!-- full_name -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.full_name"
-                label="User name"
-              />
+            <VCol cols="12" sm="6" md="4">
+              <VTextField v-model="editedItem.full_name" label="User name" />
             </VCol>
 
             <!-- email -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.email"
-                label="Email"
-              />
+            <VCol cols="12" sm="6" md="4">
+              <VTextField v-model="editedItem.email" label="Email" />
             </VCol>
 
             <!-- salary -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
+            <VCol cols="12" sm="6" md="4">
               <VTextField
                 v-model="editedItem.salary"
                 label="Salary"
@@ -258,36 +232,17 @@ onMounted(() => {
             </VCol>
 
             <!-- age -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.age"
-                label="Age"
-                type="number"
-              />
+            <VCol cols="12" sm="6" md="4">
+              <VTextField v-model="editedItem.age" label="Age" type="number" />
             </VCol>
 
             <!-- start date -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
-              <VTextField
-                v-model="editedItem.start_date"
-                label="Date"
-              />
+            <VCol cols="12" sm="6" md="4">
+              <VTextField v-model="editedItem.start_date" label="Date" />
             </VCol>
 
             <!-- status -->
-            <VCol
-              cols="12"
-              sm="6"
-              md="4"
-            >
+            <VCol cols="12" sm="6" md="4">
               <VSelect
                 v-model="editedItem.status"
                 :items="selectedOptions"
@@ -304,51 +259,26 @@ onMounted(() => {
       <VCardActions>
         <VSpacer />
 
-        <VBtn
-          color="error"
-          variant="outlined"
-          @click="close"
-        >
-          Cancel
-        </VBtn>
+        <VBtn color="error" variant="outlined" @click="close"> Cancel </VBtn>
 
-        <VBtn
-          color="success"
-          variant="elevated"
-          @click="save"
-        >
-          Save
-        </VBtn>
+        <VBtn color="primary" variant="elevated" @click="save"> Save </VBtn>
       </VCardActions>
     </VCard>
   </VDialog>
 
   <!-- 👉 Delete Dialog  -->
-  <VDialog
-    v-model="deleteDialog"
-    max-width="500px"
-  >
+  <VDialog v-model="deleteDialog" max-width="500px">
     <VCard>
-      <VCardTitle>
-        Are you sure you want to delete this item?
-      </VCardTitle>
+      <VCardTitle> Are you sure you want to delete this item? </VCardTitle>
 
       <VCardActions>
         <VSpacer />
 
-        <VBtn
-          color="error"
-          variant="outlined"
-          @click="closeDelete"
-        >
+        <VBtn color="error" variant="outlined" @click="closeDelete">
           Cancel
         </VBtn>
 
-        <VBtn
-          color="success"
-          variant="elevated"
-          @click="deleteItemConfirm"
-        >
+        <VBtn color="primary" variant="elevated" @click="deleteItemConfirm">
           OK
         </VBtn>
 

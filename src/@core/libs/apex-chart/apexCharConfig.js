@@ -449,7 +449,7 @@ export const getAreaChartSplineConfig = themeColors => {
         style: { colors: themeDisabledTextColor },
       },
       categories: [
-        '7/12',
+        '7/9',
         '8/12',
         '9/12',
         '10/12',

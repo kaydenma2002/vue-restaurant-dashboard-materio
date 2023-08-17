@@ -1,36 +1,45 @@
 <script setup>
-import { VDataTableServer } from 'vuetify/labs/VDataTable'
-import { paginationMeta } from '@/@fake-db/utils'
+import { VDataTableServer } from "vuetify/labs/VDataTable";
+import { paginationMeta } from "@/@fake-db/utils";
 import { useOrderListStore } from "@/views/apps/order/useOrderListStore";
-
-const OrderListStore = useOrderListStore()
-const searchQuery = ref('')
-const route = useRoute()
-const selectedStatus = ref()
-const totalPage = ref(1)
-const totalOrders = ref(0)
-const Orders = ref([])
+const formatDate = (date) => {
+  return new Date(date).toLocaleString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "UTC",
+  });
+};
+const OrderListStore = useOrderListStore();
+const searchQuery = ref("");
+const route = useRoute();
+const selectedStatus = ref();
+const totalPage = ref(1);
+const totalOrders = ref(0);
+const Orders = ref([]);
 const props = defineProps({
   restaurantData: {
     type: Object,
     required: true,
   },
-})
+});
 const options = ref({
   page: 1,
   itemsPerPage: 7,
   sortBy: [],
   groupBy: [],
   search: undefined,
-})
+});
 
-const isLoading = ref(false)
+const isLoading = ref(false);
 
 // 👉 headers
 const headers = [
   {
-    title: '#',
-    key: 'order_id',
+    title: "#",
+    key: "order_id",
   },
   {
     title: "TOTAL",
@@ -41,30 +50,33 @@ const headers = [
     key: "customer_name",
   },
   {
-    title: "NOTE",
-    key: "note",
+    title: "DATE ISSUED",
+    key: "created_date",
   },
-  
+
   {
     title: "STATUS",
     key: "status",
   },
-  
-]
+];
 
 // 👉 Fetch Orders
 const fetchOrdersByRestaurantId = (restaurant_id) => {
-  isLoading.value = true
-  OrderListStore.fetchOrdersByRestaurantId(restaurant_id).then(response => {
-    console.log(response)
-    
-    Orders.value = response.data
-    
-  }).catch(error => {
-    console.log(error)
-  })
-  isLoading.value = false
-}
+  isLoading.value = true;
+  OrderListStore.fetchOrdersByRestaurantId(restaurant_id,options.value)
+    .then((response) => {
+      console.log(response);
+
+      Orders.value = response.data.data;
+      totalPage.value = response.data.total;
+      totalOrders.value = response.data.total;
+      options.value.page = response.data.current_page;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  isLoading.value = false;
+};
 const resolveOrderStatusVariant = (stat) => {
   const statLowerCase = stat;
   if (statLowerCase === "Pending") return "warning";
@@ -80,51 +92,63 @@ const resolveOrderStatusText = (stat) => {
 
   return "";
 };
-const resolveOrderStatusVariantAndIcon = status => {
-  if (status === 'Partial Payment')
+const resolveOrderStatusVariantAndIcon = (status) => {
+  if (status === "Partial Payment")
     return {
-      variant: 'warning',
-      icon: 'mdi-chart-timeline-variant',
-    }
-  if (status === 'Paid')
+      variant: "warning",
+      icon: "mdi-chart-timeline-variant",
+    };
+  if (status === "Paid")
     return {
-      variant: 'success',
-      icon: 'mdi-check',
-    }
-  if (status === 'Downloaded')
+      variant: "success",
+      icon: "mdi-check",
+    };
+  if (status === "Downloaded")
     return {
-      variant: 'info',
-      icon: 'mdi-arrow-down',
-    }
-  if (status === 'Draft')
+      variant: "info",
+      icon: "mdi-arrow-down",
+    };
+  if (status === "Draft")
     return {
-      variant: 'secondary',
-      icon: 'mdi-content-save-outline',
-    }
-  if (status === 'Sent')
+      variant: "secondary",
+      icon: "mdi-content-save-outline",
+    };
+  if (status === "Sent")
     return {
-      variant: 'primary',
-      icon: 'mdi-email-outline',
-    }
-  if (status === 'Past Due')
+      variant: "primary",
+      icon: "mdi-email-outline",
+    };
+  if (status === "Past Due")
     return {
-      variant: 'error',
-      icon: 'mdi-alert-circle-outline',
-    }
-  
+      variant: "error",
+      icon: "mdi-alert-circle-outline",
+    };
+
   return {
-    variant: 'secondary',
-    icon: 'mdi-close',
-  }
-}
-
-
-
+    variant: "secondary",
+    icon: "mdi-close",
+  };
+};
 
 // 👉 watch for data table options like itemsPerPage,page,searchQuery,sortBy etc...
 watchEffect(() => {
-   fetchOrdersByRestaurantId(props.restaurantData.restaurant_id)
-})
+  fetchOrdersByRestaurantId(props.restaurantData.restaurant_id);
+});
+watch(
+  () => options.value.itemsPerPage,
+  (count) => {
+    fetchOrdersByRestaurantId(props.restaurantData.restaurant_id);
+    
+  }
+);
+
+watch(
+  () => options.value.page,
+  (count) => {
+    fetchOrdersByRestaurantId(props.restaurantData.restaurant_id);
+    
+  }
+);
 </script>
 
 <template>
@@ -132,9 +156,7 @@ watchEffect(() => {
     <VCard id="Order-list">
       <VCardText class="d-flex align-center flex-wrap gap-4">
         <!-- 👉 Actions  -->
-        <div class="me-3 text-h6">
-          Order List
-        </div>
+        <div class="me-3 text-h6">Order List</div>
 
         <VSpacer />
 
@@ -162,10 +184,7 @@ watchEffect(() => {
       >
         <!-- Trending Header -->
         <template #column.trending>
-          <VIcon
-            size="22"
-            icon="mdi-trending-up"
-          />
+          <VIcon size="22" icon="mdi-trending-up" />
         </template>
 
         <!-- id -->
@@ -182,11 +201,10 @@ watchEffect(() => {
         <template #item.customer_name="{ item }">
           {{ item.raw.user.name }}
         </template>
-        <template #item.note="{ item }">
-          {{ item.raw.note }}
+        <template #item.created_date="{ item }">
+          {{ formatDate(item.raw.created_at) }}
         </template>
         <!-- Total -->
-        
 
         <!-- issued Date -->
         <template #item.status="{ item }">
@@ -218,9 +236,10 @@ watchEffect(() => {
                   <VListItemTitle>View/Edit</VListItemTitle>
                 </VListItem>
 
-                
-                
-                <VListItem v-if="item.raw.status != 'Deactive' " @click="closeOrder(item.raw.Order_id)">
+                <VListItem
+                  v-if="item.raw.status != 'Deactive'"
+                  @click="closeOrder(item.raw.Order_id)"
+                >
                   <template #prepend>
                     <VIcon icon="mdi-cancel" />
                   </template>
@@ -247,7 +266,9 @@ watchEffect(() => {
               />
             </div>
 
-            <span class="d-flex align-center text-sm text-high-emphasis">{{ paginationMeta(options, totalOrders) }}</span>
+            <span class="d-flex align-center text-sm text-high-emphasis">{{
+              paginationMeta(options, totalOrders)
+            }}</span>
 
             <div class="d-flex gap-x-2 align-center me-2">
               <VBtn
@@ -257,7 +278,7 @@ watchEffect(() => {
                 density="comfortable"
                 color="default"
                 :disabled="options.page <= 1"
-                @click="options.page <= 1 ? options.page = 1 : options.page--"
+                @click="options.page <= 1 ? (options.page = 1) : options.page--"
               />
 
               <VBtn
@@ -266,8 +287,16 @@ watchEffect(() => {
                 density="comfortable"
                 variant="text"
                 color="default"
-                :disabled="options.page >= Math.ceil(totalOrders / options.itemsPerPage)"
-                @click="options.page >= Math.ceil(totalOrders / options.itemsPerPage) ? options.page = Math.ceil(totalOrders / options.itemsPerPage) : options.page++ "
+                :disabled="
+                  options.page >= Math.ceil(totalOrders / options.itemsPerPage)
+                "
+                @click="
+                  options.page >= Math.ceil(totalOrders / options.itemsPerPage)
+                    ? (options.page = Math.ceil(
+                        totalOrders / options.itemsPerPage
+                      ))
+                    : options.page++
+                "
               />
             </div>
           </div>

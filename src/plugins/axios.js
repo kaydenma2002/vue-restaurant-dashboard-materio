@@ -3,14 +3,14 @@ import router from '@/router'
 const isProduction = process.env.NODE_ENV === 'production';
 
 const axiosIns = axios.create({
-  baseURL: isProduction ? 'https://ehl.ai:8000/api/' : 'https://127.0.0.1/api/',
+  baseURL: isProduction ? 'https://142.11.239.33:8000/api/' : 'https://127.0.0.1/api/',
 })
 
 
 // ℹ️ Add request interceptor to send the authorization header on each subsequent request after login
 axiosIns.interceptors.request.use(config => {
   // Retrieve token from localStorage
-  const token = localStorage.getItem('accessToken')
+  const token = localStorage.getItem('adminToken')
 
   // If token is found
   if (token) {
@@ -36,8 +36,8 @@ axiosIns.interceptors.response.use(response => {
     // Remove "userData" from localStorage
     localStorage.removeItem('userData')
 
-    // Remove "accessToken" from localStorage
-    localStorage.removeItem('accessToken')
+    // Remove "adminToken" from localStorage
+    localStorage.removeItem('adminToken')
     localStorage.removeItem('userAbilities')
 
     // If 401 response returned from api

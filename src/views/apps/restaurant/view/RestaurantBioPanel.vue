@@ -1,25 +1,19 @@
 <script setup>
-import {
-  avatarText,
-  kFormatter,
-} from '@core/utils/formatters'
+import { avatarText, kFormatter } from "@core/utils/formatters";
+import ApexChartAreaChart from '@/views/charts/apex-chart/ApexChartAreaChart.vue'
 
 const props = defineProps({
   restaurantData: {
     type: Object,
-    required: true,
+    required: true,   
   },
-})
+});
 
 const standardPlan = {
-  plan: 'Standard',
+  plan: "Standard",
   price: 99,
-  benefits: [
-    '10 Restaurants',
-    'Up to 10GB storage',
-    'Basic Support',
-  ],
-}
+  benefits: ["10 Restaurants", "Up to 10GB storage", "Basic Support"],
+};
 const resolveRestaurantStatusVariant = (stat) => {
   const statLowerCase = stat;
   if (statLowerCase === "Pending") return "warning";
@@ -35,43 +29,47 @@ const resolveRestaurantStatusText = (stat) => {
 
   return "";
 };
-const isRestaurantInfoEditDialogVisible = ref(false)
-const isUpgradePlanDialogVisible = ref(false)
+const isRestaurantInfoEditDialogVisible = ref(false);
+const isUpgradePlanDialogVisible = ref(false);
 
+const resolveRestaurantRoleVariant = (role) => {
+  if (role === "subscriber")
+    return {
+      color: "primary",
+      icon: "mdi-account-outline",
+    };
+  if (role === "author")
+    return {
+      color: "warning",
+      icon: "mdi-cog-outline",
+    };
+  if (role === "maintainer")
+    return {
+      color: "success",
+      icon: "mdi-database-outline",
+    };
+  if (role === "editor")
+    return {
+      color: "info",
+      icon: "mdi-pencil-outline",
+    };
+  if (role === "admin")
+    return {
+      color: "error",
+      icon: "mdi-dns-outline",
+    };
 
-
-const resolveRestaurantRoleVariant = role => {
-  if (role === 'subscriber')
-    return {
-      color: 'primary',
-      icon: 'mdi-account-outline',
-    }
-  if (role === 'author')
-    return {
-      color: 'warning',
-      icon: 'mdi-cog-outline',
-    }
-  if (role === 'maintainer')
-    return {
-      color: 'success',
-      icon: 'mdi-database-outline',
-    }
-  if (role === 'editor')
-    return {
-      color: 'info',
-      icon: 'mdi-pencil-outline',
-    }
-  if (role === 'admin')
-    return {
-      color: 'error',
-      icon: 'mdi-dns-outline',
-    }
-  
   return {
-    color: 'primary',
-    icon: 'mdi-account-outline',
-  }
-}
+    color: "primary",
+    icon: "mdi-account-outline",
+  };
+};
+const totalOrders = (orders) => {
+  return orders.reduce((accumulator, data) => {
+    return accumulator + parseFloat(data.total);
+  }, 0);
+};
+
 </script>
 
 <template>
@@ -91,10 +89,7 @@ const resolveRestaurantRoleVariant = role => {
               v-if="props.restaurantData.avatar"
               :src="props.restaurantData.avatar"
             />
-            <span
-              v-else
-              class="text-5xl font-weight-medium"
-            >
+            <span v-else class="text-5xl font-weight-medium">
               {{ avatarText(props.restaurantData.fullName) }}
             </span>
           </VAvatar>
@@ -107,7 +102,9 @@ const resolveRestaurantRoleVariant = role => {
           <!-- 👉 Role chip -->
           <VChip
             label
-            :color="resolveRestaurantRoleVariant(props.restaurantData.role).color"
+            :color="
+              resolveRestaurantRoleVariant(props.restaurantData.role).color
+            "
             density="comfortable"
             class="text-capitalize mt-4"
           >
@@ -115,7 +112,7 @@ const resolveRestaurantRoleVariant = role => {
           </VChip>
         </VCardText>
 
-        <VCardText class="d-flex justify-space-between flex-wrap mt-1">
+        <VCardText class=" flex-wrap mt-1">
           <!-- 👉 Done task -->
           <div class="d-flex align-center">
             <VAvatar
@@ -125,21 +122,35 @@ const resolveRestaurantRoleVariant = role => {
               variant="tonal"
               class="me-4"
             >
-              <VIcon
-                size="24"
-                icon="mdi-check"
-              />
+              <VIcon size="24" icon="mdi-check" />
+            </VAvatar>
+
+            <div>
+              <h6 class="text-h6">Total Restaurant Sales</h6>
+              <span>${{ totalOrders(props.restaurantData.orders) }}</span>
+            </div>
+            
+          </div>
+
+          <!-- 👉 Done Project -->
+          <!-- <div class="d-flex align-center">
+            <VAvatar
+              :size="44"
+              rounded
+              color="primary"
+              variant="tonal"
+              class="me-4"
+            >
+              <VIcon size="24" icon="mdi-star-outline" />
             </VAvatar>
 
             <div>
               <h6 class="text-h6">
-                {{ kFormatter(props.restaurantData.taskDone) }}
+                Daily Order
               </h6>
-              <span>Task Done</span>
+              <span>{{ props.restaurantData.totalOrdersToday }}</span>
             </div>
           </div>
-
-          <!-- 👉 Done Project -->
           <div class="d-flex align-center">
             <VAvatar
               :size="44"
@@ -148,26 +159,39 @@ const resolveRestaurantRoleVariant = role => {
               variant="tonal"
               class="me-4"
             >
-              <VIcon
-                size="24"
-                icon="mdi-star-outline"
-              />
+              <VIcon size="24" icon="mdi-star-outline" />
             </VAvatar>
 
             <div>
               <h6 class="text-h6">
-                {{ kFormatter(props.restaurantData.projectDone) }}
+                Weekly Order: <span>{{ props.restaurantData.totalOrdersThisWeek }}</span>
               </h6>
-              <span>Project Done</span>
+              
             </div>
           </div>
+          <div class="d-flex align-center">
+            <VAvatar
+              :size="44"
+              rounded
+              color="primary"
+              variant="tonal"
+              class="me-4"
+            >
+              <VIcon size="24" icon="mdi-star-outline" />
+            </VAvatar>
+
+            <div>
+              <h6 class="text-h6">
+                Monthly Order: <span>{{ props.restaurantData.totalOrdersThisMonth }}</span>
+              </h6>
+              
+            </div>
+          </div> -->
         </VCardText>
 
         <!-- 👉 Details -->
         <VCardText>
-          <h6 class="text-h6">
-            Details
-          </h6>
+          <h6 class="text-h6">Details</h6>
 
           <VDivider class="my-4" />
 
@@ -188,7 +212,9 @@ const resolveRestaurantRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Owner Email:
-                  <span class="text-body-2">{{ props.restaurantData?.user?.email }}</span>
+                  <span class="text-body-2">{{
+                    props.restaurantData?.user?.email
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -201,10 +227,16 @@ const resolveRestaurantRoleVariant = role => {
                   <VChip
                     label
                     density="comfortable"
-                    :color="resolveRestaurantStatusVariant(props.restaurantData.status)"
+                    :color="
+                      resolveRestaurantStatusVariant(
+                        props.restaurantData.status
+                      )
+                    "
                     class="text-capitalize"
                   >
-                    {{ resolveRestaurantStatusText(props.restaurantData.status) }}
+                    {{
+                      resolveRestaurantStatusText(props.restaurantData.status)
+                    }}
                   </VChip>
                 </h6>
               </VListItemTitle>
@@ -214,7 +246,9 @@ const resolveRestaurantRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   City:
-                  <span class="text-capitalize text-body-2">{{ props.restaurantData.city }}</span>
+                  <span class="text-capitalize text-body-2">{{
+                    props.restaurantData.city
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -234,7 +268,9 @@ const resolveRestaurantRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Zip code:
-                  <span class="text-body-2">{{ props.restaurantData.zip_code }}</span>
+                  <span class="text-body-2">{{
+                    props.restaurantData.zip_code
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -243,7 +279,9 @@ const resolveRestaurantRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Contact:
-                  <span class="text-body-2">{{ props.restaurantData.phone }}</span>
+                  <span class="text-body-2">{{
+                    props.restaurantData.phone
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -252,7 +290,9 @@ const resolveRestaurantRoleVariant = role => {
               <VListItemTitle>
                 <h6 class="text-sm font-weight-medium">
                   Country:
-                  <span class="text-body-2">{{ props.restaurantData.country }}</span>
+                  <span class="text-body-2">{{
+                    props.restaurantData.country
+                  }}</span>
                 </h6>
               </VListItemTitle>
             </VListItem>
@@ -267,12 +307,7 @@ const resolveRestaurantRoleVariant = role => {
           >
             Edit
           </VBtn>
-          <VBtn
-            variant="outlined"
-            color="error"
-          >
-            Deactivate
-          </VBtn>
+          <VBtn variant="outlined" color="error"> Deactivate </VBtn>
         </VCardText>
       </VCard>
     </VCol>
@@ -280,39 +315,27 @@ const resolveRestaurantRoleVariant = role => {
 
     <!-- SECTION Current Plan -->
     <VCol cols="12">
-      <VCard
-        flat
-        class="current-plan"
-      >
+      <VCard flat class="current-plan">
         <VCardText class="d-flex">
           <!-- 👉 Standard Chip -->
-          <VChip
-            label
-            color="primary"
-            density="comfortable"
-          >
-            Standard
-          </VChip>
+          <VChip label color="primary" density="comfortable"> Standard </VChip>
 
           <VSpacer />
 
           <!-- 👉 Current Price  -->
           <div class="d-flex align-center">
             <sup class="text-primary text-sm font-weight-regular">$</sup>
-            <h3 class="text-h3 text-primary font-weight-regular">
-              99
-            </h3>
-            <sub class="mt-3"><h6 class="text-sm font-weight-regular">/ month</h6></sub>
+            <h3 class="text-h3 text-primary font-weight-regular">99</h3>
+            <sub class="mt-3"
+              ><h6 class="text-sm font-weight-regular">/ month</h6></sub
+            >
           </div>
         </VCardText>
 
         <VCardText>
           <!-- 👉 Price Benefits -->
           <VList class="card-list">
-            <VListItem
-              v-for="benefit in standardPlan.benefits"
-              :key="benefit"
-            >
+            <VListItem v-for="benefit in standardPlan.benefits" :key="benefit">
               <VIcon
                 size="10"
                 color="#E0E0E0"
@@ -326,13 +349,9 @@ const resolveRestaurantRoleVariant = role => {
           <!-- 👉 Days -->
           <div class="my-6">
             <div class="d-flex mt-3 mb-2">
-              <h6 class="text-sm font-weight-medium">
-                Days
-              </h6>
+              <h6 class="text-sm font-weight-medium">Days</h6>
               <VSpacer />
-              <h6 class="text-sm font-weight-medium">
-                26 of 30 Days
-              </h6>
+              <h6 class="text-sm font-weight-medium">26 of 30 Days</h6>
             </div>
 
             <!-- 👉 Progress -->
@@ -343,16 +362,11 @@ const resolveRestaurantRoleVariant = role => {
               color="primary"
             />
 
-            <p class="text-xs mt-2">
-              4 days remaining
-            </p>
+            <p class="text-xs mt-2">4 days remaining</p>
           </div>
 
           <!-- 👉 Upgrade Plan -->
-          <VBtn
-            block
-            @click="isUpgradePlanDialogVisible = true"
-          >
+          <VBtn block @click="isUpgradePlanDialogVisible = true">
             Upgrade Plan
           </VBtn>
         </VCardText>
@@ -363,13 +377,15 @@ const resolveRestaurantRoleVariant = role => {
 
   <!-- 👉 Edit restaurant info dialog -->
   <RestaurantInfoEditDialog
-    @restaurantUpdateInfo="$emit('restaurantUpdateInfo',true)"
+    @restaurantUpdateInfo="$emit('restaurantUpdateInfo', true)"
     v-model:isDialogVisible="isRestaurantInfoEditDialogVisible"
     :restaurant-data="props.restaurantData"
   />
 
   <!-- 👉 Upgrade plan dialog -->
-  <RestaurantUpgradePlanDialog v-model:isDialogVisible="isUpgradePlanDialogVisible" />
+  <RestaurantUpgradePlanDialog
+    v-model:isDialogVisible="isUpgradePlanDialogVisible"
+  />
 </template>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <script setup>
-import { VForm } from 'vuetify/components/VForm'
+import { VForm } from "vuetify/components/VForm";
 import {
   confirmedValidator,
   emailValidator,
@@ -7,88 +7,88 @@ import {
   passwordValidator,
   requiredValidator,
   urlValidator,
-} from '@core/utils/validators'
+} from "@core/utils/validators";
 
 const numberedSteps = [
   {
-    title: 'Account Details',
-    subtitle: 'Setup Account Details',
+    title: "Account Details",
+    subtitle: "Setup Account Details",
   },
   {
-    title: 'Personal Info',
-    subtitle: 'Add personal info',
+    title: "Personal Info",
+    subtitle: "Add personal info",
   },
   {
-    title: 'Social Links',
-    subtitle: 'Add social links',
+    title: "Social Links",
+    subtitle: "Add social links",
   },
-]
+];
 
-const currentStep = ref(0)
-const isPasswordVisible = ref(false)
-const isCPasswordVisible = ref(false)
-const isCurrentStepValid = ref(true)
-const refAccountForm = ref()
-const refPersonalForm = ref()
-const refSocialLinkForm = ref()
+const currentStep = ref(0);
+const isPasswordVisible = ref(false);
+const isCPasswordVisible = ref(false);
+const isCurrentStepValid = ref(true);
+const refAccountForm = ref();
+const refPersonalForm = ref();
+const refSocialLinkForm = ref();
 
 const accountForm = ref({
-  username: '',
-  email: '',
-  password: '',
-  c_password: '',
-})
+  username: "",
+  email: "",
+  password: "",
+  c_password: "",
+});
 
 const personalForm = ref({
-  firstName: '',
-  lastName: '',
+  firstName: "",
+  lastName: "",
   country: undefined,
   language: undefined,
-})
+});
 
 const socialForm = ref({
-  twitter: '',
-  facebook: '',
-  googlePlus: '',
-  linkedIn: '',
-})
+  twitter: "",
+  facebook: "",
+  googlePlus: "",
+  linkedIn: "",
+});
 
 const validateAccountForm = () => {
-  refAccountForm.value?.validate().then(valid => {
+  refAccountForm.value?.validate().then((valid) => {
     if (valid.valid) {
-      currentStep.value++
-      isCurrentStepValid.value = true
+      currentStep.value++;
+      isCurrentStepValid.value = true;
     } else {
-      isCurrentStepValid.value = false
+      isCurrentStepValid.value = false;
     }
-  })
-}
+  });
+};
 
 const validatePersonalForm = () => {
-  refPersonalForm.value?.validate().then(valid => {
+  refPersonalForm.value?.validate().then((valid) => {
     if (valid.valid) {
-      currentStep.value++
-      isCurrentStepValid.value = true
+      currentStep.value++;
+      isCurrentStepValid.value = true;
     } else {
-      isCurrentStepValid.value = false
+      isCurrentStepValid.value = false;
     }
-  })
-}
+  });
+};
 
 const validateSocialLinkForm = () => {
-  refSocialLinkForm.value?.validate().then(valid => {
+  refSocialLinkForm.value?.validate().then((valid) => {
     if (valid.valid) {
-      isCurrentStepValid.value = true
+      isCurrentStepValid.value = true;
       console.log({
         ...accountForm.value,
         ...personalForm.value,
         ...socialForm.value,
-      })
+      });
     } else {
-      isCurrentStepValid.value = false
+      isCurrentStepValid.value = false;
     }
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -108,41 +108,28 @@ const validateSocialLinkForm = () => {
     <VCardText>
       <!-- 👉 stepper content -->
 
-      <VWindow
-        v-model="currentStep"
-        class="disable-tab-transition"
-      >
+      <VWindow v-model="currentStep" class="disable-tab-transition">
         <VWindowItem>
-          <VForm
-            ref="refAccountForm"
-            @submit.prevent="validateAccountForm"
-          >
+          <VForm ref="refAccountForm" @submit.prevent="validateAccountForm">
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Account Details
-                </h6>
-                <p class="text-xs mb-0">
-                  Enter your Account Details
-                </p>
+                <h6 class="text-sm font-weight-medium">Account Details</h6>
+                <p class="text-xs mb-0">Enter your Account Details</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="accountForm.username"
                   placeholder="CarterLeonardo"
-                  :rules="[requiredValidator, lengthValidator(accountForm.username, 6)]"
+                  :rules="[
+                    requiredValidator,
+                    lengthValidator(accountForm.username, 6),
+                  ]"
                   label="Username"
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="accountForm.email"
                   placeholder="carterleonardo@gmail.com"
@@ -151,58 +138,60 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="accountForm.password"
                   label="Password"
                   placeholder="Enter Password"
                   :rules="[requiredValidator, passwordValidator]"
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                  :append-inner-icon="
+                    isPasswordVisible
+                      ? 'mdi-eye-outline'
+                      : 'mdi-eye-off-outline'
+                  "
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="accountForm.c_password"
                   label="Confirm Password"
                   placeholder="Confirm Password"
-                  :rules="[requiredValidator, confirmedValidator(accountForm.c_password, accountForm.password)]"
+                  :rules="[
+                    requiredValidator,
+                    confirmedValidator(
+                      accountForm.c_password,
+                      accountForm.password
+                    ),
+                  ]"
                   :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isCPasswordVisible ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                  :append-inner-icon="
+                    isCPasswordVisible
+                      ? 'mdi-eye-outline'
+                      : 'mdi-eye-off-outline'
+                  "
                   @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
                 />
               </VCol>
 
               <VCol cols="12">
-                <div class="d-flex justify-sm-space-between justify-center flex-wrap gap-4">
+                <div
+                  class="d-flex justify-sm-space-between justify-center flex-wrap gap-4"
+                >
                   <VBtn
                     :color="currentStep === 0 ? 'secondary' : 'default'"
                     variant="outlined"
                     disabled
                   >
-                    <VIcon
-                      icon="mdi-arrow-left"
-                      start
-                      class="flip-in-rtl"
-                    />
+                    <VIcon icon="mdi-arrow-left" start class="flip-in-rtl" />
                     Previous
                   </VBtn>
 
                   <VBtn type="submit">
                     Next
-                    <VIcon
-                      icon="mdi-arrow-right"
-                      end
-                      class="flip-in-rtl"
-                    />
+                    <VIcon icon="mdi-arrow-right" end class="flip-in-rtl" />
                   </VBtn>
                 </div>
               </VCol>
@@ -211,24 +200,14 @@ const validateSocialLinkForm = () => {
         </VWindowItem>
 
         <VWindowItem>
-          <VForm
-            ref="refPersonalForm"
-            @submit.prevent="validatePersonalForm"
-          >
+          <VForm ref="refPersonalForm" @submit.prevent="validatePersonalForm">
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Personal Info
-                </h6>
-                <p class="text-xs mb-0">
-                  Setup Information
-                </p>
+                <h6 class="text-sm font-weight-medium">Personal Info</h6>
+                <p class="text-xs mb-0">Setup Information</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="personalForm.firstName"
                   label="First Name"
@@ -237,10 +216,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="personalForm.lastName"
                   label="Last Name"
@@ -249,10 +225,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="personalForm.country"
                   label="Country"
@@ -262,10 +235,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VSelect
                   v-model="personalForm.language"
                   label="Language"
@@ -282,21 +252,13 @@ const validateSocialLinkForm = () => {
                     variant="tonal"
                     @click="currentStep--"
                   >
-                    <VIcon
-                      icon="mdi-chevron-left"
-                      start
-                      class="flip-in-rtl"
-                    />
+                    <VIcon icon="mdi-chevron-left" start class="flip-in-rtl" />
                     Previous
                   </VBtn>
 
                   <VBtn type="submit">
                     Next
-                    <VIcon
-                      icon="mdi-chevron-right"
-                      end
-                      class="flip-in-rtl"
-                    />
+                    <VIcon icon="mdi-chevron-right" end class="flip-in-rtl" />
                   </VBtn>
                 </div>
               </VCol>
@@ -311,18 +273,11 @@ const validateSocialLinkForm = () => {
           >
             <VRow>
               <VCol cols="12">
-                <h6 class="text-sm font-weight-medium">
-                  Social Links
-                </h6>
-                <p class="text-xs mb-0">
-                  Add Social Links
-                </p>
+                <h6 class="text-sm font-weight-medium">Social Links</h6>
+                <p class="text-xs mb-0">Add Social Links</p>
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="socialForm.twitter"
                   placeholder="https://twitter.com/abc"
@@ -331,10 +286,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="socialForm.facebook"
                   placeholder="https://facebook.com/abc"
@@ -343,10 +295,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="socialForm.googlePlus"
                   placeholder="https://plus.google.com/abc"
@@ -355,10 +304,7 @@ const validateSocialLinkForm = () => {
                 />
               </VCol>
 
-              <VCol
-                cols="12"
-                md="6"
-              >
+              <VCol cols="12" md="6">
                 <VTextField
                   v-model="socialForm.linkedIn"
                   placeholder="https://likedin.com/abc"
@@ -374,20 +320,11 @@ const validateSocialLinkForm = () => {
                     variant="tonal"
                     @click="currentStep--"
                   >
-                    <VIcon
-                      icon="mdi-chevron-left"
-                      start
-                      class="flip-in-rtl"
-                    />
+                    <VIcon icon="mdi-chevron-left" start class="flip-in-rtl" />
                     Previous
                   </VBtn>
 
-                  <VBtn
-                    color="success"
-                    type="submit"
-                  >
-                    submit
-                  </VBtn>
+                  <VBtn color="primary" type="submit"> submit </VBtn>
                 </div>
               </VCol>
             </VRow>

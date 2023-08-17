@@ -1,13 +1,11 @@
 <script setup>
+import Swal from "sweetalert2";
 import { VDataTableServer } from "vuetify/labs/VDataTable";
-import Swal from 'sweetalert2'
 
 import { paginationMeta } from "@/@fake-db/utils";
 import AddNewUserDrawer from "@/views/apps/user/list/AddNewUserDrawer.vue";
 import { useUserListStore } from "@/views/apps/user/useUserListStore";
-import { avatarText } from "@core/utils/formatters";
 import { debounce } from "lodash";
-
 
 const userListStore = useUserListStore();
 const searchQuery = ref("");
@@ -56,8 +54,6 @@ const headers = [
     title: "ZIP CODE",
     key: "zip_code",
   },
-
-  
 
   {
     title: "STATUS",
@@ -237,21 +233,21 @@ const addNewUser = (userData) => {
 
 const deleteUser = (id) => {
   Swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#9155FD',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-}).then((result) => {
-  if (result.isConfirmed) {
-    userListStore.deleteUser(id)
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "black",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      userListStore.deleteUser(id);
 
-  // refetch User
-  fetchUsers();
-  }
-})
+      // refetch User
+      fetchUsers();
+    }
+  });
 };
 </script>
 
@@ -400,7 +396,7 @@ const deleteUser = (id) => {
             {{ item.raw.zip_code }}
           </span>
         </template>
-        
+
         <!-- Role -->
         <!-- <template #item.user_type="{ item }">
           <span class="text-capitalize text-high-emphasis">{{
@@ -445,8 +441,6 @@ const deleteUser = (id) => {
                   <VListItemTitle>View/Edit</VListItemTitle>
                 </VListItem>
 
-                
-                
                 <VListItem @click="deleteUser(item.raw.id)">
                   <template #prepend>
                     <VIcon icon="mdi-delete-outline" />
@@ -533,5 +527,4 @@ const deleteUser = (id) => {
 .user-list-name:not(:hover) {
   color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
 }
-
 </style>

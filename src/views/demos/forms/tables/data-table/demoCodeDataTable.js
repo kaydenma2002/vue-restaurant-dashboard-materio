@@ -2427,7 +2427,7 @@ onMounted(() => {
         </VBtn>
 
         <VBtn
-          color="success"
+          color="primary"
           variant="elevated"
           @click="save"
         >
@@ -2459,7 +2459,7 @@ onMounted(() => {
         </VBtn>
 
         <VBtn
-          color="success"
+          color="primary"
           variant="elevated"
           @click="deleteItemConfirm"
         >
@@ -2786,7 +2786,7 @@ onMounted(() => {
         </VBtn>
 
         <VBtn
-          color="success"
+          color="primary"
           variant="elevated"
           @click="save"
         >
@@ -2818,7 +2818,7 @@ onMounted(() => {
         </VBtn>
 
         <VBtn
-          color="success"
+          color="primary"
           variant="elevated"
           @click="deleteItemConfirm"
         >

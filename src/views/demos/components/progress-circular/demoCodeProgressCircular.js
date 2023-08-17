@@ -12,7 +12,7 @@ export const color = { ts: `<template>
 
     <VProgressCircular
       model-value="50"
-      color="success"
+      color="primary"
     />
 
     <VProgressCircular
@@ -45,7 +45,7 @@ export const color = { ts: `<template>
 
     <VProgressCircular
       model-value="50"
-      color="success"
+      color="primary"
     />
 
     <VProgressCircular
@@ -80,7 +80,7 @@ export const indeterminate = { ts: `<template>
 
     <VProgressCircular
       indeterminate
-      color="success"
+      color="primary"
     />
 
     <VProgressCircular
@@ -113,7 +113,7 @@ export const indeterminate = { ts: `<template>
 
     <VProgressCircular
       indeterminate
-      color="success"
+      color="primary"
     />
 
     <VProgressCircular

@@ -89,7 +89,7 @@ const panel = ref(0)
         <template #actions>
           <VIcon
             icon="mdi-check"
-            color="success"
+            color="primary"
           />
         </template>
       </VExpansionPanelTitle>
@@ -141,7 +141,7 @@ const panel = ref(0)
         <template #actions>
           <VIcon
             icon="mdi-check"
-            color="success"
+            color="primary"
           />
         </template>
       </VExpansionPanelTitle>
