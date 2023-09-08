@@ -18,6 +18,7 @@
 .layout-wrapper.layout-nav-type-vertical {
   &.layout-content-height-fixed {
     .page-content-container {
+      
       > .v-layout:first-child {
         overflow: hidden;
         min-block-size: 100%;

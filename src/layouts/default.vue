@@ -6,8 +6,8 @@ import "vue3-toastify/dist/index.css";
 // @layouts plugin
 import Create from "@/toastify/order/create.vue";
 import { AppContentLayoutNav } from "@layouts/enums";
-import Echo from "laravel-echo";
-import Pusher from "pusher-js";
+import echo from "../plugins/echo";
+
 import { useRoute, useRouter } from "vue-router";
 
 const DefaultLayoutWithHorizontalNav = defineAsyncComponent(() =>
@@ -27,17 +27,7 @@ const { layoutAttrs, injectSkinClasses } = useSkins();
 const router = useRouter();
 
 injectSkinClasses();
-const pusher = new Pusher("68572aaa73079990a7d7", {
-  cluster: "mt1",
-  encrypted: true,
-});
-const echo = new Echo({
-  broadcaster: "pusher",
-  key: "68572aaa73079990a7d7",
-  cluster: "mt1",
-  encrypted: true,
-  pusher: pusher,
-});
+
 echo.channel("order-create").listen("OrderCreated", (data) => {
   console.log(data);
   toast.success(

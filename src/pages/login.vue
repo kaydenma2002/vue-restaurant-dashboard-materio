@@ -1,22 +1,21 @@
 <script setup>
-import { VForm } from "vuetify/components/VForm";
 import { useAppAbility } from "@/plugins/casl/useAppAbility";
 import AuthProvider from "@/views/pages/authentication/AuthProvider.vue";
-import axiosCustom from "@axios";
-import axios from 'axios';
 import { useGenerateImageVariant } from "@core/composable/useGenerateImageVariant";
-import tree from "@images/pages/tree.png";
-import { VNodeRenderer } from "@layouts/components/VNodeRenderer";
-import { themeConfig } from "@themeConfig";
-import { emailValidator, requiredValidator } from "@validators";
 import authV2LoginIllustrationBorderedDark from "@images/pages/auth-v2-login-illustration-bordered-dark.png";
 import authV2LoginIllustrationBorderedLight from "@images/pages/auth-v2-login-illustration-bordered-light.png";
 import authV2LoginIllustrationDark from "@images/pages/auth-v2-login-illustration-dark.png";
 import authV2LoginIllustrationLight from "@images/pages/auth-v2-login-illustration-light.png";
 import authV2MaskDark from "@images/pages/auth-v2-mask-dark.png";
 import authV2MaskLight from "@images/pages/auth-v2-mask-light.png";
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import tree from "@images/pages/tree.png";
+import { VNodeRenderer } from "@layouts/components/VNodeRenderer";
+import { themeConfig } from "@themeConfig";
+import { emailValidator, requiredValidator } from "@validators";
+import axios from "axios";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { VForm } from "vuetify/components/VForm";
 
 const isPasswordVisible = ref(false);
 const authThemeImg = useGenerateImageVariant(
@@ -40,39 +39,40 @@ const refVForm = ref();
 const email = ref("");
 const password = ref("");
 const rememberMe = ref(false);
+const isProduction = process.env.NODE_ENV === "production";
 
 const login = () => {
   axios
-    .post("https://142.11.239.33:8000/api/login", {
+    .post(isProduction ? "https://142.11.205.17/api/login" :"https://127.0.0.1/api/login", {
       email: email.value,
       password: password.value,
     })
     .then((res) => {
+      console.log(res.data.user);
+      if (res.data.user.user_type === "0") {
+        localStorage.setItem(
+          "userAbilities",
+          JSON.stringify([
+            {
+              action: "manage",
+              subject: "all",
+            },
+          ])
+        );
 
-    if(res.data.data.user.user_type === "0"){
-      localStorage.setItem(
-        "userAbilities",
-        JSON.stringify([
-          {
-            action: "manage",
-            subject: "all",
-          },
-        ])
-      );
-      
-      ability.update(localStorage.getItem("userAbilities"));
-      localStorage.setItem("userData", JSON.stringify(res.data.user));
-      localStorage.setItem("adminToken", JSON.stringify(res.data.token));
-      toast.success(`Welcome back, ${res.data.user.name}`);
-      // Redirect to `to` query if exist or redirect to index route
-      router.replace(route.query.to ? String(route.query.to) : "/");
-    }else{
-      toast.error('email or password not match')
-    }
-      
+        ability.update(localStorage.getItem("userAbilities"));
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
+        localStorage.setItem("adminToken", JSON.stringify(res.data.token));
+        toast.success(`Welcome back, ${res.data.user.name}`);
+        // Redirect to `to` query if exist or redirect to index route
+        router.replace(route.query.to ? String(route.query.to) : "/");
+      } else {
+        toast.error("email or password not match");
+      }
     })
     .catch((e) => {
-      toast.error('email or password not match')
+      console.log(e);
+      toast.error("email or password not match");
     });
 };
 
@@ -118,7 +118,7 @@ const onSubmit = () => {
               Please sign-in to your account and start the adventure
             </p>
           </VCardText>
-          
+
           <VCardText>
             <VForm ref="refVForm" @submit.prevent="onSubmit">
               <VRow>

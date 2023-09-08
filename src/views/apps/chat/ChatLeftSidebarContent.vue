@@ -4,6 +4,7 @@ import { useChat } from './useChat'
 import ChatContact from '@/views/apps/chat/ChatContact.vue'
 import { useChatStore } from '@/views/apps/chat/useChatStore'
 import { avatarText, formatDateToMonthShort } from "@core/utils/formatters";
+import { computed, onMounted } from 'vue'
 
 const props = defineProps({
   search: {
@@ -26,10 +27,8 @@ const emit = defineEmits([
 const { resolveAvatarBadgeVariant } = useChat()
 const search = useVModel(props, 'search', emit)
 const store = useChatStore()
-store.contacts.map(item =>{
-  console.log(item)
-})
-const uniqueContacts = computed(() => {
+const uniqueChats = computed(() => {
+  
   const uniqueIds = new Set();
   return store.chatsContacts.filter((contact) => {
     if (!uniqueIds.has(contact.owner_id)) {
@@ -39,6 +38,15 @@ const uniqueContacts = computed(() => {
     return false;
   });
 });
+
+const uniqueContacts = computed(() =>{
+  
+  return store.contacts.map(item => item )
+})
+
+
+
+
 </script>
 
 <template>
@@ -97,7 +105,7 @@ const uniqueContacts = computed(() => {
     </IconBtn>
   </div>
   <VDivider />
-
+  
   <PerfectScrollbar
     tag="ul"
     class="chat-contacts-list px-3"
@@ -107,7 +115,7 @@ const uniqueContacts = computed(() => {
       <span class="chat-contact-header d-block text-primary text-xl font-weight-medium">Chats</span>
     </li>
     <ChatContact
-      v-for="contact in uniqueContacts"
+      v-for="contact in uniqueChats"
       :key="`chat-${contact.id}`"
       :user="contact.owner"
       is-chat-contact
@@ -115,20 +123,21 @@ const uniqueContacts = computed(() => {
     />
     
     <span
-      v-show="!store.chatsContacts.length"
+      v-show="!uniqueChats"
       class="no-chat-items-text text-disabled"
     >No chats found</span>
     <li>
-      <span class="chat-contact-header d-block text-primary text-xl font-weight-medium">Contacts</span>
+      <span  class="chat-contact-header d-block text-primary text-xl font-weight-medium">Contacts</span>
     </li>
     <ChatContact
-      v-for="contact in store.contacts"
+      
+      v-for="contact in uniqueContacts"
       :key="`chat-${contact.id}`"
       :user="contact"
       @click="$emit('openChatOfContact', contact.id)"
     />
     <span
-      v-show="!store.contacts.length"
+      v-show="!uniqueContacts"
       class="no-chat-items-text text-disabled"
     >No contacts found</span>
   </PerfectScrollbar>

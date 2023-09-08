@@ -53,6 +53,7 @@ const msgGroups = computed(() => {
           time: msg.time,
           type: msg.type,
         });
+        
       } else {
         msgSenderId = msg.senderId;
         _msgGroups.push(msgGroup);

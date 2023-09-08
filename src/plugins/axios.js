@@ -1,9 +1,9 @@
-import axios from 'axios'
-import router from '@/router'
+import router from '@/router';
+import axios from 'axios';
 const isProduction = process.env.NODE_ENV === 'production';
 
 const axiosIns = axios.create({
-  baseURL: isProduction ? 'https://142.11.239.33:8000/api/' : 'https://127.0.0.1/api/',
+  baseURL: isProduction ? 'https://142.11.239.33:8000/api/' : 'http://127.0.0.1:8000/api/',
 })
 
 

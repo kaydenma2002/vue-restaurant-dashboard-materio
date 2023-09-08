@@ -47,7 +47,7 @@ notificationListStore
               data: notification?.data,
               add_data: notification?.add_data
             });
-            console.log(notifications.value);
+            //console.log(notifications.value);
           })
           .catch((error) => {
             console.log(error);
@@ -110,7 +110,8 @@ const handleNotificationClick = (notification) => {
 };
 echo.channel("notification-create").listen("NotificationCreated", (data) => {
   if (data.notification.type == 0) {
-    orderListStore.fetchItemsByOrderId(data.notification.data).then((res) => {
+    console.log(data)
+    orderListStore.fetchItemsByOrderId(data?.notification?.data).then((res) => {
       notifications.value.push({
         id: res.data?.id,
         title: res.data.title,

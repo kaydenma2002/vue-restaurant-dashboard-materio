@@ -198,6 +198,9 @@ export default defineComponent({
       overflow: hidden;
 
       .page-content-container {
+
+        
+
         inline-size: 100%;
 
         > :first-child {

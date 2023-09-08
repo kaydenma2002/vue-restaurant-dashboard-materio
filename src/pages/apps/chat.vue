@@ -1,4 +1,6 @@
 <script setup>
+import axios from "@axios";
+
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import { useDisplay } from "vuetify";
 import ChatActiveChatUserProfileSidebarContent from "@/views/apps/chat/ChatActiveChatUserProfileSidebarContent.vue";
@@ -11,6 +13,7 @@ import { useResponsiveLeftSidebar } from "@core/composable/useResponsiveSidebar"
 import { avatarText } from "@core/utils/formatters";
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
+
 const vuetifyDisplays = useDisplay();
 const store = useChatStore();
 const { isLeftSidebarOpen } = useResponsiveLeftSidebar(
@@ -53,41 +56,63 @@ const sendMessage = async () => {
     scrollToBottomInChatLog();
   });
 };
+
+const token = localStorage
+  .getItem("adminToken")
+  ?.substring(1, localStorage.getItem("adminToken").length - 1);
+const isProduction = process.env.NODE_ENV === "production";
 const pusher = new Pusher("68572aaa73079990a7d7", {
   cluster: "mt1",
   encrypted: true,
-});
-const token = localStorage.getItem("adminToken")?.substring(1, localStorage.getItem("adminToken").length - 1)
-const isProduction = process.env.NODE_ENV === "production";
-const echo = new Echo({
-  broadcaster: "pusher",
-  key: "68572aaa73079990a7d7",
-  cluster: "mt1",
-  encrypted: true,
-  pusher:pusher,
-  authEndpoint: isProduction
-            ? "https://ehl.ai:8000/broadcasting/auth"
-            : "https://127.0.0.1/broadcasting/auth",
+  authEndpoint: isProduction ? 'https://142.11.205.17/auth' : "https://127.0.0.1/auth",
   auth: {
-    headers: {
-      Authorization: `Bearer ${token}` || null,
-    },
+    user_id: store?.profileUser?.id, // Pass the 'user_id' obtained during login
   },
 });
+const subscribedChannels = {};
+
 const openChatOfContact = async (userId) => {
-  
-  // Listen for the private event on the private channel
-  echo
-    .private("private-super-admin-owner-chat." + store.profileUser.id + "." + userId)
-    .listen("SuperAdminOwnerChat", (data) => {
-      // Handle the private event data here
-      store.getChat(userId).then(() =>{
-        scrollToBottomInChatLog();
-      })
-      const contact = store.chatsContacts;
-      if (vuetifyDisplays.smAndDown.value) isLeftSidebarOpen.value = false;
+  if (subscribedChannels[userId]) {
+    await store.getChat(userId);
+
+    // Reset message input
+    msg.value = "";
+
+    // Set unseenMsgs to
+
+    const contact = store.chatsContacts;
+    console.log(contact);
+
+    // if smAndDown =>  Close Chat & Contacts left sidebar
+    if (vuetifyDisplays.smAndDown.value) isLeftSidebarOpen.value = false;
+
+    // Scroll to bottom
+    nextTick(() => {
+      scrollToBottomInChatLog();
     });
-  
+    return; // Already subscribed, so do nothing
+  }
+  // Listen for the private event on the private channel
+  const channel = pusher.subscribe(
+    "private-super-admin-owner-chat." + store.profileUser.id + "." + userId
+  );
+
+  channel.bind("SuperAdminOwnerChat", (data) => {
+    console.log(data);
+    // Handle the private event data here
+    store.ListenForChat(userId).then(() => {
+      scrollToBottomInChatLog();
+    });
+    // const contact = store.chatsContacts;
+    if (vuetifyDisplays.smAndDown.value) isLeftSidebarOpen.value = false;
+  });
+  channel.bind("pusher:subscription_error", (status) => {
+    console.error("Subscription Error:", status);
+    // Handle the subscription error here, e.g., show an error message to the user
+  });
+  // Store the channel in the cache
+  subscribedChannels[userId] = channel;
+  console.log(channel);
   await store.getChat(userId);
 
   // Reset message input
@@ -141,7 +166,10 @@ const moreList = [
 </script>
 
 <template>
-  <VLayout class="chat-app-layout bg-surface">
+  <VLayout
+    class="chat-app-layout bg-surface"
+    style="max-height: 90vh; min-height: 89vh"
+  >
     <!-- 👉 user profile sidebar -->
     <VNavigationDrawer
       v-model="isUserProfileSidebarOpen"

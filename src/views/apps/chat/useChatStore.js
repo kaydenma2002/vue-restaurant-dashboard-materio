@@ -19,6 +19,7 @@ export const useChatStore = defineStore("chat", {
       // this.chatsContacts = chatsContacts
       
       this.contacts = res.data.contacts;
+      
       this.profileUser = res.data.user;
       this.chatsContacts = res.data.chats
         .map((chat) => {
@@ -45,6 +46,16 @@ export const useChatStore = defineStore("chat", {
       console.log(data)
       this.activeChat = data;
     },
+    async ListenForChat(userId){
+      const data = await axios.get(`/admin/chats?owner_id=${userId}`);
+      if(userId === this.activeChat.data.owner.id){
+        this.activeChat = data;
+      }else{
+
+      }
+      
+    },
+    
     async sendMsg(message) {
       const senderId = this.profileUser?.id
       console.log(this.activeChat)
@@ -73,10 +84,12 @@ export const useChatStore = defineStore("chat", {
         })
         console.log(data.data)
         if (this.activeChat) {
+          console.log(this.activeChat.data.chat)
           this.activeChat.data.chat.push(data.data.chats)
         }
       }
       else {
+        console.log("sent")
         this.activeChat?.chat?.push(data.data)
       }
 

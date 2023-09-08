@@ -26,6 +26,7 @@ const reSaleClaimUrl = ref("");
 const businessLicenseClaimUrl = ref("");
 const ss4ClaimUrl = ref("");
 onMounted(() => {
+  console.log(props.claimData)
   dbx
     .filesGetTemporaryLink({
       path: `/kayden/${props.claimData.restaurant.web_id}/sale_tax/${props.claimData.sale_tax}`,
